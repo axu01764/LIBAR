@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>理BAR - ALAN & GIN</title>
+    <title>理 BAR - 沉浸式酒单</title>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Noto+Serif+SC:wght@300;500;700&display=swap" rel="stylesheet">
@@ -110,7 +110,7 @@
             <div class="flex items-center gap-3">
                 <i class="fa-solid fa-martini-glass-citrus text-amber-500 text-2xl"></i>
                 <div>
-                    <h1 class="text-2xl font-display tracking-widest text-white">THE LIST</h1>
+                    <h1 class="text-2xl font-bold tracking-widest text-white" style="font-family: 'Noto Serif SC', serif;">理 BAR</h1>
                     <p class="text-xs text-gray-400 tracking-widest uppercase">AI Powered Mixology</p>
                 </div>
             </div>
@@ -267,14 +267,13 @@
 <script>
     const { createApp, ref, watch, onMounted } = Vue;
 
-    // 全局默认提示词 (高对比度，暗背景，亮酒体，无人物)
+    // 全局默认提示词
     const defaultGlobalPrompt = (drinkName) => `A professional photography of ${drinkName} cocktail, high contrast, bright drink, dimly lit luxurious bar background, dramatic lighting, bokeh effect, no people, no hands, ultra-realistic, 8k, cinematic, warm tones`;
 
-    // 默认数据
     const defaultClassic = [
         { id: 1, name: 'PALERMO', subName: '巴勒莫', price: '36', tags: '苦酒 / 热带果香', desc: '意式苦酒与热带果香的西西里邂逅。', seed: 101, longDesc: "Palermo 是对经典 Campari-Soda 的一次热带升级，灵感来源于美丽的西西里岛。入口时，首先感受到苦艾酒带来的经典苦味，随后被菠萝和香草的热带甜美包裹。", aiPrompt: '' },
         { id: 2, name: 'Mamie Taylor', subName: '玛米泰勒', price: '36', tags: '姜 / 威士忌 / 青柠', desc: '19世纪的经典，复古组合。', seed: 102, longDesc: "Mamie Taylor 诞生于19世纪末。它以苏格兰威士忌为基酒，混合新鲜青柠汁和辛辣的姜汁汽水。口感清脆，姜的辛辣与青柠的酸爽形成完美对比。", aiPrompt: '' },
-        { id: 3, name: 'El Diablo', subName: '恶魔', price: '38', tags: '莓果 / 姜 / 辛辣', desc: '龙舌兰与黑醋栗的完美风暴。', seed: 103, longDesc: "El Diablo（恶魔）是一款充满魅力的墨西哥风味鸡尾酒。它以龙舌兰为基底，加入黑醋栗利口酒提供深沉的果香，再用姜汁啤酒提升辛辣和气泡感，。", aiPrompt: 'cocktail diablo in a highball glass, dramatic lighting, bright drink, no people, 8k' },
+        { id: 3, name: 'El Diablo', subName: '恶魔', price: '38', tags: '莓果 / 姜 / 辛辣', desc: '龙舌兰与黑醋栗的完美风暴。', seed: 103, longDesc: "El Diablo（恶魔）是一款充满魅力的墨西哥风味鸡尾酒。它以龙舌兰为基底，加入黑醋栗利口酒提供深沉的果香，再用姜汁啤酒提升辛辣和气泡感。", aiPrompt: '' },
         { id: 4, name: 'Zombie', subName: '僵尸', price: '38', tags: '朗姆 / 热带 / 强劲', desc: '极其危险的诱惑。', seed: 104, longDesc: "Zombie 是 Tiki 文化的标志性饮品。它使用了三种不同风味的朗姆酒、杏子白兰地、青柠汁和各种热带果汁。风味复杂，酒精度极高。", aiPrompt: 'Zombie cocktail in a tiki glass, tropical bar background, dramatic lighting, bright drink, no people, 8k' }, 
         { id: 5, name: 'Long Island', subName: '长岛冰茶', price: '45', tags: '五种基酒 / 烈性', desc: '无害外表下的烈性。', seed: 105, longDesc: "Long Island Iced Tea 由伏特加、朗姆酒、龙舌兰酒、金酒和橙皮酒五种基酒混合而成。它以其隐藏的烈度和清爽的口感而闻名。", aiPrompt: '' }
     ];
@@ -283,8 +282,8 @@
         { id: 6, name: 'Aperol Spritz', subName: '阿佩罗橙光', price: '38', tags: '橙香 / 气泡', desc: '明亮的橙色伴随着清爽气泡。', seed: 201, longDesc: "Aperol Spritz 是来自意大利的夏日标志。它由 Aperol 橙味开胃酒、普罗塞克起泡酒和少许苏打水按 3-2-1 的比例调配而成。", aiPrompt: 'Aperol Spritz cocktail in a large wine glass, summer terrace background, natural light, bright orange liquid, no people, 8k' }, 
         { id: 7, name: 'Paper Plane', subName: '纸飞机', price: '40', tags: '柑橘 / 草本', desc: '纽约现代经典，精致平衡。', seed: 202, longDesc: "Paper Plane 由调酒师 Sam Ross 发明。等量的波本威士忌、Aperol、Amaretto 和新鲜柠檬汁。口感呈现出精致的平衡。", aiPrompt: '' },
         { id: 8, name: 'Acapulco', subName: '阿卡普尔科', price: '38', tags: '菠萝 / 西柚', desc: '源自墨西哥海岸的变体长饮。', seed: 203, longDesc: "Acapulco 混合了白朗姆、青柠汁、菠萝汁和西柚汁，口感酸甜柔和，带有浓郁的果香和海洋的清新感。", aiPrompt: '' },
-        { id: 9, name: 'White Lady', subName: '白色佳人', price: '33', tags: '柑橘 / 花香', desc: '风味实验 解构柠檬汁 短饮。', seed: 204, longDesc: "White Lady 诞生于1920年代。它以金酒为基酒，搭配橙皮酒和新鲜柠檬汁。口感丝滑、优雅，带有强烈的柑橘风味。", aiPrompt: '' },
-        { id: 10, name: 'Highball', subName: '绿方嗨棒', price: '45', tags: '清爽/经典', desc: '简单好喝。使用尊尼获加绿瓶威士忌', seed: 205, longDesc: "习惯了便放不下的东西之一。", aiPrompt: '' }
+        { id: 9, name: 'White Lady', subName: '白色佳人', price: '33', tags: '柑橘 / 花香', desc: '优雅的短饮。', seed: 204, longDesc: "White Lady 诞生于1920年代。它以金酒为基酒，搭配橙皮酒和新鲜柠檬汁。口感丝滑、优雅，带有强烈的柑橘风味。", aiPrompt: '' },
+        { id: 10, name: 'Negroni', subName: '尼格罗尼', price: '42', tags: '苦甜 / 经典', desc: '平衡的苦甜交响曲。', seed: 205, longDesc: "Negroni 是标志性的意大利鸡尾酒，由金酒、金巴利和甜味美思等量调制。简单的配方创造出完美的平衡，是开胃酒的王者。", aiPrompt: '' }
     ];
 
     createApp({
@@ -298,16 +297,19 @@
                 const savedClassic = localStorage.getItem('mm_classic');
                 const savedNew = localStorage.getItem('mm_new');
                 if (savedClassic && savedNew) {
-                    classicDrinks.value = JSON.parse(savedClassic).map(d => ({
-                        ...d, 
-                        longDesc: d.longDesc || d.desc,
-                        aiPrompt: d.aiPrompt || '' 
-                    }));
-                    newDrinks.value = JSON.parse(savedNew).map(d => ({
-                        ...d, 
-                        longDesc: d.longDesc || d.desc,
-                        aiPrompt: d.aiPrompt || ''
-                    }));
+                    const mergeData = (saved, defaults) => {
+                        const parsed = JSON.parse(saved);
+                        return parsed.map((item, index) => {
+                            const defaultItem = defaults[index] || {};
+                            return {
+                                ...item,
+                                longDesc: item.longDesc || item.desc,
+                                aiPrompt: item.aiPrompt !== undefined ? item.aiPrompt : (defaultItem.aiPrompt || '')
+                            };
+                        });
+                    };
+                    classicDrinks.value = mergeData(savedClassic, defaultClassic);
+                    newDrinks.value = mergeData(savedNew, defaultNew);
                 } else {
                     resetData();
                 }
@@ -319,10 +321,12 @@
             };
 
             const getAIImage = (drink) => {
-                const finalPrompt = drink.aiPrompt && drink.aiPrompt.trim() !== '' 
+                let rawPrompt = drink.aiPrompt && drink.aiPrompt.trim() !== '' 
                                     ? drink.aiPrompt 
                                     : defaultGlobalPrompt(drink.name);
-                return `https://image.pollinations.ai/prompt/${encodeURIComponent(finalPrompt)}?width=600&height=600&nologo=true&model=flux&seed=${drink.seed}`;
+                const cleanPrompt = rawPrompt.replace(/[\r\n]+/g, ' ');
+                // 将模型修改为 turbo，速度更快更稳定
+                return `https://image.pollinations.ai/prompt/${encodeURIComponent(cleanPrompt)}?width=600&height=600&nologo=true&model=turbo&seed=${drink.seed}`;
             };
 
             const regenerateImage = (drink) => {
