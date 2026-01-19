@@ -1,179 +1,161 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>理 BAR - 智绘酒单</title>
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Noto+Serif+SC:wght@500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root { --gold: #ffd700; --dark: #0a0a0a; }
-        body { background: var(--dark); color: #e0e0e0; font-family: 'Noto Serif SC', serif; }
-        .font-display { font-family: 'Cinzel', serif; }
-        .glass-card { background: rgba(255,255,255,0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); transition: 0.4s; }
-        .glass-card:hover { border-color: var(--gold); transform: translateY(-4px); box-shadow: 0 10px 30px -10px rgba(255,215,0,0.2); }
-        .ai-img { width: 100%; height: 100%; object-cover: cover; transition: 1s; opacity: 0; }
-        .img-loaded { opacity: 1; }
-        .loading-shimmer { background: linear-gradient(90deg, #1a1a1a 25%, #2a2a2a 50%, #1a1a1a 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
-        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-        .price-tag { background: var(--gold); color: black; padding: 2px 8px; border-radius: 4px; font-weight: bold; }
-        [v-cloak] { display: none; }
-    </style>
-</head>
-<body class="min-h-screen">
-
-<div id="app" v-cloak>
-    <header class="p-6 border-b border-white/10 flex justify-between items-center sticky top-0 bg-black/80 backdrop-blur-md z-50">
-        <div class="flex items-center gap-4">
-            <div class="w-12 h-12 border-2 border-amber-500 rounded-full flex items-center justify-center text-amber-500 text-2xl">
-                <i class="fa-solid fa-whiskey-glass"></i>
-            </div>
-            <div>
-                <h1 class="text-3xl font-bold tracking-tighter text-white">理 BAR</h1>
-                <p class="text-[10px] uppercase tracking-[0.3em] text-amber-500/80">Premium AI Mixology</p>
-            </div>
-        </div>
-        <div class="flex gap-3">
-            <button @click="resetAndRefetch" class="px-4 py-2 border border-white/20 rounded-full text-xs hover:bg-white/10 transition">重新生成全场图片</button>
-            <button @click="addNew" class="px-6 py-2 bg-amber-500 text-black font-bold rounded-full hover:bg-amber-400 transition shadow-[0_0_15px_rgba(245,158,11,0.3)]">新增酒款</button>
-        </div>
-    </header>
-
-    <main class="max-w-7xl mx-auto p-6">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div v-for="(drink, index) in drinks" :key="drink.id" 
-                 class="glass-card rounded-2xl overflow-hidden flex flex-col group"
-                 @click="selectedDrink = drink">
-                
-                <div class="h-64 relative overflow-hidden bg-zinc-900 loading-shimmer">
-                    <img :src="drink.cachedUrl || getUrl(drink)" 
-                         @load="onImgLoad($event)"
-                         class="ai-img"
-                         :class="{'img-loaded': true}">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
-                    <div class="absolute bottom-4 left-4 right-4 flex justify-between items-end">
-                        <div>
-                            <h2 class="text-xl font-bold text-white">{{ drink.name }}</h2>
-                            <p class="text-xs text-amber-500 font-display uppercase">{{ drink.subName }}</p>
-                        </div>
-                        <span class="price-tag">¥{{ drink.price }}</span>
-                    </div>
-                </div>
-
-                <div class="p-5 flex-grow">
-                    <p class="text-xs text-gray-400 mb-3 italic">{{ drink.tags }}</p>
-                    <p class="text-sm text-gray-300 leading-relaxed">{{ drink.desc }}</p>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <div v-if="selectedDrink" class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/90 backdrop-blur-xl" @click.self="selectedDrink = null">
-        <div class="max-w-4xl w-full glass-card rounded-3xl overflow-hidden grid grid-cols-1 md:grid-cols-2 shadow-2xl">
-            <div class="h-96 md:h-full relative bg-black">
-                <img :src="selectedDrink.cachedUrl || getUrl(selectedDrink)" class="w-full h-full object-cover">
-                <button @click="regenerateSingle(selectedDrink)" class="absolute bottom-6 left-6 bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2 rounded-xl text-sm hover:bg-white/20 transition">
-                    <i class="fa-solid fa-wand-magic-sparkles mr-2"></i>不喜欢？点我重画
-                </button>
-            </div>
-            <div class="p-10 flex flex-col justify-center">
-                <input v-model="selectedDrink.name" class="bg-transparent text-4xl font-bold text-white mb-2 border-b border-transparent focus:border-amber-500 outline-none">
-                <input v-model="selectedDrink.subName" class="bg-transparent text-amber-500 font-display uppercase tracking-widest mb-6 outline-none">
-                
-                <div class="space-y-4 flex-grow text-gray-300">
-                    <input v-model="selectedDrink.tags" class="w-full bg-white/5 p-2 rounded-lg text-sm border border-white/10 outline-none focus:border-amber-500">
-                    <textarea v-model="selectedDrink.desc" class="w-full h-32 bg-white/5 p-3 rounded-lg text-sm border border-white/10 outline-none focus:border-amber-500 resize-none"></textarea>
-                    
-                    <div class="pt-4">
-                        <label class="text-[10px] text-gray-500 block mb-2 uppercase tracking-tighter">AI 画图指令 (Prompt)</label>
-                        <textarea v-model="selectedDrink.aiPrompt" class="w-full h-20 bg-black p-3 rounded-lg text-[10px] font-mono border border-white/10 outline-none focus:border-amber-500"></textarea>
-                    </div>
-                </div>
-
-                <div class="mt-8 flex justify-between items-center">
-                    <div class="text-3xl font-display text-amber-500">¥ <input v-model="selectedDrink.price" class="bg-transparent w-16 outline-none"></div>
-                    <div class="flex gap-2">
-                        <button @click="deleteDrink" class="px-4 py-2 text-red-500 hover:bg-red-500/10 rounded-xl transition text-sm">删除</button>
-                        <button @click="selectedDrink = null" class="px-8 py-3 bg-white text-black font-bold rounded-xl hover:bg-amber-500 transition">完成</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 <script>
-const { createApp, ref, watch, onMounted } = Vue;
+    const { createApp, ref, watch, onMounted } = Vue;
 
-const DEFAULT_PROMPT = (n) => `Extreme high-end mixology photography, ${n} cocktail, centered in frame, dramatic rim lighting, luxury dim bar background, depth of field, 8k resolution, cinematic style, sharp focus on glass textures`;
+    // 1. 这里是全局默认提示词
+    const defaultGlobalPrompt = (drinkName) => `A professional photography of ${drinkName} cocktail, high contrast, bright drink, dimly lit luxurious bar background, dramatic lighting, bokeh effect, no people, no hands, ultra-realistic, 8k, cinematic, warm tones`;
 
-const INITIAL_DATA = [
-    { id: 1, name: 'Palermo', subName: '巴勒莫', price: '36', tags: '意式苦酒 / 热带果香', desc: '入口是西西里的海风，随后是苦与甜的平衡交响。', seed: 88, aiPrompt: '' },
-    { id: 2, name: 'Mamie Taylor', subName: '玛米泰勒', price: '36', tags: '威士忌 / 辛辣姜味', desc: '19世纪的复古经典，威士忌与姜汁的灵魂碰撞。', seed: 42, aiPrompt: '' },
-    { id: 3, name: 'El Diablo', subName: '恶魔', price: '38', tags: '龙舌兰 / 黑醋栗', desc: '诱人的深红色泽下，隐藏着龙舌兰的狂放灵魂。', seed: 66, aiPrompt: '' },
-    { id: 4, name: 'Zombie', subName: '僵尸', price: '45', tags: '强劲 / 朗姆 / Tiki', desc: '三款朗姆酒的博弈，是酒吧里最危险的温柔。', seed: 99, aiPrompt: 'Tiki glass, zombie cocktail, exotic fruits decoration' },
-    { id: 5, name: 'Negroni', subName: '尼格罗尼', price: '42', tags: '苦甜平衡 / 经典', desc: '绅士的入门礼，三位一体的完美比例。', seed: 55, aiPrompt: '' }
-];
+    // 2. 这里是数据源，您可以在这里直接修改 aiPrompt
+    const defaultClassic = [
+        { 
+            id: 1, 
+            name: 'PALERMO', 
+            subName: '巴勒莫', 
+            price: '36', 
+            tags: '苦酒 / 热带果香', 
+            desc: '意式苦酒与热带果香的西西里邂逅。', 
+            seed: 101, 
+            longDesc: "Palermo 是对经典 Campari-Soda 的一次热带升级...", 
+            // ▼▼▼ 在这里直接写提示词 (必须用英文) ▼▼▼
+            aiPrompt: '' 
+        },
+        { id: 2, name: 'Mamie Taylor', subName: '玛米泰勒', price: '36', tags: '姜 / 威士忌 / 青柠', desc: '19世纪的经典，复古组合。', seed: 102, longDesc: "...", aiPrompt: '' },
+        { id: 3, name: 'El Diablo', subName: '恶魔', price: '38', tags: '莓果 / 姜 / 辛辣', desc: '龙舌兰与黑醋栗的完美风暴。', seed: 103, longDesc: "...", aiPrompt: '' },
+        // ... 您的 Zombie 示例
+        { 
+            id: 4, 
+            name: 'Zombie', 
+            subName: '僵尸', 
+            price: '38', 
+            tags: '朗姆 / 热带 / 强劲', 
+            desc: '极其危险的诱惑。', 
+            seed: 104, 
+            longDesc: "...", 
+            // ▼▼▼ 已经写好的示例 ▼▼▼
+            aiPrompt: 'Zombie cocktail in a tiki glass, tropical bar background, dramatic lighting, bright drink, no people, 8k' 
+        },
+        { id: 5, name: 'Long Island', subName: '长岛冰茶', price: '45', tags: '五种基酒 / 烈性', desc: '无害外表下的烈性。', seed: 105, longDesc: "...", aiPrompt: '' }
+    ];
 
-createApp({
-    setup() {
-        const drinks = ref([]);
-        const selectedDrink = ref(null);
+    const defaultNew = [
+        { 
+            id: 6, 
+            name: 'Aperol Spritz', 
+            subName: '阿佩罗橙光', 
+            price: '38', 
+            tags: '橙香 / 气泡', 
+            desc: '明亮的橙色伴随着清爽气泡。', 
+            seed: 201, 
+            longDesc: "...", 
+            // ▼▼▼ 已经写好的示例 ▼▼▼
+            aiPrompt: 'Aperol Spritz cocktail in a large wine glass, summer terrace background, natural light, bright orange liquid, no people, 8k' 
+        },
+        { id: 7, name: 'Paper Plane', subName: '纸飞机', price: '40', tags: '柑橘 / 草本', desc: '纽约现代经典，精致平衡。', seed: 202, longDesc: "...", aiPrompt: '' },
+        { id: 8, name: 'Acapulco', subName: '阿卡普尔科', price: '38', tags: '菠萝 / 西柚', desc: '源自墨西哥海岸的变体长饮。', seed: 203, longDesc: "...", aiPrompt: '' },
+        { id: 9, name: 'White Lady', subName: '白色佳人', price: '33', tags: '柑橘 / 花香', desc: '优雅的短饮。', seed: 204, longDesc: "...", aiPrompt: '' },
+        { id: 10, name: 'Negroni', subName: '尼格罗尼', price: '42', tags: '苦甜 / 经典', desc: '平衡的苦甜交响曲。', seed: 205, longDesc: "...", aiPrompt: '' }
+    ];
 
-        const init = () => {
-            const saved = localStorage.getItem('libar_data');
-            drinks.value = saved ? JSON.parse(saved) : INITIAL_DATA;
-        };
+    createApp({
+        setup() {
+            const classicDrinks = ref([]);
+            const newDrinks = ref([]);
+            const isModalOpen = ref(false);
+            const selectedDrink = ref({});
 
-        // 核心：生成 AI URL 逻辑，带模型轮询和缓存优化
-        const getUrl = (drink) => {
-            const prompt = drink.aiPrompt?.trim() || DEFAULT_PROMPT(drink.name);
-            const cleanPrompt = encodeURIComponent(prompt.replace(/\n/g, ' '));
-            // 采用 flux-realism 这种较少受限的路径，并增加随机性
-            const model = drink.id % 2 === 0 ? 'flux' : 'turbo';
-            return `https://image.pollinations.ai/prompt/${cleanPrompt}?seed=${drink.seed}&width=800&height=800&nologo=true&model=${model}`;
-        };
+            const initData = () => {
+                const savedClassic = localStorage.getItem('mm_classic');
+                const savedNew = localStorage.getItem('mm_new');
+                if (savedClassic && savedNew) {
+                    // 深度合并逻辑，确保即使旧数据没有 aiPrompt 字段也能正常运行
+                    const mergeData = (saved, defaults) => {
+                        const parsed = JSON.parse(saved);
+                        return parsed.map((item, index) => {
+                            const defaultItem = defaults[index] || {};
+                            return {
+                                ...item,
+                                longDesc: item.longDesc || item.desc,
+                                // 如果本地缓存里没有 prompt，就优先用源代码里的 default 值，还没有才为空
+                                aiPrompt: item.aiPrompt !== undefined ? item.aiPrompt : (defaultItem.aiPrompt || '')
+                            };
+                        });
+                    };
+                    classicDrinks.value = mergeData(savedClassic, defaultClassic);
+                    newDrinks.value = mergeData(savedNew, defaultNew);
+                } else {
+                    resetData();
+                }
+            };
 
-        const onImgLoad = (event) => {
-            event.target.classList.add('img-loaded');
-        };
+            const resetData = () => {
+                classicDrinks.value = JSON.parse(JSON.stringify(defaultClassic));
+                newDrinks.value = JSON.parse(JSON.stringify(defaultNew));
+            };
 
-        const regenerateSingle = (drink) => {
-            drink.seed = Math.floor(Math.random() * 99999);
-            // 立即清除旧缓存链接，强制浏览器发起新请求
-            drink.cachedUrl = getUrl(drink);
-        };
+            // ★★★ 核心修复：自动处理换行符和空格 ★★★
+            const getAIImage = (drink) => {
+                let rawPrompt = drink.aiPrompt && drink.aiPrompt.trim() !== '' 
+                                    ? drink.aiPrompt 
+                                    : defaultGlobalPrompt(drink.name);
+                
+                // 强制将换行符替换为空格，防止 URL 断裂
+                const cleanPrompt = rawPrompt.replace(/[\r\n]+/g, ' ');
 
-        const resetAndRefetch = () => {
-            if(!confirm('这将为所有酒款重绘图片，确定吗？')) return;
-            drinks.value.forEach(d => regenerateSingle(d));
-        };
+                return `https://image.pollinations.ai/prompt/${encodeURIComponent(cleanPrompt)}?width=600&height=600&nologo=true&model=flux&seed=${drink.seed}`;
+            };
 
-        const addNew = () => {
-            const id = Date.now();
-            drinks.value.unshift({
-                id, name: '新调饮', subName: 'New Drink', price: '38', tags: '风味 / 基酒', 
-                desc: '点击进行编辑...', seed: id, aiPrompt: ''
+            const regenerateImage = (drink) => {
+                drink.seed = Math.floor(Math.random() * 100000);
+                if (isModalOpen.value && selectedDrink.value.id === drink.id) {
+                    selectedDrink.value = { ...drink }; 
+                }
+            };
+
+            const openModal = (drink) => {
+                selectedDrink.value = drink;
+                isModalOpen.value = true;
+            };
+            const closeModal = () => {
+                isModalOpen.value = false;
+                selectedDrink.value = {};
+            };
+
+            const addNewDrink = () => {
+                const newId = Date.now();
+                newDrinks.value.unshift({
+                    id: newId,
+                    name: 'New Cocktail',
+                    subName: '新品',
+                    price: '00',
+                    tags: '风味',
+                    desc: '点击编辑',
+                    longDesc: '详细介绍...',
+                    aiPrompt: '', 
+                    seed: newId
+                });
+            };
+
+            const deleteDrink = (type, index) => {
+                if(!confirm('Delete?')) return;
+                type === 'classic' ? classicDrinks.value.splice(index, 1) : newDrinks.value.splice(index, 1);
+            };
+
+            watch([classicDrinks, newDrinks], () => {
+                localStorage.setItem('mm_classic', JSON.stringify(classicDrinks.value));
+                localStorage.setItem('mm_new', JSON.stringify(newDrinks.value));
+            }, { deep: true });
+
+            onMounted(() => {
+                initData();
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && isModalOpen.value) closeModal();
+                });
             });
-        };
 
-        const deleteDrink = () => {
-            if(!confirm('确定要删除这款酒吗？')) return;
-            drinks.value = drinks.value.filter(d => d.id !== selectedDrink.value.id);
-            selectedDrink.value = null;
-        };
-
-        watch(drinks, (newVal) => {
-            localStorage.setItem('libar_data', JSON.stringify(newVal));
-        }, { deep: true });
-
-        onMounted(init);
-
-        return { drinks, selectedDrink, getUrl, onImgLoad, regenerateSingle, resetAndRefetch, addNew, deleteDrink };
-    }
-}).mount('#app');
+            return {
+                classicDrinks, newDrinks, isModalOpen, selectedDrink,
+                getAIImage, regenerateImage, openModal, closeModal,
+                addNewDrink, deleteDrink, resetData
+            };
+        }
+    }).mount('#app');
 </script>
-</body>
-</html>
