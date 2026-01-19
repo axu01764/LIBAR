@@ -3,387 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>理 BAR - 沉浸式酒单</title>
+    <title>理 BAR - 智绘酒单</title>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Noto+Serif+SC:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Noto+Serif+SC:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <style>
-        :root {
-            --neon-gold: #ffd700;
-            --glass-bg: rgba(20, 20, 20, 0.7);
-            --glass-border: rgba(255, 255, 255, 0.1);
-        }
-
-        body {
-            background-color: #0f0f0f;
-            background-image: 
-                radial-gradient(circle at 15% 50%, rgba(76, 29, 149, 0.15), transparent 25%), 
-                radial-gradient(circle at 85% 30%, rgba(180, 83, 9, 0.15), transparent 25%);
-            color: #e0e0e0;
-            font-family: 'Noto Serif SC', serif;
-            min-height: 100vh;
-        }
-
+        :root { --gold: #ffd700; --dark: #0a0a0a; }
+        body { background: var(--dark); color: #e0e0e0; font-family: 'Noto Serif SC', serif; }
         .font-display { font-family: 'Cinzel', serif; }
-
-        /* 卡片样式 */
-        .glass-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-        }
-        .glass-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(255, 215, 0, 0.3);
-            box-shadow: 0 15px 40px -10px rgba(255, 215, 0, 0.1);
-        }
-
-        /* Modal 背景模糊 */
-        .modal-overlay-blur {
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            background-color: rgba(0, 0, 0, 0.6);
-        }
-
-        /* 输入框样式 */
-        .editable-input, .editable-textarea, .editable-long-desc, .editable-ai-prompt {
-            background: transparent;
-            border: none;
-            color: inherit;
-            outline: none;
-            transition: 0.3s;
-        }
-        .editable-input:focus, .editable-textarea:focus {
-            border-bottom: 1px dashed var(--neon-gold);
-            background: rgba(255,255,255,0.05);
-        }
-        .editable-long-desc:focus, .editable-ai-prompt:focus {
-             border: 1px dashed var(--neon-gold);
-             background: rgba(255,255,255,0.05);
-        }
-        .editable-textarea { resize: none; min-height: 50px; }
-        .editable-long-desc { width: 100%; height: 100%; resize: none; line-height: 1.8; }
-        .editable-ai-prompt { width: 100%; resize: vertical; min-height: 50px; font-size: 0.8rem; color: #888; border: 1px dashed rgba(255,255,255,0.05); padding: 0.5rem; border-radius: 0.25rem;}
-
-
-        /* 图片容器 */
-        .h-48 { height: 12rem; }
-        .h-48 img { transition: transform 0.7s ease; }
-        .glass-card:hover .h-48 img { transform: scale(1.1); }
-
-        /* 按钮 */
-        .btn-primary {
-            background: linear-gradient(90deg, rgba(255,215,0,0.1), rgba(255,215,0,0.2));
-            border: 1px solid var(--neon-gold);
-            color: var(--neon-gold);
-            transition: 0.3s;
-        }
-        .btn-primary:hover {
-            background: var(--neon-gold);
-            color: #000;
-            box-shadow: 0 0 15px var(--neon-gold);
-        }
-
-        /* 价格标签 */
-        .price-tag {
-            position: absolute; top: -10px; right: -10px;
-            background: linear-gradient(135deg, #b45309 0%, #f59e0b 100%);
-            color: #000; font-weight: bold; padding: 6px 12px;
-            clip-path: polygon(10% 0, 100% 0, 100% 100%, 0 100%, 0 20%);
-            box-shadow: 3px 3px 10px rgba(0,0,0,0.5); z-index: 10; font-family: 'Cinzel', serif;
-        }
-
+        .glass-card { background: rgba(255,255,255,0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); transition: 0.4s; }
+        .glass-card:hover { border-color: var(--gold); transform: translateY(-4px); box-shadow: 0 10px 30px -10px rgba(255,215,0,0.2); }
+        .ai-img { width: 100%; height: 100%; object-cover: cover; transition: 1s; opacity: 0; }
+        .img-loaded { opacity: 1; }
+        .loading-shimmer { background: linear-gradient(90deg, #1a1a1a 25%, #2a2a2a 50%, #1a1a1a 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+        .price-tag { background: var(--gold); color: black; padding: 2px 8px; border-radius: 4px; font-weight: bold; }
         [v-cloak] { display: none; }
     </style>
 </head>
-<body>
+<body class="min-h-screen">
 
-<div id="app" v-cloak class="pb-20">
-    <header class="sticky top-0 z-50 backdrop-blur-lg border-b border-white/10 bg-black/60 mb-10">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <i class="fa-solid fa-martini-glass-citrus text-amber-500 text-2xl"></i>
-                <div>
-                    <h1 class="text-2xl font-bold tracking-widest text-white" style="font-family: 'Noto Serif SC', serif;">理 BAR</h1>
-                    <p class="text-xs text-gray-400 tracking-widest uppercase">AI Powered Mixology</p>
-                </div>
+<div id="app" v-cloak>
+    <header class="p-6 border-b border-white/10 flex justify-between items-center sticky top-0 bg-black/80 backdrop-blur-md z-50">
+        <div class="flex items-center gap-4">
+            <div class="w-12 h-12 border-2 border-amber-500 rounded-full flex items-center justify-center text-amber-500 text-2xl">
+                <i class="fa-solid fa-whiskey-glass"></i>
             </div>
-            <div class="flex gap-4">
-                <button @click="resetData" class="text-xs text-gray-500 hover:text-red-400 transition">
-                    <i class="fa-solid fa-rotate-left mr-1"></i> 重置
-                </button>
-                <button @click="addNewDrink" class="btn-primary px-6 py-2 rounded-full font-bold flex items-center gap-2">
-                    <i class="fa-solid fa-plus"></i> 新增
-                </button>
+            <div>
+                <h1 class="text-3xl font-bold tracking-tighter text-white">理 BAR</h1>
+                <p class="text-[10px] uppercase tracking-[0.3em] text-amber-500/80">Premium AI Mixology</p>
             </div>
+        </div>
+        <div class="flex gap-3">
+            <button @click="resetAndRefetch" class="px-4 py-2 border border-white/20 rounded-full text-xs hover:bg-white/10 transition">重新生成全场图片</button>
+            <button @click="addNew" class="px-6 py-2 bg-amber-500 text-black font-bold rounded-full hover:bg-amber-400 transition shadow-[0_0_15px_rgba(245,158,11,0.3)]">新增酒款</button>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4">
-        
-        <div class="mb-16">
-            <div class="flex items-center gap-4 mb-8">
-                <h2 class="text-4xl font-display text-white/90">CLASSICS</h2>
-                <div class="h-px bg-gradient-to-r from-amber-500/50 to-transparent flex-grow"></div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-                <div v-for="(drink, index) in classicDrinks" :key="drink.id" 
-                     class="glass-card rounded-xl overflow-hidden group relative flex flex-col"
-                     @click="openModal(drink)">
-                    
-                    <button @click.stop="deleteDrink('classic', index)" class="absolute top-2 left-2 z-20 w-8 h-8 rounded-full bg-black/50 text-white/30 hover:bg-red-500 hover:text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
-                        <i class="fa-solid fa-times"></i>
-                    </button>
-
-                    <div class="h-48 relative bg-gray-800 overflow-hidden">
-                        <img :src="getAIImage(drink)" :key="`${drink.id}-${drink.seed}`" class="w-full h-full object-cover opacity-90 group-hover:scale-110 transition duration-700" loading="lazy">
-                        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/90"></div>
-                    </div>
-
-                    <div class="p-4 flex-grow flex flex-col">
-                         <div class="flex justify-between items-start mb-2">
-                             <div>
-                                <input v-model="drink.name" class="editable-input text-base font-bold text-white w-full" placeholder="酒名" @click.stop="">
-                                <input v-model="drink.subName" class="editable-input text-xs font-display text-amber-500 w-full" placeholder="English Name" @click.stop="">
-                             </div>
-                             <div class="text-lg font-display text-amber-400">
-                                 <span class="text-xs">¥</span><input v-model="drink.price" class="bg-transparent w-6 text-right outline-none" type="text" @click.stop="">
-                             </div>
+    <main class="max-w-7xl mx-auto p-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div v-for="(drink, index) in drinks" :key="drink.id" 
+                 class="glass-card rounded-2xl overflow-hidden flex flex-col group"
+                 @click="selectedDrink = drink">
+                
+                <div class="h-64 relative overflow-hidden bg-zinc-900 loading-shimmer">
+                    <img :src="drink.cachedUrl || getUrl(drink)" 
+                         @load="onImgLoad($event)"
+                         class="ai-img"
+                         :class="{'img-loaded': true}">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
+                    <div class="absolute bottom-4 left-4 right-4 flex justify-between items-end">
+                        <div>
+                            <h2 class="text-xl font-bold text-white">{{ drink.name }}</h2>
+                            <p class="text-xs text-amber-500 font-display uppercase">{{ drink.subName }}</p>
                         </div>
-                        <input v-model="drink.tags" class="editable-input text-xs text-gray-400 mb-2 w-full" placeholder="风味标签" @click.stop="">
-                        <textarea v-model="drink.desc" class="editable-textarea text-xs text-gray-400 leading-relaxed w-full bg-transparent" placeholder="描述..." @click.stop=""></textarea>
+                        <span class="price-tag">¥{{ drink.price }}</span>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <div class="mb-20">
-            <div class="flex items-center gap-4 mb-8 justify-center">
-                <div class="h-px bg-gradient-to-l from-amber-500/50 to-transparent flex-grow"></div>
-                <h2 class="text-4xl font-display text-white/90 text-center px-8 border-x border-amber-500/30">NEW ARRIVALS</h2>
-                <div class="h-px bg-gradient-to-r from-amber-500/50 to-transparent flex-grow"></div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-                 <div v-for="(drink, index) in newDrinks" :key="drink.id" 
-                      class="glass-card rounded-xl overflow-hidden group relative flex flex-col"
-                      @click="openModal(drink)">
-                    
-                    <button @click.stop="deleteDrink('new', index)" class="absolute top-2 left-2 z-20 w-8 h-8 rounded-full bg-black/50 text-white/30 hover:bg-red-500 hover:text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
-                        <i class="fa-solid fa-times"></i>
-                    </button>
-
-                    <div class="h-48 relative bg-gray-800 overflow-hidden">
-                        <img :src="getAIImage(drink)" :key="`${drink.id}-${drink.seed}`" class="w-full h-full object-cover opacity-90 group-hover:scale-110 transition duration-700" loading="lazy">
-                        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/90"></div>
-                    </div>
-
-                    <div class="p-4 flex-grow flex flex-col">
-                        <div class="flex justify-between items-start mb-2">
-                             <div>
-                                <input v-model="drink.name" class="editable-input text-base font-bold text-white w-full" placeholder="酒名" @click.stop="">
-                                <input v-model="drink.subName" class="editable-input text-xs font-display text-amber-500 w-full" placeholder="English Name" @click.stop="">
-                             </div>
-                             <div class="text-lg font-display text-amber-400">
-                                 <span class="text-xs">¥</span><input v-model="drink.price" class="bg-transparent w-6 text-right outline-none" type="text" @click.stop="">
-                             </div>
-                        </div>
-                        <input v-model="drink.tags" class="editable-input text-xs text-gray-400 mb-2 w-full" placeholder="风味标签" @click.stop="">
-                        <textarea v-model="drink.desc" class="editable-textarea text-xs text-gray-400 leading-relaxed w-full bg-transparent" placeholder="描述..." @click.stop=""></textarea>
-                    </div>
-                 </div>
+                <div class="p-5 flex-grow">
+                    <p class="text-xs text-gray-400 mb-3 italic">{{ drink.tags }}</p>
+                    <p class="text-sm text-gray-300 leading-relaxed">{{ drink.desc }}</p>
+                </div>
             </div>
         </div>
     </main>
 
-    <div v-if="isModalOpen" 
-         class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay-blur transition-opacity duration-300"
-         @click.self="closeModal">
-        
-        <div class="glass-card w-full max-w-5xl p-0 rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/10" @click.stop="">
-            <div class="grid grid-cols-1 md:grid-cols-2 h-[80vh] md:h-[65vh]">
-                <div class="relative bg-gray-900 overflow-hidden hidden md:block group">
-                    <img :src="getAIImage(selectedDrink)" :key="`${selectedDrink.id}-${selectedDrink.seed}`" class="w-full h-full object-cover opacity-95 transition duration-1000 group-hover:scale-105">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+    <div v-if="selectedDrink" class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/90 backdrop-blur-xl" @click.self="selectedDrink = null">
+        <div class="max-w-4xl w-full glass-card rounded-3xl overflow-hidden grid grid-cols-1 md:grid-cols-2 shadow-2xl">
+            <div class="h-96 md:h-full relative bg-black">
+                <img :src="selectedDrink.cachedUrl || getUrl(selectedDrink)" class="w-full h-full object-cover">
+                <button @click="regenerateSingle(selectedDrink)" class="absolute bottom-6 left-6 bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2 rounded-xl text-sm hover:bg-white/20 transition">
+                    <i class="fa-solid fa-wand-magic-sparkles mr-2"></i>不喜欢？点我重画
+                </button>
+            </div>
+            <div class="p-10 flex flex-col justify-center">
+                <input v-model="selectedDrink.name" class="bg-transparent text-4xl font-bold text-white mb-2 border-b border-transparent focus:border-amber-500 outline-none">
+                <input v-model="selectedDrink.subName" class="bg-transparent text-amber-500 font-display uppercase tracking-widest mb-6 outline-none">
+                
+                <div class="space-y-4 flex-grow text-gray-300">
+                    <input v-model="selectedDrink.tags" class="w-full bg-white/5 p-2 rounded-lg text-sm border border-white/10 outline-none focus:border-amber-500">
+                    <textarea v-model="selectedDrink.desc" class="w-full h-32 bg-white/5 p-3 rounded-lg text-sm border border-white/10 outline-none focus:border-amber-500 resize-none"></textarea>
                     
-                    <button @click="regenerateImage(selectedDrink)" class="absolute bottom-6 right-6 btn-primary px-4 py-2 rounded-full flex items-center gap-2 text-sm font-bold shadow-lg backdrop-blur-md z-20">
-                         <i class="fa-solid fa-wand-magic-sparkles"></i> 更换图片
-                    </button>
+                    <div class="pt-4">
+                        <label class="text-[10px] text-gray-500 block mb-2 uppercase tracking-tighter">AI 画图指令 (Prompt)</label>
+                        <textarea v-model="selectedDrink.aiPrompt" class="w-full h-20 bg-black p-3 rounded-lg text-[10px] font-mono border border-white/10 outline-none focus:border-amber-500"></textarea>
+                    </div>
                 </div>
 
-                <div class="p-8 flex flex-col relative bg-black/80 md:bg-black/40 backdrop-blur-md">
-                    <button @click="closeModal" class="absolute top-4 right-4 w-10 h-10 rounded-full hover:bg-white/10 flex items-center justify-center text-white/50 hover:text-white transition z-10">
-                         <i class="fa-solid fa-xmark text-xl"></i>
-                    </button>
-                    
-                    <h3 class="text-5xl font-display text-white mb-1">{{ selectedDrink.name }}</h3>
-                    <p class="text-lg font-display text-amber-500 mb-6 tracking-widest uppercase">{{ selectedDrink.subName }}</p>
-
-                    <div class="flex items-center gap-2 text-sm text-amber-300/80 mb-6 italic border-l-2 border-amber-500 pl-3">
-                        {{ selectedDrink.tags }}
-                    </div>
-
-                    <div class="flex-grow overflow-y-auto pr-2 custom-scrollbar">
-                        <textarea v-model="selectedDrink.longDesc" 
-                                  class="editable-long-desc text-gray-300 text-lg font-light leading-8 mb-4"
-                                  placeholder="在这里输入酒款的详细介绍、故事或配方...">
-                        </textarea>
-                        
-                        <div class="text-xs text-gray-500 mb-2 flex items-center gap-2">
-                             <i class="fa-solid fa-magic text-amber-400"></i> AI 图片提示词 (Prompt):
-                        </div>
-                        <textarea v-model="selectedDrink.aiPrompt" 
-                                  class="editable-ai-prompt text-gray-400"
-                                  placeholder="留空使用默认提示词，或输入自定义提示词（例如: Zombie cocktail in a tiki glass, dramatic lighting, no people, bar background）">
-                        </textarea>
-                        <p class="text-[0.65rem] text-gray-600 mt-1 pl-1">修改后需点击“更换图片”按钮生效</p>
-                    </div>
-
-                    <div class="mt-6 pt-6 border-t border-white/10 flex justify-between items-end">
-                        <div class="text-4xl font-display text-amber-400">
-                             <span class="text-lg align-top mr-1">¥</span>{{ selectedDrink.price }}
-                        </div>
-                        <button @click="closeModal" class="text-xs text-gray-500 hover:text-white transition uppercase tracking-widest">
-                            Close [ESC]
-                        </button>
+                <div class="mt-8 flex justify-between items-center">
+                    <div class="text-3xl font-display text-amber-500">¥ <input v-model="selectedDrink.price" class="bg-transparent w-16 outline-none"></div>
+                    <div class="flex gap-2">
+                        <button @click="deleteDrink" class="px-4 py-2 text-red-500 hover:bg-red-500/10 rounded-xl transition text-sm">删除</button>
+                        <button @click="selectedDrink = null" class="px-8 py-3 bg-white text-black font-bold rounded-xl hover:bg-amber-500 transition">完成</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <footer class="text-center text-gray-600 text-sm py-10 border-t border-white/5">
-        <p>Designed by AI Gemini | AI Images by Pollinations.ai</p>
-    </footer>
 </div>
 
 <script>
-    const { createApp, ref, watch, onMounted } = Vue;
+const { createApp, ref, watch, onMounted } = Vue;
 
-    // 全局默认提示词
-    const defaultGlobalPrompt = (drinkName) => `A professional photography of ${drinkName} cocktail, high contrast, bright drink, dimly lit luxurious bar background, dramatic lighting, bokeh effect, no people, no hands, ultra-realistic, 8k, cinematic, warm tones`;
+const DEFAULT_PROMPT = (n) => `Extreme high-end mixology photography, ${n} cocktail, centered in frame, dramatic rim lighting, luxury dim bar background, depth of field, 8k resolution, cinematic style, sharp focus on glass textures`;
 
-    const defaultClassic = [
-        { id: 1, name: 'PALERMO', subName: '巴勒莫', price: '36', tags: '苦酒 / 热带果香', desc: '意式苦酒与热带果香的西西里邂逅。', seed: 101, longDesc: "Palermo 是对经典 Campari-Soda 的一次热带升级，灵感来源于美丽的西西里岛。入口时，首先感受到苦艾酒带来的经典苦味，随后被菠萝和香草的热带甜美包裹。", aiPrompt: '' },
-        { id: 2, name: 'Mamie Taylor', subName: '玛米泰勒', price: '36', tags: '姜 / 威士忌 / 青柠', desc: '19世纪的经典，复古组合。', seed: 102, longDesc: "Mamie Taylor 诞生于19世纪末。它以苏格兰威士忌为基酒，混合新鲜青柠汁和辛辣的姜汁汽水。口感清脆，姜的辛辣与青柠的酸爽形成完美对比。", aiPrompt: '' },
-        { id: 3, name: 'El Diablo', subName: '恶魔', price: '38', tags: '莓果 / 姜 / 辛辣', desc: '龙舌兰与黑醋栗的完美风暴。', seed: 103, longDesc: "El Diablo（恶魔）是一款充满魅力的墨西哥风味鸡尾酒。它以龙舌兰为基底，加入黑醋栗利口酒提供深沉的果香，再用姜汁啤酒提升辛辣和气泡感。", aiPrompt: '' },
-        { id: 4, name: 'Zombie', subName: '僵尸', price: '38', tags: '朗姆 / 热带 / 强劲', desc: '极其危险的诱惑。', seed: 104, longDesc: "Zombie 是 Tiki 文化的标志性饮品。它使用了三种不同风味的朗姆酒、杏子白兰地、青柠汁和各种热带果汁。风味复杂，酒精度极高。", aiPrompt: 'Zombie cocktail in a tiki glass, tropical bar background, dramatic lighting, bright drink, no people, 8k' }, 
-        { id: 5, name: 'Long Island', subName: '长岛冰茶', price: '45', tags: '五种基酒 / 烈性', desc: '无害外表下的烈性。', seed: 105, longDesc: "Long Island Iced Tea 由伏特加、朗姆酒、龙舌兰酒、金酒和橙皮酒五种基酒混合而成。它以其隐藏的烈度和清爽的口感而闻名。", aiPrompt: '' }
-    ];
+const INITIAL_DATA = [
+    { id: 1, name: 'Palermo', subName: '巴勒莫', price: '36', tags: '意式苦酒 / 热带果香', desc: '入口是西西里的海风，随后是苦与甜的平衡交响。', seed: 88, aiPrompt: '' },
+    { id: 2, name: 'Mamie Taylor', subName: '玛米泰勒', price: '36', tags: '威士忌 / 辛辣姜味', desc: '19世纪的复古经典，威士忌与姜汁的灵魂碰撞。', seed: 42, aiPrompt: '' },
+    { id: 3, name: 'El Diablo', subName: '恶魔', price: '38', tags: '龙舌兰 / 黑醋栗', desc: '诱人的深红色泽下，隐藏着龙舌兰的狂放灵魂。', seed: 66, aiPrompt: '' },
+    { id: 4, name: 'Zombie', subName: '僵尸', price: '45', tags: '强劲 / 朗姆 / Tiki', desc: '三款朗姆酒的博弈，是酒吧里最危险的温柔。', seed: 99, aiPrompt: 'Tiki glass, zombie cocktail, exotic fruits decoration' },
+    { id: 5, name: 'Negroni', subName: '尼格罗尼', price: '42', tags: '苦甜平衡 / 经典', desc: '绅士的入门礼，三位一体的完美比例。', seed: 55, aiPrompt: '' }
+];
 
-    const defaultNew = [
-        { id: 6, name: 'Aperol Spritz', subName: '阿佩罗橙光', price: '38', tags: '橙香 / 气泡', desc: '明亮的橙色伴随着清爽气泡。', seed: 201, longDesc: "Aperol Spritz 是来自意大利的夏日标志。它由 Aperol 橙味开胃酒、普罗塞克起泡酒和少许苏打水按 3-2-1 的比例调配而成。", aiPrompt: 'Aperol Spritz cocktail in a large wine glass, summer terrace background, natural light, bright orange liquid, no people, 8k' }, 
-        { id: 7, name: 'Paper Plane', subName: '纸飞机', price: '40', tags: '柑橘 / 草本', desc: '纽约现代经典，精致平衡。', seed: 202, longDesc: "Paper Plane 由调酒师 Sam Ross 发明。等量的波本威士忌、Aperol、Amaretto 和新鲜柠檬汁。口感呈现出精致的平衡。", aiPrompt: '' },
-        { id: 8, name: 'Acapulco', subName: '阿卡普尔科', price: '38', tags: '菠萝 / 西柚', desc: '源自墨西哥海岸的变体长饮。', seed: 203, longDesc: "Acapulco 混合了白朗姆、青柠汁、菠萝汁和西柚汁，口感酸甜柔和，带有浓郁的果香和海洋的清新感。", aiPrompt: '' },
-        { id: 9, name: 'White Lady', subName: '白色佳人', price: '33', tags: '柑橘 / 花香', desc: '优雅的短饮。', seed: 204, longDesc: "White Lady 诞生于1920年代。它以金酒为基酒，搭配橙皮酒和新鲜柠檬汁。口感丝滑、优雅，带有强烈的柑橘风味。", aiPrompt: '' },
-        { id: 10, name: 'Negroni', subName: '尼格罗尼', price: '42', tags: '苦甜 / 经典', desc: '平衡的苦甜交响曲。', seed: 205, longDesc: "Negroni 是标志性的意大利鸡尾酒，由金酒、金巴利和甜味美思等量调制。简单的配方创造出完美的平衡，是开胃酒的王者。", aiPrompt: '' }
-    ];
+createApp({
+    setup() {
+        const drinks = ref([]);
+        const selectedDrink = ref(null);
 
-    createApp({
-        setup() {
-            const classicDrinks = ref([]);
-            const newDrinks = ref([]);
-            const isModalOpen = ref(false);
-            const selectedDrink = ref({});
+        const init = () => {
+            const saved = localStorage.getItem('libar_data');
+            drinks.value = saved ? JSON.parse(saved) : INITIAL_DATA;
+        };
 
-            const initData = () => {
-                const savedClassic = localStorage.getItem('mm_classic');
-                const savedNew = localStorage.getItem('mm_new');
-                if (savedClassic && savedNew) {
-                    const mergeData = (saved, defaults) => {
-                        const parsed = JSON.parse(saved);
-                        return parsed.map((item, index) => {
-                            const defaultItem = defaults[index] || {};
-                            return {
-                                ...item,
-                                longDesc: item.longDesc || item.desc,
-                                aiPrompt: item.aiPrompt !== undefined ? item.aiPrompt : (defaultItem.aiPrompt || '')
-                            };
-                        });
-                    };
-                    classicDrinks.value = mergeData(savedClassic, defaultClassic);
-                    newDrinks.value = mergeData(savedNew, defaultNew);
-                } else {
-                    resetData();
-                }
-            };
+        // 核心：生成 AI URL 逻辑，带模型轮询和缓存优化
+        const getUrl = (drink) => {
+            const prompt = drink.aiPrompt?.trim() || DEFAULT_PROMPT(drink.name);
+            const cleanPrompt = encodeURIComponent(prompt.replace(/\n/g, ' '));
+            // 采用 flux-realism 这种较少受限的路径，并增加随机性
+            const model = drink.id % 2 === 0 ? 'flux' : 'turbo';
+            return `https://image.pollinations.ai/prompt/${cleanPrompt}?seed=${drink.seed}&width=800&height=800&nologo=true&model=${model}`;
+        };
 
-            const resetData = () => {
-                classicDrinks.value = JSON.parse(JSON.stringify(defaultClassic));
-                newDrinks.value = JSON.parse(JSON.stringify(defaultNew));
-            };
+        const onImgLoad = (event) => {
+            event.target.classList.add('img-loaded');
+        };
 
-            const getAIImage = (drink) => {
-                let rawPrompt = drink.aiPrompt && drink.aiPrompt.trim() !== '' 
-                                    ? drink.aiPrompt 
-                                    : defaultGlobalPrompt(drink.name);
-                const cleanPrompt = rawPrompt.replace(/[\r\n]+/g, ' ');
-                // 将模型修改为 turbo，速度更快更稳定
-                return `https://image.pollinations.ai/prompt/${encodeURIComponent(cleanPrompt)}?width=600&height=600&nologo=true&model=turbo&seed=${drink.seed}`;
-            };
+        const regenerateSingle = (drink) => {
+            drink.seed = Math.floor(Math.random() * 99999);
+            // 立即清除旧缓存链接，强制浏览器发起新请求
+            drink.cachedUrl = getUrl(drink);
+        };
 
-            const regenerateImage = (drink) => {
-                drink.seed = Math.floor(Math.random() * 100000);
-                if (isModalOpen.value && selectedDrink.value.id === drink.id) {
-                    selectedDrink.value = { ...drink }; 
-                }
-            };
+        const resetAndRefetch = () => {
+            if(!confirm('这将为所有酒款重绘图片，确定吗？')) return;
+            drinks.value.forEach(d => regenerateSingle(d));
+        };
 
-            const openModal = (drink) => {
-                selectedDrink.value = drink;
-                isModalOpen.value = true;
-            };
-            const closeModal = () => {
-                isModalOpen.value = false;
-                selectedDrink.value = {};
-            };
-
-            const addNewDrink = () => {
-                const newId = Date.now();
-                newDrinks.value.unshift({
-                    id: newId,
-                    name: 'New Cocktail',
-                    subName: '新品',
-                    price: '00',
-                    tags: '风味',
-                    desc: '点击编辑',
-                    longDesc: '详细介绍...',
-                    aiPrompt: '', 
-                    seed: newId
-                });
-            };
-
-            const deleteDrink = (type, index) => {
-                if(!confirm('Delete?')) return;
-                type === 'classic' ? classicDrinks.value.splice(index, 1) : newDrinks.value.splice(index, 1);
-            };
-
-            watch([classicDrinks, newDrinks], () => {
-                localStorage.setItem('mm_classic', JSON.stringify(classicDrinks.value));
-                localStorage.setItem('mm_new', JSON.stringify(newDrinks.value));
-            }, { deep: true });
-
-            onMounted(() => {
-                initData();
-                document.addEventListener('keydown', (e) => {
-                    if (e.key === 'Escape' && isModalOpen.value) closeModal();
-                });
+        const addNew = () => {
+            const id = Date.now();
+            drinks.value.unshift({
+                id, name: '新调饮', subName: 'New Drink', price: '38', tags: '风味 / 基酒', 
+                desc: '点击进行编辑...', seed: id, aiPrompt: ''
             });
+        };
 
-            return {
-                classicDrinks, newDrinks, isModalOpen, selectedDrink,
-                getAIImage, regenerateImage, openModal, closeModal,
-                addNewDrink, deleteDrink, resetData
-            };
-        }
-    }).mount('#app');
+        const deleteDrink = () => {
+            if(!confirm('确定要删除这款酒吗？')) return;
+            drinks.value = drinks.value.filter(d => d.id !== selectedDrink.value.id);
+            selectedDrink.value = null;
+        };
+
+        watch(drinks, (newVal) => {
+            localStorage.setItem('libar_data', JSON.stringify(newVal));
+        }, { deep: true });
+
+        onMounted(init);
+
+        return { drinks, selectedDrink, getUrl, onImgLoad, regenerateSingle, resetAndRefetch, addNew, deleteDrink };
+    }
+}).mount('#app');
 </script>
 </body>
 </html>
