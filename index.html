@@ -2,213 +2,419 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>理 BAR - 精选酒单</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">    
+    <title>理BAR </title>
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="apple-touch-icon.png">
+    
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Noto+Serif+SC:wght@500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <link href="https://fonts.loli.net/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Noto+Serif+SC:wght@300;400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
     <style>
-        :root { --gold: #ffd700; --dark: #0a0a0a; }
-        body { 
-            background: var(--dark); 
-            color: #e0e0e0; 
-            font-family: 'Noto Serif SC', serif;
-            background-image: radial-gradient(circle at 15% 50%, rgba(76, 29, 149, 0.1), transparent 25%), 
-                              radial-gradient(circle at 85% 30%, rgba(180, 83, 9, 0.1), transparent 25%);
+        :root {
+            --bg-color: #fdfcfaf0;
+            --text-main: #1a1a1a;
+            --text-muted: #666666;
+            --border-color: #e5e5e5;
         }
-        .font-display { font-family: 'Cinzel', serif; }
+
+        body {
+            background-color: #ffffff;
+            color: var(--text-main);
+            font-family: 'Inter', 'Noto Serif SC', serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+
+        @media (pointer: fine) {
+            body { cursor: none; }
+        }
+
+        .cursor-dot, .cursor-outline {
+            pointer-events: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+        }
         
-        /* 玻璃卡片 */
-        .glass-card { 
-            background: rgba(255,255,255,0.03); 
-            backdrop-filter: blur(15px); 
-            border: 1px solid rgba(255,255,255,0.08); 
-            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+        .cursor-dot {
+            width: 5px;
+            height: 5px;
+            background-color: var(--text-main);
+            transition: opacity 0.2s;
         }
 
-        /* 模态框液化模糊 */
-        .modal-overlay-blur { 
-            backdrop-filter: blur(20px); 
-            background-color: rgba(0, 0, 0, 0.8); 
+        .cursor-outline {
+            width: 36px;
+            height: 36px;
+            border: 1px solid rgba(26, 26, 26, 0.4);
+            transition: width 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), 
+                        height 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), 
+                        background-color 0.3s, border-color 0.3s;
         }
 
-        /* 图片缩放效果 */
-        .drink-img { transition: 0.8s ease; }
-        .glass-card:hover .drink-img { transform: scale(1.1); }
+        @media (pointer: coarse) {
+            .cursor-dot, .cursor-outline { display: none !important; }
+        }
 
-        /* 隐藏滚动条 */
-        .custom-scrollbar::-webkit-scrollbar { width: 0px; }
+        .cursor-hover .cursor-outline {
+            width: 56px;
+            height: 56px;
+            background-color: rgba(26, 26, 26, 0.05);
+            border-color: transparent;
+            backdrop-filter: blur(2px);
+        }
+        .cursor-hover-dark .cursor-outline {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-color: transparent;
+        }
+        .cursor-hover-dark .cursor-dot {
+            background-color: #fff;
+        }
+
+        h1, h2, h3, .font-serif-en { 
+    font-family: 'Cormorant Garamond', 'Baskerville', 'Georgia', 'Times New Roman', serif; 
+}
+        .font-serif-cn { 
+            font-family: 'Noto Serif SC', serif; 
+            letter-spacing: 0.05em; 
+        }
+
+        .btn-outline {
+            display: inline-block;
+            border: 1px solid var(--text-main);
+            padding: 12px 32px;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            background: transparent;
+            color: var(--text-main);
+        }
+
+        @media (hover: hover) {
+            .btn-outline:hover { background: var(--text-main); color: #ffffff; }
+            .menu-item:hover .menu-item-border { border-bottom-color: var(--text-main); }
+        }
+
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1.2s cubic-bezier(0.2, 0.8, 0.2, 1), 
+                        transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .reveal-up.is-visible { opacity: 1; transform: translateY(0); }
         
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+
+        .img-mask { overflow: hidden; position: relative; }
+        .img-scale {
+            transform: scale(1.08);
+            transition: transform 1.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .img-mask.is-visible .img-scale { transform: scale(1); }
+
+        .menu-item-border { border-bottom: 1px solid var(--border-color); transition: border-color 0.4s;}
+
+        html { scroll-behavior: smooth; }
         [v-cloak] { display: none; }
     </style>
 </head>
-<body>
+<body class="selection:bg-gray-200 selection:text-black">
+
+<div class="cursor-dot" id="cursor-dot"></div>
+<div class="cursor-outline" id="cursor-outline"></div>
+
+<div id="preloader" class="fixed inset-0 z-[999] bg-white flex items-center justify-center transition-opacity duration-1000 ease-in-out">
+    <span class="text-[10px] tracking-[0.4em] font-serif-en uppercase text-gray-400">Alan & Gin</span>
+</div>
 
 <div id="app" v-cloak>
-    <header class="p-6 md:p-10 border-b border-white/5 flex justify-center items-center sticky top-0 bg-black/60 backdrop-blur-md z-50">
-        <div class="text-center">
-            <h1 class="text-3xl md:text-4xl font-bold tracking-widest text-white mb-1">理 BAR</h1>
-            <p class="text-[10px] uppercase tracking-[0.4em] text-amber-500/60">Selected Mixology</p>
+    
+    <header class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
+            <div class="text-xl font-serif-en tracking-widest font-semibold uppercase hover-target">LI BAR</div>
+            <nav class="hidden md:flex gap-8 text-[11px] tracking-[0.15em] uppercase text-gray-500">
+                <a href="#event" class="hover:text-black transition-colors hover-target">Event</a>
+                <a href="#about" class="hover:text-black transition-colors hover-target">About</a>
+                <a href="#menu" class="hover:text-black transition-colors hover-target">Menu</a>
+            </nav>
+            <a href="#menu" class="text-[11px] tracking-[0.1em] uppercase font-medium border-b border-black pb-0.5 md:hidden hover-target">Menu</a>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto p-4 md:p-8">
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-6">
-            <div v-for="drink in drinks" :key="drink.id" 
-                 class="glass-card rounded-xl overflow-hidden flex flex-col group cursor-pointer"
-                 @click="selectedDrink = drink">
-                
-                <div class="aspect-[3/4] relative overflow-hidden bg-zinc-900">
-                    <img :src="drink.image" class="drink-img w-full h-full object-cover" :alt="drink.name">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div>
-                    <div class="absolute bottom-3 left-3 pr-2">
-                        <h2 class="text-sm md:text-lg font-bold text-white leading-tight">{{ drink.name }}</h2>
-                        <p class="text-[8px] md:text-[10px] text-amber-500 font-display uppercase tracking-wider">{{ drink.subName }}</p>
+    <section class="h-[100dvh] w-full relative flex flex-col justify-end pb-20 px-6 md:px-12 pt-24 hover-target-dark">
+        <div class="absolute inset-0 z-0 img-mask reveal-up">
+            <img src="images/1.jpg" alt="Atmosphere" class="img-scale opacity-95">
+            <div class="absolute inset-0 bg-black/10"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"></div>
+        </div>
+        
+        <div class="relative z-10 max-w-7xl mx-auto w-full reveal-up delay-100">
+            <h1 class="text-[9.5vw] md:text-7xl lg:text-8xl text-white font-serif-en mb-4 tracking-wide whitespace-nowrap">ECUST BAR HOME PAGE.</h1>
+            <p class="text-white/80 text-xs md:text-sm tracking-[0.2em] uppercase mb-10 font-light"></p>
+            <a href="#menu" class="btn-outline !text-white !border-white hover:!bg-white hover:!text-black hover-target whitespace-nowrap">探索酒单 / Explore Menu</a>
+        </div>
+    </section>
+
+    <section id="event" class="py-20 md:py-40 px-6 max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-center">
+            <div class="lg:col-span-5 reveal-up">
+                <div class="text-[10px] tracking-[0.25em] text-gray-400 uppercase mb-4">Spring 2026</div>
+                <h2 class="text-3xl md:text-5xl font-serif-cn mb-8 leading-tight">春季活动 <br><span class="italic font-serif-en text-gray-400">Exploring Flavors</span></h2>
+                <div class="space-y-6 text-gray-600 font-light leading-relaxed text-sm">
+                    <p>欢迎大家来参加我们春季的特调活动——“味觉漫游”。在这个季节交替的时刻，我们精心准备了一系列全新的鸡尾酒，旨在带领大家穿越不同的风味世界，从经典到创新，每一杯都是一次独特的味觉体验。
+                    </p>
+                    <p>无论你是喜欢清爽的长饮，还是钟情于浓烈的短饮，我们的菜单都能满足你的期待。快来加入我们，一起探索这些令人兴奋的新口味吧！</p>
+                </div>
+                <div class="mt-10">
+                    <a href="#menu" class="text-[10px] uppercase tracking-widest border-b border-gray-300 pb-1 hover:border-black transition-colors hover-target">Discover the flavors</a>
+                </div>
+            </div>
+            <div class="lg:col-span-7 img-mask reveal-up delay-200 h-[50vh] md:h-[80vh]">
+                <img src="images/2.jpg" alt="Event Image" class="img-scale object-center">
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="py-20 md:py-32 bg-[#faf9f7] px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-32">
+                <div class="relative h-[45vh] md:h-[70vh] mb-6 lg:mb-0">
+                    <div class="absolute top-0 left-0 w-3/4 h-3/4 img-mask reveal-up z-10 shadow-xl">
+                        <img src="images/3.jpg" class="img-scale">
+                    </div>
+                    <div class="absolute bottom-0 right-0 w-3/5 h-2/3 img-mask reveal-up delay-200 z-20 shadow-2xl">
+                        <img src="images/4.jpg" class="img-scale">
                     </div>
                 </div>
 
-                <div class="p-3">
-                    <div class="flex justify-between items-center mb-1">
-                        <span class="text-[9px] text-gray-500 italic truncate mr-2">{{ drink.tags }}</span>
-                        <span class="text-amber-400 font-display text-xs md:text-base">¥{{ drink.price }}</span>
+                <div class="flex flex-col justify-center reveal-up delay-100">
+                    <h2 class="text-3xl md:text-4xl font-serif-en mb-2">About Us</h2>
+                    <h3 class="text-lg font-serif-cn text-gray-400 mb-8 md:mb-10">关于我们</h3>
+                    
+                    <div class="space-y-6 text-gray-600 font-light leading-relaxed text-sm">
+                        <p>华理学生自运营的鸡尾酒活动，天气好时每周举办，同时承办社团演出的酒水供应。</p>
+                        <p>请准备好放下白日的疲惫。我们不定义标准，我们只提供情绪的出口与灵魂的栖息地。</p>
+                        
+                        <blockquote class="border-l border-gray-300 pl-6 py-2 italic text-gray-500 mt-8 text-xs leading-loose relative">
+                            "Address: 华理 奉贤 风檐广场<br>
+                            Business Hours: 3.10 19:00 - 24:00."<br>
+                        </blockquote>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
+    </section>
 
-    <div v-if="selectedDrink" 
-         class="fixed inset-0 z-[60] flex items-center justify-center p-4 md:p-10 modal-overlay-blur transition-all"
-         @click.self="selectedDrink = null">
-        
-        <div class="glass-card w-full max-w-lg md:max-w-4xl rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/10 flex flex-col md:grid md:grid-cols-2 max-h-[90vh] md:max-h-[80vh]">
+    <section class="w-full h-[35vh] md:h-[50vh] img-mask reveal-up">
+        <img src="images/5.jpg" class="img-scale object-cover object-[50%_70%]">
+    </section>
+
+    <section id="menu" class="py-20 md:py-40 px-6 max-w-5xl mx-auto">
+        <div class="text-center mb-16 md:mb-24 reveal-up">
+            <h2 class="text-4xl md:text-6xl font-serif-en mb-6">The Menu</h2>
+            <div class="w-8 h-px bg-black mx-auto mb-6"></div>
+            <p class="text-[10px] tracking-[0.3em] text-gray-400 uppercase">Classic & Original</p>
+        </div>
+
+        <div class="mb-24 md:mb-32 reveal-up">
+            <h3 class="text-xl md:text-2xl font-serif-en mb-10 md:mb-12 tracking-widest uppercase text-gray-800">Classics <span class="text-xs text-gray-400 font-serif-cn normal-case italic ml-3">常驻酒款</span></h3>
             
-            <div class="relative w-full aspect-square md:aspect-auto md:h-full bg-zinc-900 overflow-hidden">
-                <img :src="selectedDrink.image" class="w-full h-full object-cover">
-                
-                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex flex-col justify-end p-6 md:p-10">
-                    <h3 class="text-4xl md:text-6xl font-bold text-white mb-1 drop-shadow-lg">{{ selectedDrink.name }}</h3>
-                    <p class="text-base md:text-xl font-display text-amber-500 uppercase tracking-[0.2em] opacity-90">{{ selectedDrink.subName }}</p>
-                </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-20 gap-y-10 md:gap-y-12">
+                <div v-for="(drink, index) in classicDrinks" :key="drink.id" 
+                     class="menu-item group flex flex-col justify-between hover-target"
+                     :class="{'reveal-up': true, 'delay-100': index % 2 === 1}">
+                    
+                    <div class="menu-item-border pb-3 flex justify-between items-end mb-3 gap-4">
+                        <div class="flex items-baseline gap-2 md:gap-3 flex-1 min-w-0">
+                            <span class="text-lg font-serif-en font-medium truncate">{{ drink.name }}</span>
+                            <span class="text-[11px] text-gray-400 font-serif-cn whitespace-nowrap flex-shrink-0">{{ drink.subName }}</span>
+                        </div>
+                        <div class="text-sm font-serif-en whitespace-nowrap flex-shrink-0">{{ drink.price }}</div>
+                    </div>
 
-                <button @click="selectedDrink = null" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/40 backdrop-blur-md text-white/70 flex items-center justify-center hover:bg-white/10 transition">
-                    <i class="fa-solid fa-xmark fa-lg"></i>
-                </button>
+                    <div class="text-[9px] tracking-[0.2em] text-gray-400 mb-2 uppercase">{{ drink.tags }}</div>
+                    <p class="text-xs text-gray-500 font-light leading-relaxed font-serif-cn">{{ drink.desc }}</p>
+                </div>
             </div>
+        </div>
 
-            <div class="p-6 md:p-10 flex flex-col overflow-y-auto custom-scrollbar bg-zinc-950/50">
-                <div class="mb-6 flex items-center gap-2">
-                    <span class="px-2 py-0.5 border border-amber-500/30 text-amber-500 text-[9px] md:text-[10px] rounded uppercase italic tracking-widest">
-                        {{ selectedDrink.tags }}
-                    </span>
-                    <span class="h-px bg-white/10 flex-grow"></span>
+        <div class="w-full h-48 md:h-96 img-mask reveal-up mb-24 md:mb-32">
+            <img src="images/6.jpg" class="img-scale">
+        </div>
+
+        <div class="reveal-up">
+            <h3 class="text-xl md:text-2xl font-serif-en mb-10 md:mb-12 tracking-widest uppercase text-gray-800">Seasonal <span class="text-xs text-gray-400 font-serif-cn normal-case italic ml-3">季节限定</span></h3>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-20 gap-y-10 md:gap-y-12">
+                <div v-for="(drink, index) in newDrinks" :key="drink.id" 
+                     class="menu-item group flex flex-col justify-between hover-target"
+                     :class="{'reveal-up': true, 'delay-100': index % 2 === 1}">
+                    
+                    <div class="menu-item-border pb-3 flex justify-between items-end mb-3 gap-4">
+                        <div class="flex items-baseline gap-2 md:gap-3 flex-1 min-w-0">
+                            <span class="text-lg font-serif-en font-medium truncate">{{ drink.name }}</span>
+                            <span class="text-[11px] text-gray-400 font-serif-cn whitespace-nowrap flex-shrink-0">{{ drink.subName }}</span>
+                        </div>
+                        <div class="text-sm font-serif-en whitespace-nowrap flex-shrink-0">{{ drink.price }}</div>
+                    </div>
+
+                    <div class="text-[9px] tracking-[0.2em] text-gray-400 mb-2 uppercase">{{ drink.tags }}</div>
+                    <p class="text-xs text-gray-500 font-light leading-relaxed font-serif-cn">{{ drink.desc }}</p>
                 </div>
+            </div>
+        </div>
+    </section>
 
-                <div class="flex-grow">
-                    <p class="text-gray-300 text-sm md:text-lg font-light leading-relaxed whitespace-pre-line mb-8">
-                        {{ selectedDrink.longDesc }}
+    <footer class="bg-[#111] text-white pt-20 md:pt-24 pb-12 px-6 hover-target-dark relative overflow-hidden">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 mb-16 md:mb-20 reveal-up">
+                <div class="img-mask h-48 md:h-80"><img src="images/7.jpg" class="img-scale"></div>
+                <div class="img-mask h-48 md:h-80 mt-0 lg:mt-12"><img src="images/8.jpg" class="img-scale"></div>
+                <div class="flex flex-col justify-center text-center lg:text-left px-4 mt-8 lg:mt-0">
+                    <h3 class="text-2xl font-serif-en mb-6 text-white">Find Us</h3>
+                    <p class="text-gray-400 text-sm font-light leading-relaxed mb-4">
+                        WeChat: 17601382093 <br>
+                        Location: ECUST Fengxian Campus <br>
+                    </p>
+                </div>
+            </div>
+            
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-[10px] text-gray-500 tracking-widest uppercase reveal-up space-y-6 md:space-y-0">
+                <p>&copy; 2026 Li Bar.</p>
+                
+                <div class="group cursor-default">
+                    <p class="text-[#111] transition-colors duration-[1500ms] group-hover:text-gray-600 font-serif-en text-center text-[9px] tracking-[0.3em]">
+                        Synchronicity is an ever-present reality.<br>
+                        <span class="italic text-[#111] group-hover:text-gray-500 transition-colors duration-[2000ms] mt-1 block">IX. The Hermit</span>
                     </p>
                 </div>
 
-                <div class="mt-auto pt-6 border-t border-white/10 flex justify-between items-center">
-                    <div class="text-3xl md:text-4xl font-display text-amber-400">
-                        <span class="text-base md:text-xl align-top mr-1">¥</span>{{ selectedDrink.price }}
-                    </div>
-                    <button @click="selectedDrink = null" class="hidden md:block px-8 py-3 bg-white text-black font-bold rounded-xl hover:bg-amber-500 transition text-sm">
-                        CLOSE
-                    </button>
-                </div>
+                <p>All rights reserved.</p>
             </div>
         </div>
-    </div>
-
-    <footer class="text-center text-gray-600 text-[10px] py-12 tracking-widest uppercase">
-        &copy; 理 BAR • Premium Selection
     </footer>
+
 </div>
 
 <script>
-const { createApp, ref } = Vue;
+    document.addEventListener("DOMContentLoaded", () => {
+        setTimeout(() => {
+            const preloader = document.getElementById('preloader');
+            preloader.style.opacity = '0';
+            setTimeout(() => {
+                preloader.style.display = 'none';
+            }, 1000); 
+        }, 1500); 
 
-/**
- * 命名规范：images/英文名(全小写，无空格).jpg
- */
-const DRINK_DATA = [
-    { 
-        id: 1, 
-        name: '巴勒莫', 
-        subName: 'Palermo', 
-        price: '36', 
-        tags: '苦酒 / 热带果香', 
-        image: 'images/palermo.jpg',
-        desc: '意式苦酒与热带果香的西西里邂逅。', 
-        longDesc: "Palermo 是对经典 Campari-Soda 的一次热带升级。\n\n入口时，首先感受到苦艾酒带来的经典苦味，随后被菠萝和香草的热带甜美包裹，是一款充满地中海风情的夏日调饮。" 
-    },
-    { 
-        id: 2, 
-        name: '玛米泰勒', 
-        subName: 'Mamie Taylor', 
-        price: '36', 
-        tags: '威士忌 / 辛辣姜味', 
-        image: 'images/mamietaylor.jpg',
-        desc: '19世纪的复古经典，威士忌与姜汁的灵魂碰撞。', 
-        longDesc: "诞生于19世纪末，得名于著名的歌剧演员。\n\n苏格兰威士忌的麦芽香气与新鲜青柠、辛辣姜汁形成了极具张力的对比。适合在漫长的谈话中慢慢品味。" 
-    },
-    { 
-        id: 3, 
-        name: '恶魔', 
-        subName: 'El Diablo', 
-        price: '38', 
-        tags: '龙舌兰 / 黑醋栗', 
-        image: 'images/eldiablo.jpg',
-        desc: '诱人的深红色泽下，隐藏着龙舌兰的狂放灵魂。', 
-        longDesc: "充满魅力的墨西哥风味鸡尾酒。\n\n以龙舌兰为基底，加入黑醋栗利口酒提供深沉果香，姜汁啤酒提升辛辣感，最后由新鲜青柠收尾，口感极具层次。" 
-    },
-    { 
-        id: 4, 
-        name: '僵尸', 
-        subName: 'Zombie', 
-        price: '45', 
-        tags: '强劲 / 朗姆 / Tiki', 
-        image: 'images/zombie.jpg',
-        desc: '三款朗姆酒的博弈，是酒吧里最危险的温柔。', 
-        longDesc: "Tiki 文化的标志性饮品。使用了三种不同风味的朗姆酒。\n\n因为酒精度极高，传说饮用后会像僵尸一样行走。迷人的果香掩盖了酒精的烈度，请谨慎享用。" 
-    },
-    { 
-        id: 5, 
-        name: '尼格罗尼', 
-        subName: 'Negroni', 
-        price: '42', 
-        tags: '苦甜平衡 / 经典', 
-        image: 'images/negroni.jpg',
-        desc: '绅士的入门礼，三位一体的完美比例。', 
-        longDesc: "标志性的意大利鸡尾酒，由金酒、金巴利和甜味美思等量调制。\n\n简单的配方创造出完美的平衡，是调酒师基本功的终极考验，也是开胃酒的王者。" 
-    },
-    { 
-        id: 6, 
-        name: '阿佩罗橙光', 
-        subName: 'Aperol Spritz', 
-        price: '38', 
-        tags: '起泡酒 / 清爽', 
-        image: 'images/aperolspritz.jpg',
-        desc: '意大利的日落色彩，轻盈的气泡体验。', 
-        longDesc: "这是意大利最受欢迎的开胃酒之一。明亮的橙色伴随着普罗塞克起泡酒的轻盈感，清爽且低酒精，是社交场合的完美伴侣。" 
-    }
-];
+        const cursorDot = document.getElementById('cursor-dot');
+        const cursorOutline = document.getElementById('cursor-outline');
+        
+        if (window.matchMedia("(pointer: coarse)").matches) {
+            cursorDot.style.display = 'none';
+            cursorOutline.style.display = 'none';
+        } else {
+            window.addEventListener('mousemove', (e) => {
+                const posX = e.clientX;
+                const posY = e.clientY;
 
-createApp({
-    setup() {
-        const drinks = ref(DRINK_DATA);
-        const selectedDrink = ref(null);
+                cursorDot.style.left = `${posX}px`;
+                cursorDot.style.top = `${posY}px`;
 
-        return {
-            drinks,
-            selectedDrink
-        };
-    }
-}).mount('#app');
+                cursorOutline.style.left = `${posX}px`;
+                cursorOutline.style.top = `${posY}px`;
+            });
+
+            const hoverTargets = document.querySelectorAll('a, button, .hover-target');
+            hoverTargets.forEach(target => {
+                target.addEventListener('mouseenter', () => {
+                    document.body.classList.add('cursor-hover');
+                });
+                target.addEventListener('mouseleave', () => {
+                    document.body.classList.remove('cursor-hover');
+                });
+            });
+
+            const darkSections = document.querySelectorAll('.hover-target-dark');
+            darkSections.forEach(section => {
+                section.addEventListener('mouseenter', () => {
+                    document.body.classList.add('cursor-hover-dark');
+                });
+                section.addEventListener('mouseleave', () => {
+                    document.body.classList.remove('cursor-hover-dark');
+                });
+            });
+        }
+    });
+
+    const { createApp, ref, onMounted } = Vue;
+
+    const classicDrinksList = [
+        { id: 1, name: 'Palermo', subName: '巴勒莫', price: '36', tags: '菠萝 / 草药 / 甜美', desc: '50 Best Bars 榜首 Bar Leone 原配方。意式苦酒与菠萝果肉的西西里邂逅。 12%abv 短饮' },
+        { id: 2, name: 'Diablo', subName: '恶魔', price: '38', tags: '莓果 / 辛辣 / 龙舌兰', desc: '黑加仑与姜汁的碰撞,酒体颜色如恶魔的血液。 13%abv 长饮' },
+        { id: 3, name: 'Zombie', subName: '僵尸', price: '38', tags: '多种朗姆 / 菠萝 / 百香果', desc: '混合热带风味经典。 12%abv 长饮' },
+        { id: 4, name: 'Long Island Iced-tea', subName: '长岛冰茶', price: '40', tags: '多重烈酒 / 柠檬', desc: '无害的茶色下藏着五种基酒的烈性,后劲十足。 17%abv 长饮' },
+        { id: 5, name: 'Mamba Libre', subName: '自由曼巴', price: '36', tags: '黑朗姆 / 气泡 / 解渴', desc: '这一杯\'进阶版自由古巴 将带你穿梭于两个维度。 12%abv 长饮' },
+        { id: 6, name: 'Paper Plane', subName: '纸飞机', price: '38', tags: '谷物 / 草本 / 馥郁', desc: '这款诞生于纽约的现代经典旨在向同名金曲致敬。波本威士忌的温润与果味的鲜活轻盈滑翔,好似童年梦境里的纸飞机。 17%abv 短饮' },
+        { id: 7, name: 'Godfather', subName: '教父', price: '55', tags: '醇厚 / 肉桂 / 杏仁', desc: '尊尼获加黑牌/拉弗格10。选用调和&泥煤威士忌打造这一杯有深度的教父,烟熏肉桂封杯。 30%abv 短饮' },
+        { id: 8, name: 'Negroni', subName: '尼格罗尼', price: '55', tags: '苦甜 / 复杂', desc: '经典架构、全新配方。 20%abv 短饮' }
+    ];
+
+    const newDrinksList = [
+        { id: 9, name: 'Raspberry Gimlet', subName: '树莓金', price: '38', tags: '莓果 / 甜润', desc: '琴蕾的改编:用酸甜修饰树莓的饱满口感,回味无穷。 20%abv 短饮' },
+        { id: 10, name: 'Rainy Garden', subName: '雨后花园', price: '36', tags: '清爽 / 沁透', desc: '罗勒的辛香伴随青瓜的鲜活融入草本味美思、汤力水带来跳跃的清新,一杯轻松愉悦的味觉体验。 10%abv 长饮' }
+    ];
+
+    createApp({
+        setup() {
+            const classicDrinks = ref(classicDrinksList);
+            const newDrinks = ref(newDrinksList);
+
+            onMounted(() => {
+                const observerOptions = {
+                    root: null,
+                    rootMargin: '0px',
+                    threshold: 0.15
+                };
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-visible');
+                        } else {
+                            if (entry.boundingClientRect.top > 0) {
+                                entry.target.classList.remove('is-visible');
+                            }
+                        }
+                    });
+                }, observerOptions);
+
+                document.querySelectorAll('.reveal-up, .img-mask').forEach((el) => {
+                    observer.observe(el);
+                });
+            });
+
+            return {
+                classicDrinks,
+                newDrinks
+            };
+        }
+    }).mount('#app');
 </script>
 </body>
 </html>
