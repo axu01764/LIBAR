@@ -165,7 +165,7 @@
         </div>
         
         <div class="relative z-10 max-w-7xl mx-auto w-full reveal-up delay-100">
-            <h1 class="text-[9.5vw] md:text-7xl lg:text-8xl text-white font-serif-en mb-4 tracking-wide whitespace-nowrap">ECUST BAR.</h1>
+            <h1 class="text-[9.5vw] md:text-7xl lg:text-8xl text-white font-serif-en mb-4 tracking-wide whitespace-nowrap">ECUST BAR HOME PAGE.</h1>
             <p class="text-white/80 text-xs md:text-sm tracking-[0.2em] uppercase mb-10 font-light"></p>
             <a href="#menu" class="btn-outline !text-white !border-white hover:!bg-white hover:!text-black hover-target whitespace-nowrap">探索酒单 / Explore Menu</a>
         </div>
@@ -249,7 +249,7 @@
                     </div>
 
                     <div class="text-[9px] tracking-[0.2em] text-gray-400 mb-2 uppercase">{{ drink.tags }}</div>
-                    <p class="text-xs text-gray-500 font-light leading-relaxed font-serif-cn">{{ drink.desc }}</p>
+                    <p class="text-xs text-gray-500 font-light leading-relaxed font-serif-cn" style="white-space: pre-line;">{{ drink.desc }}</p>
                 </div>
             </div>
         </div>
@@ -275,7 +275,7 @@
                     </div>
 
                     <div class="text-[9px] tracking-[0.2em] text-gray-400 mb-2 uppercase">{{ drink.tags }}</div>
-                    <p class="text-xs text-gray-500 font-light leading-relaxed font-serif-cn">{{ drink.desc }}</p>
+                    <p class="text-xs text-gray-500 font-light leading-relaxed font-serif-cn" style="white-space: pre-line;">{{ drink.desc }}</p>
                 </div>
             </div>
         </div>
@@ -365,20 +365,20 @@
     const { createApp, ref, onMounted } = Vue;
 
     const classicDrinksList = [
-        { id: 1, name: 'Palermo', subName: '巴勒莫', price: '36', tags: '菠萝 / 草药 / 甜美', desc: '50 Best Bars 榜首 Bar Leone 原配方。意式苦酒与菠萝果肉的西西里邂逅。 12%abv 短饮' },
-        { id: 2, name: 'Diablo', subName: '恶魔', price: '38', tags: '莓果 / 辛辣 / 龙舌兰', desc: '黑加仑与姜汁的碰撞,酒体颜色如恶魔的血液。 13%abv 长饮' },
-        { id: 3, name: 'Zombie', subName: '僵尸', price: '38', tags: '多种朗姆 / 菠萝 / 百香果', desc: '混合热带风味经典。 12%abv 长饮' },
-        { id: 4, name: 'Long Island Iced-tea', subName: '长岛冰茶', price: '40', tags: '多重烈酒 / 柠檬', desc: '无害的茶色下藏着五种基酒的烈性,后劲十足。 17%abv 长饮' },
-        { id: 5, name: 'Mamba Libre', subName: '自由曼巴', price: '36', tags: '黑朗姆 / 气泡 / 解渴', desc: '这一杯\'进阶版自由古巴 将带你穿梭于两个维度。 12%abv 长饮' },
-        { id: 6, name: 'Paper Plane', subName: '纸飞机', price: '38', tags: '谷物 / 草本 / 馥郁', desc: '这款诞生于纽约的现代经典旨在向同名金曲致敬。波本威士忌的温润与果味的鲜活轻盈滑翔,好似童年梦境里的纸飞机。 17%abv 短饮' },
-        { id: 7, name: 'Godfather', subName: '教父', price: '55', tags: '醇厚 / 肉桂 / 杏仁', desc: '尊尼获加黑牌/拉弗格10。选用调和&泥煤威士忌打造这一杯有深度的教父,烟熏肉桂封杯。 30%abv 短饮' },
-        { id: 8, name: 'Negroni', subName: '尼格罗尼', price: '55', tags: '苦甜 / 复杂', desc: '经典架构、全新配方。 20%abv 短饮' }
-    ];
+    { id: 1, name: 'Palermo', subName: '巴勒莫', price: '36', tags: '菠萝 / 草药 / 甜美', desc: '50 Best Bars 榜首 Bar Leone 原配方。意式苦酒与菠萝果肉的西西里邂逅。\n12%abv 短饮' },
+    { id: 2, name: 'Diablo', subName: '恶魔', price: '38', tags: '莓果 / 辛辣 / 龙舌兰', desc: '黑加仑与姜汁的碰撞,酒体颜色如恶魔的血液。\n13%abv 长饮' },
+    { id: 3, name: 'Zombie', subName: '僵尸', price: '38', tags: '多种朗姆 / 菠萝 / 百香果', desc: '混合热带风味经典。\n12%abv 长饮' },
+    { id: 4, name: 'Long Island Iced-tea', subName: '长岛冰茶', price: '40', tags: '多重烈酒 / 柠檬', desc: '无害的茶色下藏着五种基酒的烈性,后劲十足。\n17%abv 长饮' },
+    { id: 5, name: 'Mamba Libre', subName: '自由曼巴', price: '36', tags: '黑朗姆 / 气泡 / 解渴', desc: '这一杯\'进阶版自由古巴\' 将带你穿梭于两个维度。\n12%abv 长饮' },
+    { id: 6, name: 'Paper Plane', subName: '纸飞机', price: '38', tags: '谷物 / 草本 / 馥郁', desc: '这款诞生于纽约的现代经典旨在向同名金曲致敬。波本威士忌的温润与果味的鲜活轻盈滑翔,好似童年梦境里的纸飞机。\n17%abv 短饮' },
+    { id: 7, name: 'Godfather', subName: '教父', price: '55', tags: '醇厚 / 肉桂 / 杏仁', desc: '尊尼获加黑牌/拉弗格10。选用调和&泥煤威士忌打造这一杯有深度的教父,烟熏肉桂封杯。\n30%abv 短饮' },
+    { id: 8, name: 'Negroni', subName: '尼格罗尼', price: '55', tags: '苦甜 / 复杂', desc: '经典架构、全新配方。\n20%abv 短饮' }
+];
 
-    const newDrinksList = [
-        { id: 9, name: 'Raspberry Gimlet', subName: '树莓金', price: '38', tags: '莓果 / 甜润', desc: '琴蕾的改编:用酸甜修饰树莓的饱满口感,回味无穷。 20%abv 短饮' },
-        { id: 10, name: 'Rainy Garden', subName: '雨后花园', price: '36', tags: '清爽 / 沁透', desc: '罗勒的辛香伴随青瓜的鲜活融入草本味美思、汤力水带来跳跃的清新,一杯轻松愉悦的味觉体验。 10%abv 长饮' }
-    ];
+const newDrinksList = [
+    { id: 9, name: 'Raspberry Gimlet', subName: '树莓金', price: '38', tags: '莓果 / 甜润', desc: '琴蕾的改编:用酸甜修饰树莓的饱满口感,回味无穷。\n20%abv 短饮' },
+    { id: 10, name: 'Rainy Garden', subName: '雨后花园', price: '36', tags: '清爽 / 沁透', desc: '罗勒的辛香伴随青瓜的鲜活融入草本味美思、汤力水带来跳跃的清新,一杯轻松愉悦的味觉体验。\n10%abv 长饮' }
+];
 
     createApp({
         setup() {
@@ -418,4 +418,3 @@
 </script>
 </body>
 </html>
-
