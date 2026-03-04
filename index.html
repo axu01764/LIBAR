@@ -6,11 +6,11 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="mobile-web-app-capable" content="yes">    
-    <title>理BAR </title>
+    <title>理BAR</title>
     <script>
-  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-</script>
-<script defer src="/_vercel/insights/script.js"></script>
+      window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="apple-touch-icon" href="favicon.png">
     
@@ -85,8 +85,8 @@
         }
 
         h1, h2, h3, .font-serif-en { 
-    font-family: 'Cormorant Garamond', 'Baskerville', 'Georgia', 'Times New Roman', serif; 
-}
+            font-family: 'Cormorant Garamond', 'Baskerville', 'Georgia', 'Times New Roman', serif; 
+        }
         .font-serif-cn { 
             font-family: 'Noto Serif SC', serif; 
             letter-spacing: 0.05em; 
@@ -180,8 +180,7 @@
                 <div class="text-[10px] tracking-[0.25em] text-gray-400 uppercase mb-4">Spring 2026</div>
                 <h2 class="text-3xl md:text-5xl font-serif-cn mb-8 leading-tight">春季活动 <br><span class="italic font-serif-en text-gray-400">Exploring Flavors</span></h2>
                 <div class="space-y-6 text-gray-600 font-light leading-relaxed text-sm">
-                    <p>欢迎大家来参加我们春季的特调活动——“味觉漫游”。在这个季节交替的时刻，我们精心准备了一系列全新的鸡尾酒，旨在带领大家穿越不同的风味世界，从经典到创新，每一杯都是一次独特的味觉体验。
-                    </p>
+                    <p>欢迎大家来参加我们春季的特调活动——“味觉漫游”。在这个季节交替的时刻，我们精心准备了一系列全新的鸡尾酒，旨在带领大家穿越不同的风味世界，从经典到创新，每一杯都是一次独特的味觉体验。</p>
                     <p>无论你是喜欢清爽的长饮，还是钟情于浓烈的短饮，我们的菜单都能满足你的期待。快来加入我们，一起探索这些令人兴奋的新口味吧！</p>
                 </div>
                 <div class="mt-10">
@@ -289,10 +288,20 @@
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 mb-16 md:mb-20 reveal-up">
                 <div class="img-mask h-48 md:h-80"><img src="images/7.jpg" class="img-scale"></div>
                 <div class="img-mask h-48 md:h-80 mt-0 lg:mt-12"><img src="images/8.jpg" class="img-scale"></div>
+                
                 <div class="flex flex-col justify-center text-center lg:text-left px-4 mt-8 lg:mt-0">
                     <h3 class="text-2xl font-serif-en mb-6 text-white">Find Us</h3>
+                    
+                    <div class="mb-5 flex justify-center lg:justify-start">
+                        <img src="images/qrcode.jpg" alt="WeChat QR Code" class="w-28 h-auto rounded shadow-lg opacity-90 hover:opacity-100 transition-opacity duration-300">
+                    </div>
+                    
                     <p class="text-gray-400 text-sm font-light leading-relaxed mb-4">
-                        WeChat: 17601382093 <br><br>
+                        <span class="cursor-pointer hover:text-white transition-colors duration-300 hover-target font-serif-en tracking-wider inline-block mb-3"
+                              onclick="navigator.clipboard.writeText('17601382093'); const text = this.innerText; this.innerText = '✓ Copied to clipboard'; setTimeout(() => this.innerText = text, 2000);"
+                              title="点击复制微信号">
+                            WeChat: 17601382093
+                        </span><br>
                         <a href="https://b23.tv/KLiRgD0" target="_blank" rel="noopener noreferrer" class="text-gray-200 border-b border-gray-500 pb-[2px] hover:text-white hover:border-white transition-all duration-300 hover-target font-serif-cn tracking-wider inline-block mt-1">bilibili主页</a><br>
                         <a href="https://xhslink.com/m/9IN1QDcfLlw" target="_blank" rel="noopener noreferrer" class="text-gray-200 border-b border-gray-500 pb-[2px] hover:text-white hover:border-white transition-all duration-300 hover-target font-serif-cn tracking-wider inline-block mt-3">小红书主页</a>
                     </p>
@@ -369,20 +378,21 @@
     const { createApp, ref, onMounted } = Vue;
 
     const classicDrinksList = [
-    { id: 1, name: 'Palermo', subName: '巴勒莫', price: '36', tags: '菠萝 / 草药 / 甜美', desc: '50 Best Bars 榜首 Bar Leone 原配方。意式苦酒与菠萝果肉的西西里邂逅。\n12%abv 短饮' },
-    { id: 2, name: 'Diablo', subName: '恶魔', price: '38', tags: '莓果 / 辛辣 / 龙舌兰', desc: '黑加仑与姜汁的碰撞,酒体颜色如恶魔的血液。\n13%abv 长饮' },
-    { id: 3, name: 'Zombie', subName: '僵尸', price: '38', tags: '多种朗姆 / 菠萝 / 百香果', desc: '混合热带风味经典。\n12%abv 长饮' },
-    { id: 4, name: 'Long Island Iced-tea', subName: '长岛冰茶', price: '40', tags: '多重烈酒 / 柠檬', desc: '无害的茶色下藏着五种基酒的烈性,后劲十足。\n17%abv 长饮' },
-    { id: 5, name: 'Mamba Libre', subName: '自由曼巴', price: '36', tags: '黑朗姆 / 气泡 / 解渴', desc: '这一杯\'进阶版自由古巴\' 将带你穿梭于两个维度。\n12%abv 长饮' },
-    { id: 6, name: 'Paper Plane', subName: '纸飞机', price: '38', tags: '谷物 / 草本 / 馥郁', desc: '这款诞生于纽约的现代经典旨在向同名金曲致敬。波本威士忌的温润与果味的鲜活轻盈滑翔,好似童年梦境里的纸飞机。\n17%abv 短饮' },
-    { id: 7, name: 'Godfather', subName: '教父', price: '55', tags: '醇厚 / 肉桂 / 杏仁', desc: '尊尼获加黑牌/拉弗格10。选用调和&泥煤威士忌打造这一杯有深度的教父,烟熏肉桂封杯。\n30%abv 短饮' },
-    { id: 8, name: 'Negroni', subName: '尼格罗尼', price: '55', tags: '苦甜 / 复杂', desc: '经典架构、全新配方。\n20%abv 短饮' }
-];
+        { id: 1, name: 'Palermo', subName: '巴勒莫', price: '36', tags: '菠萝 / 草药 / 甜美', desc: '50 Best Bars 榜首 Bar Leone 原配方。意式苦酒与菠萝果肉的西西里邂逅。\n12%abv 短饮' },
+        { id: 2, name: 'Diablo', subName: '恶魔', price: '38', tags: '莓果 / 辛辣 / 龙舌兰', desc: '黑加仑与姜汁的碰撞,酒体颜色如恶魔的血液。\n13%abv 长饮' },
+        { id: 3, name: 'Zombie', subName: '僵尸', price: '38', tags: '多种朗姆 / 菠萝 / 百香果', desc: '混合热带风味经典。\n12%abv 长饮' },
+        { id: 4, name: 'Long Island Iced-tea', subName: '长岛冰茶', price: '40', tags: '多重烈酒 / 柠檬', desc: '无害的茶色下藏着五种基酒的烈性,后劲十足。\n17%abv 长饮' },
+        { id: 5, name: 'Mamba Libre', subName: '自由曼巴', price: '36', tags: '黑朗姆 / 气泡 / 解渴', desc: '这一杯\'进阶版自由古巴\' 将带你穿梭于两个维度。\n12%abv 长饮' },
+        { id: 6, name: 'Paper Plane', subName: '纸飞机', price: '38', tags: '谷物 / 草本 / 馥郁', desc: '这款诞生于纽约的现代经典旨在向同名金曲致敬。波本威士忌的温润与果味的鲜活轻盈滑翔,好似童年梦境里的纸飞机。\n17%abv 短饮' },
+        { id: 7, name: 'Godfather', subName: '教父', price: '55', tags: '醇厚 / 肉桂 / 杏仁', desc: '尊尼获加黑牌/拉弗格10。选用调和&泥煤威士忌打造这一杯有深度的教父,烟熏肉桂封杯。\n30%abv 短饮' },
+        { id: 8, name: 'Negroni', subName: '尼格罗尼', price: '55', tags: '苦甜 / 复杂', desc: '经典架构、全新配方。\n20%abv 短饮' },
+        { id: 9, name: 'Gimlet', subName: '琴蕾', price: '38', tags: '干净 / 青柠 / 金酒', desc: '干净利落，青柠的酸与金酒的凛冽。成名于《漫长的告别》。\n20%abv 短饮' }
+    ];
 
-const newDrinksList = [
-    { id: 9, name: 'Raspberry Gimlet', subName: '树莓金', price: '38', tags: '莓果 / 甜润', desc: '琴蕾的改编:用酸甜修饰树莓的饱满口感,回味无穷。\n20%abv 短饮' },
-    { id: 10, name: 'Rainy Garden', subName: '雨后花园', price: '36', tags: '清爽 / 沁透', desc: '罗勒的辛香伴随青瓜的鲜活融入草本味美思、汤力水带来跳跃的清新,一杯轻松愉悦的味觉体验。\n10%abv 长饮' }
-];
+    const newDrinksList = [
+        { id: 10, name: 'Raspberry Gimlet', subName: '树莓', price: '38', tags: '莓果 / 甜润', desc: '琴蕾的改编:用酸甜修饰树莓的饱满口感,回味无穷。\n20%abv 短饮' },
+        { id: 11, name: 'Sakura Sakura', subName: '樱花', price: '48', tags: '樱花 / 白桃 / 清甜', desc: '日本银座知名酒吧设计，用清冷的花果香，带来早春的感受。\n20%abv 短饮' }
+    ];
 
     createApp({
         setup() {
@@ -422,6 +432,3 @@ const newDrinksList = [
 </script>
 </body>
 </html>
-
-
-
