@@ -180,7 +180,7 @@
                 <div class="text-[10px] tracking-[0.25em] text-gray-400 uppercase mb-4">Spring 2026</div>
                 <h2 class="text-3xl md:text-5xl font-serif-cn mb-8 leading-tight">春季活动 <br><span class="italic font-serif-en text-gray-400">Exploring Flavors</span></h2>
                 <div class="space-y-6 text-gray-600 font-light leading-relaxed text-sm">
-                    <p>欢迎大家来参加我们春季的特调活动——“味觉漫游”。在这个季节交替的时刻，我们精心准备了一系列全新的鸡尾酒，旨在带领大家穿越不同的风味世界，从经典到创新，每一杯都是一次独特的味觉体验。</p>
+                    <p>欢迎大家来参加我们春季的鸡尾酒交流活动——“味觉漫游”。在这个季节交替的时刻，我们精心准备了一系列全新的鸡尾酒，旨在带领大家穿越不同的风味世界，从经典到创新，每一杯都是一次独特的味觉体验。</p>
                     <p>无论你是喜欢清爽的长饮，还是钟情于浓烈的短饮，我们的菜单都能满足你的期待。快来加入我们，一起探索这些令人兴奋的新口味吧！</p>
                 </div>
                 <div class="mt-10">
@@ -210,12 +210,12 @@
                     <h3 class="text-lg font-serif-cn text-gray-400 mb-8 md:mb-10">关于我们</h3>
                     
                     <div class="space-y-6 text-gray-600 font-light leading-relaxed text-sm">
-                        <p>华理学生自运营的鸡尾酒活动，天气好时每周举办，同时承办社团演出的酒水供应。</p>
+                        <p>学生自运营的鸡尾酒活动，天气好时每周举办，同时承办社团演出的饮品供应。</p>
                         <p>请准备好放下白日的疲惫。我们不定义标准，我们只提供情绪的出口与灵魂的栖息地。</p>
                         
                         <blockquote class="border-l border-gray-300 pl-6 py-2 italic text-gray-500 mt-8 text-xs leading-loose relative">
                             "Address: 华理 奉贤 风檐广场<br>
-                            Business Hours: 3.10 19:00 - 24:00."<br>
+                            Business Hours: 3.11 周三 19:00 - 24:00."<br>
                         </blockquote>
                     </div>
                 </div>
@@ -243,11 +243,12 @@
                      :class="{'reveal-up': true, 'delay-100': index % 2 === 1}">
                     
                     <div class="menu-item-border pb-3 flex justify-between items-end mb-3 gap-4">
-                        <div class="flex items-baseline gap-2 md:gap-3 flex-1 min-w-0">
+                        <div class="flex items-baseline gap-2 md:gap-3 flex-1 min-w-0" :class="{'opacity-40': drink.soldOut}">
                             <span class="text-lg font-serif-en font-medium truncate">{{ drink.name }}</span>
                             <span class="text-[11px] text-gray-400 font-serif-cn whitespace-nowrap flex-shrink-0">{{ drink.subName }}</span>
+                            <span v-if="drink.soldOut" class="ml-2 text-[9px] tracking-[0.2em] text-gray-500 uppercase border border-gray-400 px-1.5 py-0.5 rounded-sm">Sold Out</span>
                         </div>
-                        <div class="text-sm font-serif-en whitespace-nowrap flex-shrink-0">{{ drink.price }}</div>
+                        <div class="text-sm font-serif-en whitespace-nowrap flex-shrink-0" :class="{'opacity-40 line-through': drink.soldOut}">{{ drink.price }}</div>
                     </div>
 
                     <div class="text-[9px] tracking-[0.2em] text-gray-400 mb-2 uppercase">{{ drink.tags }}</div>
@@ -269,11 +270,12 @@
                      :class="{'reveal-up': true, 'delay-100': index % 2 === 1}">
                     
                     <div class="menu-item-border pb-3 flex justify-between items-end mb-3 gap-4">
-                        <div class="flex items-baseline gap-2 md:gap-3 flex-1 min-w-0">
+                        <div class="flex items-baseline gap-2 md:gap-3 flex-1 min-w-0" :class="{'opacity-40': drink.soldOut}">
                             <span class="text-lg font-serif-en font-medium truncate">{{ drink.name }}</span>
                             <span class="text-[11px] text-gray-400 font-serif-cn whitespace-nowrap flex-shrink-0">{{ drink.subName }}</span>
+                            <span v-if="drink.soldOut" class="ml-2 text-[9px] tracking-[0.2em] text-gray-500 uppercase border border-gray-400 px-1.5 py-0.5 rounded-sm">Sold Out</span>
                         </div>
-                        <div class="text-sm font-serif-en whitespace-nowrap flex-shrink-0">{{ drink.price }}</div>
+                        <div class="text-sm font-serif-en whitespace-nowrap flex-shrink-0" :class="{'opacity-40 line-through': drink.soldOut}">{{ drink.price }}</div>
                     </div>
 
                     <div class="text-[9px] tracking-[0.2em] text-gray-400 mb-2 uppercase">{{ drink.tags }}</div>
@@ -383,18 +385,17 @@
         { id: 3, name: 'Zombie', subName: '僵尸', price: '38', tags: '多种朗姆 / 菠萝 / 百香果', desc: '混合热带风味经典。\n12%abv 长饮' },
         { id: 4, name: 'Long Island Iced-tea', subName: '长岛冰茶', price: '40', tags: '多重烈酒 / 柠檬', desc: '无害的茶色下藏着五种基酒的烈性,后劲十足。\n17%abv 长饮' },
         { id: 5, name: 'Mamba Libre', subName: '自由曼巴', price: '36', tags: '黑朗姆 / 气泡 / 解渴', desc: '这一杯\'进阶版自由古巴\' 将带你穿梭于两个维度。\n12%abv 长饮' },
-        { id: 6, name: 'Paper Plane', subName: '纸飞机', price: '38', tags: '谷物 / 草本 / 馥郁', desc: '这款诞生于纽约的现代经典旨在向同名金曲致敬。波本威士忌的温润与果味的鲜活轻盈滑翔,好似童年梦境里的纸飞机。\n17%abv 短饮' },
-        { id: 7, name: 'Godfather', subName: '教父', price: '55', tags: '醇厚 / 肉桂 / 杏仁', desc: '尊尼获加黑牌/拉弗格10。选用调和&泥煤威士忌打造这一杯有深度的教父,烟熏肉桂封杯。\n30%abv 短饮' },
-        { id: 8, name: 'Negroni', subName: '尼格罗尼', price: '55', tags: '苦甜 / 复杂', desc: '经典架构、全新配方。\n20%abv 短饮' },
+        { id: 6, name: 'Paper Plane', subName: '纸飞机', price: '40', tags: '谷物 / 草本 / 馥郁', desc: '这款诞生于纽约的现代经典旨在向同名金曲致敬。\n波本威士忌的温润与果味的鲜活轻盈滑翔,好似童年梦境里的纸飞机。\n17%abv 短饮' },
+        { id: 7, name: 'Godfather', subName: '教父', price: '55', tags: '醇厚 / 肉桂 / 杏仁', desc: '尊尼获加黑牌/拉弗格10年: 选用调和&泥煤威士忌打造这一杯有深度的教父。\n烟熏肉桂封杯。\n30%abv 短饮' },
+        { id: 8, name: 'Negroni Edited', subName: '尼格罗尼改编', price: '55', tags: '苦甜 / 复杂', desc: '经典架构、全新配方。\n20%abv 短饮' },
         { id: 9, name: 'Gimlet', subName: '琴蕾', price: '38', tags: '干净 / 青柠 / 金酒', desc: '干净利落，青柠的酸与金酒的凛冽。成名于《漫长的告别》。\n20%abv 短饮' }
     ];
 
     const newDrinksList = [
         { id: 10, name: 'Raspberry Gimlet', subName: '树莓', price: '38', tags: '莓果 / 甜润', desc: '琴蕾的改编:用酸甜修饰树莓的饱满口感,回味无穷。\n20%abv 短饮' },
-        // { id: 11, name: 'Sakura Sakura', subName: '樱花', price: '48', tags: '樱花 / 白桃 / 清甜', desc: '日本银座知名酒吧设计，用清冷的花果香，带来早春的感受。\n20%abv 短饮' }
+        { id: 11, name: 'Sakura Sakura', subName: '樱花', price: '48', tags: '樱花 / 白桃 / 清甜', desc: '日本银座知名酒吧设计，用清冷的花果香，带来早春的感受。\n20%abv 短饮' , soldOut: true},
         { id: 12, name: 'Aviation', subName: '飞行', price: '48', tags: '花香 / 紫罗兰 / 清冽', desc: '诞生于上世纪初的浪漫之作。紫罗兰利口酒赋予其迷人的天际色彩，金酒的凛冽与优雅花香在舌尖轻盈起飞。\n25%abv 短饮' }
     ];
-
     createApp({
         setup() {
             const classicDrinks = ref(classicDrinksList);
