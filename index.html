@@ -309,8 +309,19 @@
                             WeChat: 17601382093（点击复制）
                         </span><br>
                         <a href="https://b23.tv/KLiRgD0" target="_blank" rel="noopener noreferrer" class="text-gray-200 border-b border-gray-500 pb-[2px] hover:text-white hover:border-white transition-all duration-300 hover-target font-serif-cn tracking-wider inline-block mt-1">bilibili主页</a><br>
-                        <a href="https://xhslink.com/m/9IN1QDcfLlw" target="_blank" rel="noopener noreferrer" class="text-gray-200 border-b border-gray-500 pb-[2px] hover:text-white hover:border-white transition-all duration-300 hover-target font-serif-cn tracking-wider inline-block mt-3">小红书主页</a>
+                        <a href="https://xhslink.com/m/9IN1QDcfLlw" target="_blank" rel="noopener noreferrer" class="text-gray-200 border-b border-gray-500 pb-[2px] hover:text-white hover:border-white transition-all duration-300 hover-target font-serif-cn tracking-wider inline-block mt-3">小红书主页</a><br>
+                        <button type="button" id="coffee-trigger" class="text-gray-200 border-b border-gray-500 pb-[2px] hover:text-white hover:border-white transition-all duration-300 hover-target font-serif-en tracking-[0.12em] inline-block mt-3 uppercase">Buy me a coffee</button>
                     </p>
+                </div>
+            </div>
+
+            <div id="coffee-modal" class="fixed inset-0 z-[1000] bg-black/70 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300 px-6">
+                <div class="w-full h-full flex items-center justify-center">
+                    <div id="coffee-modal-panel" class="relative w-full max-w-sm rounded-2xl border border-white/20 bg-[#171717] p-4 md:p-5 shadow-2xl transform translate-y-3 transition-transform duration-300">
+                        <button type="button" id="coffee-close" class="absolute right-4 top-3 text-[10px] tracking-[0.2em] uppercase text-gray-400 hover:text-white transition-colors duration-300 hover-target">Close</button>
+                        <p class="text-center text-[10px] tracking-[0.24em] uppercase text-gray-300 mb-3 font-serif-en">Buy me a coffee</p>
+                        <img id="coffee-image" src="images/coffee.jpg" alt="WeChat Pay QR Code" class="w-full h-auto rounded-lg border border-white/10 shadow-lg">
+                    </div>
                 </div>
             </div>
             
@@ -377,6 +388,41 @@
                 section.addEventListener('mouseleave', () => {
                     document.body.classList.remove('cursor-hover-dark');
                 });
+            });
+        }
+
+        const coffeeTrigger = document.getElementById('coffee-trigger');
+        const coffeeModal = document.getElementById('coffee-modal');
+        const coffeeModalPanel = document.getElementById('coffee-modal-panel');
+        const coffeeClose = document.getElementById('coffee-close');
+        const coffeeImage = document.getElementById('coffee-image');
+
+        if (coffeeImage) {
+            const fallbackSources = ['images/coffee.jpg', 'images/coffee.png', 'images/coffee.jpeg', 'images/coffee.webp'];
+            let fallbackIndex = 0;
+            coffeeImage.addEventListener('error', () => {
+                if (fallbackIndex < fallbackSources.length) {
+                    coffeeImage.src = fallbackSources[fallbackIndex];
+                    fallbackIndex += 1;
+                }
+            });
+        }
+
+        if (coffeeTrigger && coffeeModal && coffeeModalPanel && coffeeClose) {
+            const toggleCoffeeModal = (show) => {
+                coffeeModal.classList.toggle('opacity-0', !show);
+                coffeeModal.classList.toggle('pointer-events-none', !show);
+                coffeeModalPanel.classList.toggle('translate-y-3', !show);
+                document.body.style.overflow = show ? 'hidden' : '';
+            };
+
+            coffeeTrigger.addEventListener('click', () => toggleCoffeeModal(true));
+            coffeeClose.addEventListener('click', () => toggleCoffeeModal(false));
+            coffeeModal.addEventListener('click', (event) => {
+                if (event.target === coffeeModal) toggleCoffeeModal(false);
+            });
+            window.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') toggleCoffeeModal(false);
             });
         }
     });
