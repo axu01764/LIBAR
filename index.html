@@ -176,6 +176,7 @@
             <p class="text-white/80 text-xs md:text-sm tracking-[0.2em] uppercase mb-10 font-light"></p>
             <a href="#menu" class="btn-outline !text-white !border-white hover:!bg-white hover:!text-black hover-target whitespace-nowrap">探索酒单 / Explore Menu</a>
         </div>
+
     </section>
 
     <section id="event" class="py-20 md:py-40 px-6 max-w-7xl mx-auto">
@@ -219,7 +220,7 @@
                         
                         <blockquote class="border-l border-gray-300 pl-6 py-2 italic text-gray-500 mt-8 text-xs leading-loose relative">
                             "Address: 华理 奉贤 风檐广场<br>
-                            Business Hours: 3.11 周三 19:00 - 24:00."<br>
+                            Business Hours: 3.17 周二 19:00 - 24:00."<br>
                         </blockquote>
                     </div>
                 </div>
@@ -270,6 +271,28 @@
             
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-20 gap-y-10 md:gap-y-12">
                 <div v-for="(drink, index) in newDrinks" :key="drink.id" 
+                     class="menu-item group flex flex-col justify-between hover-target"
+                     :class="{'reveal-up': true, 'delay-100': index % 2 === 1}">
+                    
+                    <div class="menu-item-border pb-3 flex justify-between items-end mb-3 gap-4">
+                        <div class="flex items-baseline gap-2 md:gap-3 flex-1 min-w-0" :class="{'opacity-40': drink.soldOut}">
+                            <span class="text-lg font-serif-en font-medium truncate">{{ drink.name }}</span>
+                            <span class="text-[11px] text-gray-400 font-serif-cn whitespace-nowrap flex-shrink-0">{{ drink.subName }}</span>
+                            <span v-if="drink.soldOut" class="ml-2 text-[9px] tracking-[0.2em] text-gray-500 uppercase border border-gray-400 px-1.5 py-0.5 rounded-sm">Sold Out</span>
+                        </div>
+                        <div class="text-sm font-serif-en whitespace-nowrap flex-shrink-0" :class="{'opacity-40 line-through': drink.soldOut}">{{ drink.price }}</div>
+                    </div>
+
+                    <div class="text-[9px] tracking-[0.2em] text-gray-400 mb-2 uppercase">{{ drink.tags }}</div>
+                    <p class="text-xs text-gray-500 font-light leading-relaxed font-serif-cn" style="white-space: pre-line;">{{ drink.desc }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="reveal-up mt-24 md:mt-32">
+            <h3 class="text-xl md:text-2xl font-serif-en mb-10 md:mb-12 tracking-widest uppercase text-gray-800">Trial <span class="text-xs text-gray-400 font-serif-cn normal-case italic ml-3">风味实验</span></h3>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-20 gap-y-10 md:gap-y-12">
+                <div v-for="(drink, index) in experimentalDrinks" :key="drink.id" 
                      class="menu-item group flex flex-col justify-between hover-target"
                      :class="{'reveal-up': true, 'delay-100': index % 2 === 1}">
                     
@@ -431,7 +454,7 @@
 
     const classicDrinksList = [
         { id: 1, name: 'Palermo', subName: '巴勒莫', price: '36', tags: '菠萝 / 草药 / 甜美', desc: '50 Best Bars 榜首 Bar Leone 原配方。意式苦酒与菠萝果肉的西西里邂逅。\n12%abv 短饮' },
-        { id: 2, name: 'Diablo', subName: '恶魔', price: '38', tags: '莓果 / 辛辣 / 龙舌兰', desc: '黑加仑与姜汁的碰撞,酒体颜色如恶魔的血液。\n13%abv 长饮' },
+        { id: 2, name: 'Moscow Mule', subName: '莫斯科骡子', price: '38', tags: '姜汁 / 清爽 / 气泡', desc: '青柠的鲜活撞击生姜的辛香，在铜杯中释放出极致凉爽。 \n12%abv 长饮' },
         { id: 3, name: 'Zombie', subName: '僵尸', price: '38', tags: '多种朗姆 / 菠萝 / 百香果', desc: '混合热带风味经典。\n12%abv 长饮' },
         { id: 4, name: 'Long Island Iced-tea', subName: '长岛冰茶', price: '40', tags: '多重烈酒 / 柠檬', desc: '无害的茶色下藏着五种基酒的烈性,后劲十足。\n17%abv 长饮' },
         { id: 5, name: 'Mamba Libre', subName: '自由曼巴', price: '36', tags: '黑朗姆 / 气泡 / 解渴', desc: '这一杯\'进阶版自由古巴\' 将带你穿梭于两个维度。\n12%abv 长饮' },
@@ -443,13 +466,18 @@
 
     const newDrinksList = [
         { id: 10, name: 'Raspberry Gimlet', subName: '树莓', price: '38', tags: '莓果 / 甜润', desc: '琴蕾的改编:用酸甜修饰树莓的饱满口感,回味无穷。\n20%abv 短饮' },
-        { id: 11, name: 'Sakura Sakura', subName: '樱花', price: '48', tags: '樱花 / 白桃 / 清甜', desc: '日本银座知名酒吧设计，用清冷的花果香，带来早春的感受。\n20%abv 短饮' },
-        { id: 12, name: 'Aviation', subName: '飞行', price: '48', tags: '花香 / 紫罗兰 / 清冽', desc: '诞生于上世纪初的浪漫之作。紫罗兰利口酒赋予其迷人的天际色彩，金酒的凛冽与优雅花香在舌尖轻盈起飞。\n25%abv 短饮' }
+        { id: 11, name: 'Sakura Sakura', subName: '樱花', price: '48', tags: '樱花 / 白桃 / 清甜', desc: '日本银座知名酒吧设计，用清冷的花果香，带来早春的感受。\n20%abv 短饮', soldOut: true },
+        { id: 12, name: 'Sakura Gin Tonic', subName: '樱花金汤力', price: '45', tags: '樱花 / 清爽 / 气泡', desc: '那个春天我第一次尝到了樱花的味道。\n8%abv长饮' },
+        { id: 13, name: 'Aviation', subName: '飞行', price: '48', tags: '花香 / 紫罗兰 / 清冽', desc: '诞生于上世纪初的浪漫之作。紫罗兰利口酒赋予其迷人的天际色彩，金酒的凛冽与优雅花香在舌尖轻盈起飞。\n25%abv 短饮' }
+    ];
+    const experimentalDrinksList = [
+        { id: 14, name: 'Afterglow', subName: '余晖', price: '38', tags: '柑橘 / 烟熏 / 余韵', desc: '明亮的柑橘芬芳在迷人的烟熏质感里缓缓绽放。' }
     ];
     createApp({
         setup() {
             const classicDrinks = ref(classicDrinksList);
             const newDrinks = ref(newDrinksList);
+            const experimentalDrinks = ref(experimentalDrinksList);
 
             onMounted(() => {
                 const observerOptions = {
@@ -477,7 +505,8 @@
 
             return {
                 classicDrinks,
-                newDrinks
+                newDrinks,
+                experimentalDrinks
             };
         }
     }).mount('#app');
