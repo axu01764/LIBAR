@@ -139,6 +139,37 @@
 
         html { scroll-behavior: smooth; }
         [v-cloak] { display: none; }
+
+        .pos-scrollbar-hidden {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .pos-scrollbar-hidden::-webkit-scrollbar {
+            display: none;
+        }
+
+        .pos-mode {
+            background-color: #050505;
+            cursor: auto !important;
+        }
+
+        .pos-mode .cursor-dot,
+        .pos-mode .cursor-outline {
+            display: none !important;
+        }
+
+        .pos-touch-y {
+            touch-action: pan-y;
+            overscroll-behavior: contain;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .pos-touch-pan {
+            touch-action: pan-x pan-y;
+            overscroll-behavior: contain;
+            -webkit-overflow-scrolling: touch;
+        }
     </style>
 </head>
 <body class="selection:bg-gray-200 selection:text-black">
@@ -151,7 +182,7 @@
 </div>
 
 <div id="app" v-cloak>
-    
+    <div v-show="!showPos">
     <header class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-50 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
             <div class="text-xl font-serif-en tracking-widest font-semibold uppercase hover-target">LI BAR</div>
@@ -349,7 +380,7 @@
             </div>
             
             <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-[10px] text-gray-500 tracking-widest uppercase reveal-up space-y-6 md:space-y-0">
-                <p>&copy; 2026 Li Bar.</p>
+                <p @click="enterPos" class="cursor-pointer select-none hover:text-white transition-colors duration-300">&copy; 2026 Li Bar.</p>
                 
                 <div class="group cursor-default">
                     <p class="text-[#111] transition-colors duration-[1500ms] group-hover:text-gray-600 font-serif-en text-center text-[9px] tracking-[0.3em]">
@@ -362,6 +393,107 @@
             </div>
         </div>
     </footer>
+    </div>
+
+    <div v-show="showPos" class="h-[100dvh] overflow-hidden bg-[#050505] text-white">
+        <div class="flex h-full flex-col">
+            <div class="sticky top-0 z-40 border-b border-white/10 bg-black px-4 py-4">
+                <div class="flex items-start justify-between gap-4">
+                    <div class="min-w-0">
+                        <p class="text-[10px] tracking-[0.28em] uppercase text-white/35">Internal POS</p>
+                        <h2 class="mt-2 text-2xl font-serif-cn text-white">内部点单看板</h2>
+                        <p class="mt-2 text-[11px] leading-relaxed text-white/45">双击酒块下单，8 秒内再次双击同款可撤销最近一杯；双击订单卡片划单。</p>
+                    </div>
+                    <button @click="exitPos" type="button" class="shrink-0 rounded-full border border-white/15 px-4 py-2 text-[11px] tracking-[0.18em] text-white/75">退出系统</button>
+                </div>
+
+                <div class="mt-4 flex items-center justify-between gap-3 text-[11px]">
+                    <p class="text-white/45">今晚订单 {{ posOrders.length }} 杯</p>
+                    <button @click="clearTonightData" type="button" class="rounded-full border border-white/15 px-4 py-2 text-white/75">清空今晚数据</button>
+                </div>
+            </div>
+
+            <section class="h-[42dvh] shrink-0 border-b border-white/10 px-4 py-4">
+                <div class="pos-scrollbar-hidden pos-touch-y h-full overflow-y-auto overflow-x-hidden">
+                    <div class="space-y-5">
+                        <div v-for="group in posDrinkGroups" :key="group.id">
+                            <div class="mb-3 text-[11px] tracking-[0.24em] uppercase text-white/35">{{ group.title }}</div>
+                            <div class="grid grid-cols-3 gap-2.5 sm:grid-cols-4">
+                                <button
+                                    v-for="drink in group.drinks"
+                                    :key="drink.id"
+                                    type="button"
+                                    @dblclick="toggleOrderDrink(drink)"
+                                    class="min-h-[92px] rounded-2xl px-3 py-3 text-left text-white shadow-[0_14px_28px_rgba(0,0,0,0.28)] active:scale-[0.98] touch-manipulation"
+                                    :style="drinkButtonStyle(drink)"
+                                >
+                                    <div class="text-sm font-serif-en leading-tight">{{ drink.name }}</div>
+                                    <div class="mt-1 text-[11px] font-serif-cn text-white/80">{{ drink.subName }}</div>
+                                    <div class="mt-3 flex items-center justify-between gap-2">
+                                        <span class="text-[10px] tracking-[0.16em] uppercase text-white/65">{{ drink.price }}</span>
+                                        <span class="rounded-full bg-black/15 px-2 py-0.5 text-[10px] text-white/80">{{ getDrinkActiveCount(drink.id) }}</span>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="min-h-0 flex-1 overflow-hidden px-4 py-4">
+                <div class="mb-3 flex items-center justify-between gap-3">
+                    <h3 class="text-sm tracking-[0.22em] uppercase text-white/55">出杯时间轴</h3>
+                    <p class="text-[11px] text-white/35">{{ serviceDateLabel }}</p>
+                </div>
+
+                <div
+                    ref="timelineScroller"
+                    class="timeline-pan-zone pos-scrollbar-hidden pos-touch-pan h-full overflow-auto pb-2"
+                    @wheel="handleTimelineWheel"
+                >
+                    <div class="flex min-h-full min-w-max items-start gap-3">
+                        <div
+                            v-for="slot in posTimelineSlots"
+                            :key="slot.start"
+                            class="flex min-h-full w-[156px] shrink-0 self-start flex-col rounded-3xl border border-white/10 bg-white/[0.03] p-3"
+                        >
+                            <div class="mb-3 border-b border-white/10 pb-2">
+                                <div class="text-sm font-serif-en text-white">{{ slot.label }}</div>
+                                <div class="text-[10px] tracking-[0.18em] uppercase text-white/35">{{ slot.orders.length }} orders</div>
+                            </div>
+
+                            <div class="space-y-2 pr-1">
+                                <button
+                                    v-for="order in slot.orders"
+                                    :key="order.id"
+                                    type="button"
+                                    @dblclick="toggleOrderDone(order.id)"
+                                    class="w-full rounded-2xl border px-3 py-3 text-left"
+                                    :class="order.done ? 'border-white/10 bg-white/5 text-white/35' : 'border-transparent bg-white/8 text-white'"
+                                    :style="orderCardStyle(order)"
+                                >
+                                    <div class="flex items-start justify-between gap-2">
+                                        <div class="min-w-0">
+                                            <div class="truncate text-sm font-serif-en leading-tight">{{ order.name }}</div>
+                                            <div class="mt-1 text-[11px] font-serif-cn" :class="order.done ? 'text-white/30' : 'text-white/70'">{{ order.subName }}</div>
+                                        </div>
+                                        <span v-if="order.done" class="text-xs text-white/60">✓</span>
+                                    </div>
+
+                                    <div class="mt-3 flex items-center justify-between gap-2">
+                                        <span class="inline-flex h-2.5 w-2.5 rounded-full" :style="{ backgroundColor: order.color }"></span>
+                                        <span class="text-[10px] tracking-[0.18em] uppercase" :class="order.done ? 'text-white/25' : 'text-white/40'">{{ formatOrderTime(order.orderedAt) }}</span>
+                                    </div>
+                                </button>
+
+                                <div v-if="!slot.orders.length" class="rounded-2xl border border-dashed border-white/10 px-3 py-4 text-[11px] text-white/20">暂无订单</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
 
 </div>
 
@@ -450,38 +582,242 @@
         }
     });
 
-    const { createApp, ref, onMounted } = Vue;
+    const { createApp, ref, computed, watch, onMounted, onBeforeUnmount, nextTick } = Vue;
+    const POS_STORAGE_KEY = 'li-bar-pos-tonight-v1';
+    const POS_SLOT_MS = 5 * 60 * 1000;
+    const POS_UNDO_WINDOW_MS = 8 * 1000;
+
+    const getServiceDateKey = (timestamp = Date.now()) => {
+        const date = new Date(timestamp);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+
+    const getSlotStart = (timestamp) => Math.floor(timestamp / POS_SLOT_MS) * POS_SLOT_MS;
+
+    const formatClock = (timestamp) => new Intl.DateTimeFormat('zh-CN', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+    }).format(new Date(timestamp));
+
+    const formatClockWithSeconds = (timestamp) => new Intl.DateTimeFormat('zh-CN', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+    }).format(new Date(timestamp));
 
     const classicDrinksList = [
-        { id: 1, name: 'Palermo', subName: '巴勒莫', price: '36', tags: '菠萝 / 草药 / 甜美', desc: '50 Best Bars 榜首 Bar Leone 原配方。意式苦酒与菠萝果肉的西西里邂逅。\n12%abv 短饮' },
-        { id: 2, name: 'Moscow Mule', subName: '莫斯科骡子', price: '38', tags: '姜汁 / 清爽 / 气泡', desc: '青柠的鲜活撞击生姜的辛香，在铜杯中释放出极致凉爽。 \n12%abv 长饮' },
-        { id: 3, name: 'Zombie', subName: '僵尸', price: '38', tags: '多种朗姆 / 菠萝 / 百香果', desc: '混合热带风味经典。\n12%abv 长饮' },
-        { id: 4, name: 'Long Island Iced-tea', subName: '长岛冰茶', price: '40', tags: '多重烈酒 / 柠檬', desc: '无害的茶色下藏着五种基酒的烈性,后劲十足。\n17%abv 长饮' },
-        { id: 5, name: 'Mamba Libre', subName: '自由曼巴', price: '36', tags: '黑朗姆 / 气泡 / 解渴', desc: '这一杯\'进阶版自由古巴\' 将带你穿梭于两个维度。\n12%abv 长饮' },
-        { id: 6, name: 'Paper Plane', subName: '纸飞机', price: '40', tags: '谷物 / 草本 / 馥郁', desc: '这款诞生于纽约的现代经典旨在向同名金曲致敬。\n波本威士忌的温润与果味的鲜活轻盈滑翔,好似童年梦境里的纸飞机。\n17%abv 短饮' },
-        { id: 7, name: 'Godfather', subName: '教父', price: '55', tags: '醇厚 / 肉桂 / 杏仁', desc: '尊尼获加黑牌/拉弗格10年: 选用调和&泥煤威士忌打造这一杯有深度的教父。\n烟熏肉桂封杯。\n30%abv 短饮' },
-        { id: 8, name: 'Negroni Edited', subName: '尼格罗尼改编', price: '55', tags: '苦甜 / 复杂', desc: '经典架构、全新配方。\n20%abv 短饮' },
-        { id: 9, name: 'Gimlet', subName: '琴蕾', price: '38', tags: '干净 / 青柠 / 金酒', desc: '干净利落，青柠的酸与金酒的凛冽。成名于《漫长的告别》。\n20%abv 短饮' }
+        { id: 1, name: 'Palermo', subName: '巴勒莫', price: '36', color: '#8b1e3f', tags: '菠萝 / 草药 / 甜美', desc: '50 Best Bars 榜首 Bar Leone 原配方。意式苦酒与菠萝果肉的西西里邂逅。\n12%abv 短饮' },
+        { id: 2, name: 'Moscow Mule', subName: '莫斯科骡子', price: '38', color: '#0f766e', tags: '姜汁 / 清爽 / 气泡', desc: '青柠的鲜活撞击生姜的辛香，在铜杯中释放出极致凉爽。 \n12%abv 长饮' },
+        { id: 3, name: 'Zombie', subName: '僵尸', price: '38', color: '#c2410c', tags: '多种朗姆 / 菠萝 / 百香果', desc: '混合热带风味经典。\n12%abv 长饮' },
+        { id: 4, name: 'Long Island Iced-tea', subName: '长岛冰茶', price: '40', color: '#1d4ed8', tags: '多重烈酒 / 柠檬', desc: '无害的茶色下藏着五种基酒的烈性,后劲十足。\n17%abv 长饮' },
+        { id: 5, name: 'Mamba Libre', subName: '自由曼巴', price: '36', color: '#6d28d9', tags: '黑朗姆 / 气泡 / 解渴', desc: '这一杯\'进阶版自由古巴\' 将带你穿梭于两个维度。\n12%abv 长饮' },
+        { id: 6, name: 'Paper Plane', subName: '纸飞机', price: '40', color: '#be123c', tags: '谷物 / 草本 / 馥郁', desc: '这款诞生于纽约的现代经典旨在向同名金曲致敬。\n波本威士忌的温润与果味的鲜活轻盈滑翔,好似童年梦境里的纸飞机。\n17%abv 短饮' },
+        { id: 7, name: 'Godfather', subName: '教父', price: '55', color: '#b45309', tags: '醇厚 / 肉桂 / 杏仁', desc: '尊尼获加黑牌/拉弗格10年: 选用调和&泥煤威士忌打造这一杯有深度的教父。\n烟熏肉桂封杯。\n30%abv 短饮' },
+        { id: 8, name: 'Negroni Edited', subName: '尼格罗尼改编', price: '55', color: '#7c2d12', tags: '苦甜 / 复杂', desc: '经典架构、全新配方。\n20%abv 短饮' },
+        { id: 9, name: 'Gimlet', subName: '琴蕾', price: '38', color: '#0e7490', tags: '干净 / 青柠 / 金酒', desc: '干净利落，青柠的酸与金酒的凛冽。成名于《漫长的告别》。\n20%abv 短饮' }
     ];
 
     const newDrinksList = [
-        { id: 16, name: 'Blossom', subName: '樱·桃', price: '48', tags: '樱花 / 白桃 / 清新', desc: '千呼万唤始出来，犹抱琵琶半遮面。\n18%abv 短饮' },
-        { id: 10, name: 'Raspberry Gimlet', subName: '树莓', price: '38', tags: '莓果 / 甜润', desc: '琴蕾的改编:用酸甜修饰树莓的饱满口感,回味无穷。\n20%abv 短饮' },
-        { id: 11, name: 'Sakura Gin Tonic', subName: '樱花金汤力', price: '45', tags: '樱花 / 清爽 / 气泡', desc: '那个春天我第一次尝到了樱花的味道。\n8%abv 长饮' },
-        { id: 13, name: 'Aviation', subName: '飞行', price: '48', tags: '花香 / 紫罗兰 / 清冽', desc: '诞生于上世纪初的浪漫之作。紫罗兰利口酒赋予其迷人的天际色彩，金酒的凛冽与优雅花香在舌尖轻盈起飞。\n25%abv 短饮' }
+        { id: 16, name: 'Blossom', subName: '樱·桃', price: '48', color: '#db2777', tags: '樱花 / 白桃 / 清新', desc: '千呼万唤始出来，犹抱琵琶半遮面。\n18%abv 短饮' },
+        { id: 10, name: 'Raspberry Gimlet', subName: '树莓', price: '38', color: '#9333ea', tags: '莓果 / 甜润', desc: '琴蕾的改编:用酸甜修饰树莓的饱满口感,回味无穷。\n20%abv 短饮' },
+        { id: 11, name: 'Sakura Gin Tonic', subName: '樱花金汤力', price: '45', color: '#e11d48', tags: '樱花 / 清爽 / 气泡', desc: '那个春天我第一次尝到了樱花的味道。\n8%abv长饮' },
+        { id: 13, name: 'Aviation', subName: '飞行', price: '48', color: '#7e22ce', tags: '花香 / 紫罗兰 / 清冽', desc: '诞生于上世纪初的浪漫之作。紫罗兰利口酒赋予其迷人的天际色彩，金酒的凛冽与优雅花香在舌尖轻盈起飞。\n25%abv 短饮' }
     ];
     const experimentalDrinksList = [
-        { id: 14, name: 'coffee Martin', subName: '咖啡马提尼', price: '45', tags: '坚果 / 菠萝 / 奶油口感', desc: '对于经典鸡尾酒的创新演绎。\n20%abv 短饮' },
-        { id: 12, name: 'Bloody Mary', subName: '血腥玛丽', price: '45', tags: '番茄 / 鲜辣 / 浓郁', desc: '绵密口感的回魂体验，探索鸡尾酒口感的新边界。\n（观赏rolling的鸡尾酒技法）\n6%abv 长饮' },
-        { id: 15, name: 'White Lady', subName: '白色佳人', price: '38', tags: '柑橘 / 清烈 / 洁净', desc: '时代经典，体验金酒三重奏的律动。\n22%abv 短饮' }
+        { id: 14, name: 'coffee Martin', subName: '咖啡马提尼', price: '45', color: '#15803d', tags: '坚果 / 菠萝 / 奶油口感', desc: '对于经典鸡尾酒的创新演绎\n20%abv 短饮' },
+        { id: 12, name: 'Bloody Mary', subName: '血腥玛丽', price: '45', color: '#b91c1c', tags: '番茄 / 鲜辣 / 浓郁', desc: '绵密口感的回魂体验，探索鸡尾酒口感的新边界。\n（观赏rolling的鸡尾酒技法）\n6%abv长饮' },
+        { id: 15, name: 'White Lady', subName: '白色佳人', price: '38', color: '#4338ca', tags: '柑橘 / 清烈 / 洁净', desc: '时代经典，体验金酒三重奏的律动。\n22%abv 短饮' }
     ];
     createApp({
         setup() {
             const classicDrinks = ref(classicDrinksList);
             const newDrinks = ref(newDrinksList);
             const experimentalDrinks = ref(experimentalDrinksList);
+            const showPos = ref(false);
+            const posOrders = ref([]);
+            const timelineScroller = ref(null);
+            const now = ref(Date.now());
+            const activeServiceDate = ref(getServiceDateKey());
+
+            const posDrinkGroups = computed(() => [
+                { id: 'classic', title: '经典 Classics', drinks: classicDrinks.value },
+                { id: 'seasonal', title: '季节 Seasonal', drinks: newDrinks.value },
+                { id: 'trial', title: '风味实验 Trial', drinks: experimentalDrinks.value }
+            ]);
+
+            const serviceDateLabel = computed(() => activeServiceDate.value.replace(/-/g, '.'));
+
+            const getDrinkActiveCount = (drinkId) => posOrders.value.filter((order) => order.drinkId === drinkId && !order.done).length;
+
+            const drinkButtonStyle = (drink) => ({
+                background: `linear-gradient(135deg, ${drink.color} 0%, rgba(15, 23, 42, 0.96) 100%)`,
+                border: '1px solid rgba(255, 255, 255, 0.08)'
+            });
+
+            const orderCardStyle = (order) => ({
+                boxShadow: `inset 3px 0 0 ${order.color}`
+            });
+
+            const formatOrderTime = (timestamp) => formatClockWithSeconds(timestamp);
+
+            const buildTimelineSlots = () => {
+                const sortedOrders = [...posOrders.value].sort((a, b) => a.orderedAt - b.orderedAt);
+                const ordersBySlot = new Map();
+
+                sortedOrders.forEach((order) => {
+                    const slotStart = getSlotStart(order.orderedAt);
+                    if (!ordersBySlot.has(slotStart)) {
+                        ordersBySlot.set(slotStart, []);
+                    }
+                    ordersBySlot.get(slotStart).push(order);
+                });
+
+                const currentSlot = getSlotStart(now.value);
+                const firstSlot = sortedOrders.length ? getSlotStart(sortedOrders[0].orderedAt) : currentSlot;
+                const lastOrderSlot = sortedOrders.length ? getSlotStart(sortedOrders[sortedOrders.length - 1].orderedAt) : currentSlot;
+                const lastSlot = Math.max(currentSlot + (POS_SLOT_MS * 5), lastOrderSlot);
+                const slots = [];
+
+                for (let slot = firstSlot; slot <= lastSlot; slot += POS_SLOT_MS) {
+                    slots.push({
+                        start: slot,
+                        label: formatClock(slot),
+                        orders: ordersBySlot.get(slot) || []
+                    });
+                }
+
+                return slots;
+            };
+
+            const posTimelineSlots = computed(() => buildTimelineSlots());
+
+            const persistTonightData = () => {
+                try {
+                    window.localStorage.setItem(POS_STORAGE_KEY, JSON.stringify({
+                        serviceDate: activeServiceDate.value,
+                        orders: posOrders.value
+                    }));
+                } catch (error) {
+                    console.warn('POS storage unavailable', error);
+                }
+            };
+
+            const loadTonightData = () => {
+                try {
+                    const raw = window.localStorage.getItem(POS_STORAGE_KEY);
+                    const todayKey = getServiceDateKey();
+                    activeServiceDate.value = todayKey;
+
+                    if (!raw) {
+                        posOrders.value = [];
+                        return;
+                    }
+
+                    const parsed = JSON.parse(raw);
+                    if (parsed && parsed.serviceDate === todayKey && Array.isArray(parsed.orders)) {
+                        posOrders.value = parsed.orders.map((order) => ({
+                            ...order,
+                            done: Boolean(order.done)
+                        }));
+                    } else {
+                        posOrders.value = [];
+                    }
+                } catch (error) {
+                    posOrders.value = [];
+                }
+            };
+
+            const scrollTimelineToEnd = async () => {
+                await nextTick();
+                if (timelineScroller.value) {
+                    timelineScroller.value.scrollLeft = timelineScroller.value.scrollWidth;
+                }
+            };
+
+            const handleTimelineWheel = (event) => {
+                if (!timelineScroller.value) {
+                    return;
+                }
+
+                event.preventDefault();
+
+                if (event.shiftKey) {
+                    const horizontalDelta = event.deltaY || event.deltaX;
+                    timelineScroller.value.scrollLeft += horizontalDelta;
+                    return;
+                }
+
+                timelineScroller.value.scrollTop += event.deltaY;
+            };
+
+            const enterPos = async () => {
+                showPos.value = true;
+                await scrollTimelineToEnd();
+            };
+
+            const exitPos = () => {
+                showPos.value = false;
+            };
+
+            const findLatestOrderIndexByDrink = (drinkId) => {
+                for (let index = posOrders.value.length - 1; index >= 0; index -= 1) {
+                    if (posOrders.value[index].drinkId === drinkId) {
+                        return index;
+                    }
+                }
+                return -1;
+            };
+
+            const toggleOrderDrink = (drink) => {
+                const orderedAt = Date.now();
+                now.value = orderedAt;
+
+                const latestIndex = findLatestOrderIndexByDrink(drink.id);
+                if (latestIndex !== -1) {
+                    const latestOrder = posOrders.value[latestIndex];
+                    if (orderedAt - latestOrder.orderedAt <= POS_UNDO_WINDOW_MS) {
+                        posOrders.value.splice(latestIndex, 1);
+                        return;
+                    }
+                }
+
+                posOrders.value.push({
+                    id: `order-${drink.id}-${orderedAt}-${Math.random().toString(36).slice(2, 8)}`,
+                    drinkId: drink.id,
+                    name: drink.name,
+                    subName: drink.subName,
+                    color: drink.color,
+                    orderedAt,
+                    done: false
+                });
+            };
+
+            const toggleOrderDone = (orderId) => {
+                const targetOrder = posOrders.value.find((order) => order.id === orderId);
+                if (!targetOrder) {
+                    return;
+                }
+                targetOrder.done = !targetOrder.done;
+            };
+
+            const clearTonightData = () => {
+                if (!window.confirm('确认清空今晚数据吗？')) {
+                    return;
+                }
+                posOrders.value = [];
+                now.value = Date.now();
+            };
+
+            let clockTimer = null;
 
             onMounted(() => {
+                loadTonightData();
+
                 const observerOptions = {
                     root: null,
                     rootMargin: '0px',
@@ -503,12 +839,58 @@
                 document.querySelectorAll('.reveal-up, .img-mask').forEach((el) => {
                     observer.observe(el);
                 });
+
+                clockTimer = window.setInterval(() => {
+                    now.value = Date.now();
+                    const todayKey = getServiceDateKey(now.value);
+                    if (todayKey !== activeServiceDate.value) {
+                        activeServiceDate.value = todayKey;
+                        posOrders.value = [];
+                    }
+                }, 30000);
             });
+
+            onBeforeUnmount(() => {
+                if (clockTimer) {
+                    window.clearInterval(clockTimer);
+                }
+                document.body.classList.remove('pos-mode');
+                document.body.style.overflow = '';
+            });
+
+            watch(posOrders, () => {
+                persistTonightData();
+                scrollTimelineToEnd();
+            }, { deep: true });
+
+            watch(showPos, async (value) => {
+                document.body.classList.toggle('pos-mode', value);
+                document.body.style.overflow = value ? 'hidden' : '';
+                if (value) {
+                    await scrollTimelineToEnd();
+                }
+            }, { immediate: true });
 
             return {
                 classicDrinks,
                 newDrinks,
-                experimentalDrinks
+                experimentalDrinks,
+                showPos,
+                posOrders,
+                posDrinkGroups,
+                serviceDateLabel,
+                posTimelineSlots,
+                timelineScroller,
+                enterPos,
+                exitPos,
+                clearTonightData,
+                toggleOrderDrink,
+                toggleOrderDone,
+                handleTimelineWheel,
+                getDrinkActiveCount,
+                drinkButtonStyle,
+                orderCardStyle,
+                formatOrderTime
             };
         }
     }).mount('#app');
