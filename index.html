@@ -402,13 +402,13 @@
                     <div class="min-w-0">
                         <p class="text-[10px] tracking-[0.28em] uppercase text-white/35">Internal POS</p>
                         <h2 class="mt-2 text-2xl font-serif-cn text-white">内部点单看板</h2>
-                        <p class="mt-2 text-[11px] leading-relaxed text-white/45">双击酒块下单，8 秒内再次双击同款可撤销最近一杯；双击订单卡片划单。</p>
+                        <p class="mt-2 text-[11px] leading-relaxed text-white/45">双击酒块下单，3 秒内再次双击同款可撤销最近一杯；双击订单卡片划单。</p>
                     </div>
                     <button @click="exitPos" type="button" class="shrink-0 rounded-full border border-white/15 px-4 py-2 text-[11px] tracking-[0.18em] text-white/75">退出系统</button>
                 </div>
 
-                <div class="mt-4 flex items-center justify-between gap-3 text-[11px]">
-                    <p class="text-white/45">今晚订单 {{ posOrders.length }} 杯</p>
+                <div class="mt-4 flex items-center justify-end gap-3 text-[11px]">
+                    <p class="rounded-full border border-white/10 bg-white/[0.04] px-3 py-2 text-white/60">总杯数 {{ totalDrinkCount }}</p>
                     <button @click="clearTonightData" type="button" class="rounded-full border border-white/15 px-4 py-2 text-white/75">清空今晚数据</button>
                 </div>
             </div>
@@ -432,7 +432,7 @@
                                     <div class="mt-1 text-[11px] font-serif-cn text-white/80">{{ drink.subName }}</div>
                                     <div class="mt-3 flex items-center justify-between gap-2">
                                         <span class="text-[10px] tracking-[0.16em] uppercase text-white/65">{{ drink.price }}</span>
-                                        <span class="rounded-full bg-black/15 px-2 py-0.5 text-[10px] text-white/80">{{ getDrinkActiveCount(drink.id) }}</span>
+                                        <span class="rounded-full bg-black/15 px-2 py-0.5 text-[10px] text-white/80">{{ getDrinkCount(drink.id) }}</span>
                                     </div>
                                 </button>
                             </div>
@@ -587,7 +587,7 @@
     const { createApp, ref, computed, watch, onMounted, onBeforeUnmount, nextTick } = Vue;
     const POS_STORAGE_KEY = 'li-bar-pos-tonight-v1';
     const POS_SLOT_MS = 5 * 60 * 1000;
-    const POS_UNDO_WINDOW_MS = 8 * 1000;
+    const POS_UNDO_WINDOW_MS = 3 * 1000;
     const POS_DOUBLE_TAP_MS = 320;
 
     const getServiceDateKey = (timestamp = Date.now()) => {
@@ -661,8 +661,9 @@
             ]);
 
             const serviceDateLabel = computed(() => activeServiceDate.value.replace(/-/g, '.'));
+            const totalDrinkCount = computed(() => posOrders.value.length);
 
-            const getDrinkActiveCount = (drinkId) => posOrders.value.filter((order) => order.drinkId === drinkId && !order.done).length;
+            const getDrinkCount = (drinkId) => posOrders.value.filter((order) => order.drinkId === drinkId).length;
 
             const drinkButtonStyle = (drink) => ({
                 background: `linear-gradient(135deg, ${drink.color} 0%, rgba(15, 23, 42, 0.96) 100%)`,
@@ -917,6 +918,7 @@
                 posOrders,
                 posDrinkGroups,
                 serviceDateLabel,
+                totalDrinkCount,
                 posTimelineSlots,
                 timelineScroller,
                 enterPos,
@@ -927,7 +929,7 @@
                 handleDrinkTap,
                 handleOrderTap,
                 handleTimelineWheel,
-                getDrinkActiveCount,
+                getDrinkCount,
                 drinkButtonStyle,
                 orderCardStyle,
                 formatOrderTime
