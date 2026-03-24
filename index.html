@@ -170,6 +170,11 @@
             overscroll-behavior: contain;
             -webkit-overflow-scrolling: touch;
         }
+
+        .pos-timeline-type {
+            font-family: Arial, "Helvetica Neue", Helvetica, "Noto Sans SC", sans-serif;
+            font-weight: 700;
+        }
     </style>
 </head>
 <body class="selection:bg-gray-200 selection:text-black">
@@ -433,10 +438,10 @@
                 </div>
             </section>
 
-            <section class="min-h-0 flex-1 overflow-hidden px-4 py-4">
+            <section class="pos-timeline-type min-h-0 flex-1 overflow-hidden px-4 py-4">
                 <div class="mb-3 flex items-center justify-between gap-3">
-                    <h3 class="text-sm tracking-[0.22em] uppercase text-white/55">出杯时间轴</h3>
-                    <p class="text-[11px] text-white/35">{{ serviceDateLabel }}</p>
+                    <h3 class="text-sm font-bold tracking-[0.14em] text-white/65">出杯时间轴</h3>
+                    <p class="text-[11px] font-bold text-white/35">{{ serviceDateLabel }}</p>
                 </div>
 
                 <div
@@ -451,8 +456,8 @@
                             class="flex min-h-full w-[156px] shrink-0 self-start flex-col rounded-3xl border border-white/10 bg-white/[0.03] p-3"
                         >
                             <div class="mb-3 border-b border-white/10 pb-2">
-                                <div class="text-sm font-serif-en text-white">{{ slot.label }}</div>
-                                <div class="text-[10px] tracking-[0.18em] uppercase text-white/35">{{ slot.orders.length }} orders</div>
+                                <div class="text-sm font-bold text-white">{{ slot.label }}</div>
+                                <div class="text-[10px] font-bold tracking-[0.18em] uppercase text-white/35">{{ slot.orders.length }} orders</div>
                             </div>
 
                             <div class="space-y-2 pr-1">
@@ -462,21 +467,16 @@
                                     type="button"
                                     @click="handleOrderTap(order.id)"
                                     @dblclick="toggleOrderDone(order.id)"
-                                    class="w-full rounded-2xl border px-3 py-3 text-left"
+                                    class="w-full rounded-2xl border px-3 py-2.5 text-left"
                                     :class="order.done ? 'border-white/10 bg-white/5 text-white/35' : 'border-transparent bg-white/8 text-white'"
                                     :style="orderCardStyle(order)"
                                 >
                                     <div class="flex items-start justify-between gap-2">
                                         <div class="min-w-0">
-                                            <div class="truncate text-sm font-serif-en leading-tight">{{ order.name }}</div>
-                                            <div class="mt-1 text-[11px] font-serif-cn" :class="order.done ? 'text-white/30' : 'text-white/70'">{{ order.subName }}</div>
+                                            <div class="truncate text-[15px] font-bold leading-tight">{{ order.name }}</div>
+                                            <div class="mt-1 truncate text-[12px] font-bold" :class="order.done ? 'text-white/30' : 'text-white/85'">{{ order.subName }}</div>
                                         </div>
                                         <span v-if="order.done" class="text-xs text-white/60">✓</span>
-                                    </div>
-
-                                    <div class="mt-3 flex items-center justify-between gap-2">
-                                        <span class="inline-flex h-2.5 w-2.5 rounded-full" :style="{ backgroundColor: order.color }"></span>
-                                        <span class="text-[10px] tracking-[0.18em] uppercase" :class="order.done ? 'text-white/25' : 'text-white/40'">{{ formatOrderTime(order.orderedAt) }}</span>
                                     </div>
                                 </button>
 
@@ -598,13 +598,6 @@
         hour12: false
     }).format(new Date(timestamp));
 
-    const formatClockWithSeconds = (timestamp) => new Intl.DateTimeFormat('zh-CN', {
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false
-    }).format(new Date(timestamp));
-
     const isCoarsePointerDevice = () => window.matchMedia('(pointer: coarse)').matches || window.matchMedia('(hover: none)').matches;
 
     const classicDrinksList = [
@@ -662,11 +655,10 @@
                 border: '1px solid rgba(255, 255, 255, 0.08)'
             });
 
-            const orderCardStyle = (order) => ({
-                boxShadow: `inset 3px 0 0 ${order.color}`
+            const orderCardStyle = (order) => order.done ? {} : ({
+                backgroundColor: order.color,
+                borderColor: 'rgba(255, 255, 255, 0.08)'
             });
-
-            const formatOrderTime = (timestamp) => formatClockWithSeconds(timestamp);
 
             const buildTimelineSlots = () => {
                 const sortedOrders = [...posOrders.value].sort((a, b) => a.orderedAt - b.orderedAt);
@@ -923,8 +915,7 @@
                 handleTimelineWheel,
                 getDrinkCount,
                 drinkButtonStyle,
-                orderCardStyle,
-                formatOrderTime
+                orderCardStyle
             };
         }
     }).mount('#app');
