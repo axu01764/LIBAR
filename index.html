@@ -423,6 +423,7 @@
                                     v-for="drink in group.drinks"
                                     :key="drink.id"
                                     type="button"
+                                    @click="handleDrinkTap(drink)"
                                     @dblclick="toggleOrderDrink(drink)"
                                     class="min-h-[92px] rounded-2xl px-3 py-3 text-left text-white shadow-[0_14px_28px_rgba(0,0,0,0.28)] active:scale-[0.98] touch-manipulation"
                                     :style="drinkButtonStyle(drink)"
@@ -467,6 +468,7 @@
                                     v-for="order in slot.orders"
                                     :key="order.id"
                                     type="button"
+                                    @click="handleOrderTap(order.id)"
                                     @dblclick="toggleOrderDone(order.id)"
                                     class="w-full rounded-2xl border px-3 py-3 text-left"
                                     :class="order.done ? 'border-white/10 bg-white/5 text-white/35' : 'border-transparent bg-white/8 text-white'"
@@ -586,6 +588,7 @@
     const POS_STORAGE_KEY = 'li-bar-pos-tonight-v1';
     const POS_SLOT_MS = 5 * 60 * 1000;
     const POS_UNDO_WINDOW_MS = 8 * 1000;
+    const POS_DOUBLE_TAP_MS = 320;
 
     const getServiceDateKey = (timestamp = Date.now()) => {
         const date = new Date(timestamp);
@@ -609,6 +612,8 @@
         second: '2-digit',
         hour12: false
     }).format(new Date(timestamp));
+
+    const isCoarsePointerDevice = () => window.matchMedia('(pointer: coarse)').matches || window.matchMedia('(hover: none)').matches;
 
     const classicDrinksList = [
         { id: 1, name: 'Palermo', subName: '巴勒莫', price: '36', color: '#8b1e3f', tags: '菠萝 / 草药 / 甜美', desc: '50 Best Bars 榜首 Bar Leone 原配方。意式苦酒与菠萝果肉的西西里邂逅。\n12%abv 短饮' },
@@ -643,6 +648,11 @@
             const timelineScroller = ref(null);
             const now = ref(Date.now());
             const activeServiceDate = ref(getServiceDateKey());
+            const lastMobileTap = {
+                type: '',
+                key: '',
+                time: 0
+            };
 
             const posDrinkGroups = computed(() => [
                 { id: 'classic', title: '经典 Classics', drinks: classicDrinks.value },
@@ -753,6 +763,35 @@
                 }
 
                 timelineScroller.value.scrollTop += event.deltaY;
+            };
+
+            const runMobileDoubleTap = (type, key, action) => {
+                if (!isCoarsePointerDevice()) {
+                    return;
+                }
+
+                const tapTime = Date.now();
+                const tapKey = String(key);
+
+                if (lastMobileTap.type === type && lastMobileTap.key === tapKey && tapTime - lastMobileTap.time <= POS_DOUBLE_TAP_MS) {
+                    lastMobileTap.type = '';
+                    lastMobileTap.key = '';
+                    lastMobileTap.time = 0;
+                    action();
+                    return;
+                }
+
+                lastMobileTap.type = type;
+                lastMobileTap.key = tapKey;
+                lastMobileTap.time = tapTime;
+            };
+
+            const handleDrinkTap = (drink) => {
+                runMobileDoubleTap('drink', drink.id, () => toggleOrderDrink(drink));
+            };
+
+            const handleOrderTap = (orderId) => {
+                runMobileDoubleTap('order', orderId, () => toggleOrderDone(orderId));
             };
 
             const enterPos = async () => {
@@ -886,6 +925,8 @@
                 clearTonightData,
                 toggleOrderDrink,
                 toggleOrderDone,
+                handleDrinkTap,
+                handleOrderTap,
                 handleTimelineWheel,
                 getDrinkActiveCount,
                 drinkButtonStyle,
