@@ -650,10 +650,19 @@
 
             const getDrinkCount = (drinkId) => posOrders.value.filter((order) => order.drinkId === drinkId).length;
 
-            const drinkButtonStyle = (drink) => ({
-                backgroundColor: drink.color,
-                border: '1px solid rgba(255, 255, 255, 0.08)'
-            });
+            const drinkButtonStyle = (drink) => {
+                if (drink.name === 'Mamba Libre') {
+                    return {
+                        background: 'linear-gradient(90deg, #facc15 0%, #facc15 50%, #7e22ce 50%, #7e22ce 100%)',
+                        border: '1px solid rgba(255, 255, 255, 0.08)'
+                    };
+                }
+
+                return {
+                    backgroundColor: drink.color,
+                    border: '1px solid rgba(255, 255, 255, 0.08)'
+                };
+            };
 
             const orderCardStyle = (order) => order.done ? {} : ({
                 backgroundColor: order.color,
