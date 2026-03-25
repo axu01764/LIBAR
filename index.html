@@ -653,7 +653,7 @@
             const drinkButtonStyle = (drink) => {
                 if (drink.name === 'Mamba Libre') {
                     return {
-                        background: 'linear-gradient(90deg, #facc15 0%, #facc15 50%, #7e22ce 50%, #7e22ce 100%)',
+                        background: 'linear-gradient(90deg, #7e22ce 0%, #7e22ce 50%, #facc15 50%, #facc15 100%)',
                         border: '1px solid rgba(255, 255, 255, 0.08)'
                     };
                 }
@@ -664,10 +664,23 @@
                 };
             };
 
-            const orderCardStyle = (order) => order.done ? {} : ({
-                backgroundColor: order.color,
-                borderColor: 'rgba(255, 255, 255, 0.08)'
-            });
+            const orderCardStyle = (order) => {
+                if (order.done) {
+                    return {};
+                }
+
+                if (order.name === 'Mamba Libre') {
+                    return {
+                        background: 'linear-gradient(90deg, #7e22ce 0%, #7e22ce 50%, #facc15 50%, #facc15 100%)',
+                        borderColor: 'rgba(255, 255, 255, 0.08)'
+                    };
+                }
+
+                return {
+                    backgroundColor: order.color,
+                    borderColor: 'rgba(255, 255, 255, 0.08)'
+                };
+            };
 
             const buildTimelineSlots = () => {
                 const sortedOrders = [...posOrders.value].sort((a, b) => a.orderedAt - b.orderedAt);
