@@ -730,23 +730,26 @@
                 try {
                     const raw = window.localStorage.getItem(POS_STORAGE_KEY);
                     const todayKey = getServiceDateKey();
-                    activeServiceDate.value = todayKey;
 
                     if (!raw) {
+                        activeServiceDate.value = todayKey;
                         posOrders.value = [];
                         return;
                     }
 
                     const parsed = JSON.parse(raw);
-                    if (parsed && parsed.serviceDate === todayKey && Array.isArray(parsed.orders)) {
+                    if (parsed && Array.isArray(parsed.orders)) {
+                        activeServiceDate.value = parsed.serviceDate || todayKey;
                         posOrders.value = parsed.orders.map((order) => ({
                             ...order,
                             done: Boolean(order.done)
                         }));
                     } else {
+                        activeServiceDate.value = todayKey;
                         posOrders.value = [];
                     }
                 } catch (error) {
+                    activeServiceDate.value = getServiceDateKey();
                     posOrders.value = [];
                 }
             };
@@ -857,6 +860,7 @@
                 if (!window.confirm('确认清空今晚数据吗？')) {
                     return;
                 }
+                activeServiceDate.value = getServiceDateKey();
                 posOrders.value = [];
                 now.value = Date.now();
             };
@@ -890,11 +894,6 @@
 
                 clockTimer = window.setInterval(() => {
                     now.value = Date.now();
-                    const todayKey = getServiceDateKey(now.value);
-                    if (todayKey !== activeServiceDate.value) {
-                        activeServiceDate.value = todayKey;
-                        posOrders.value = [];
-                    }
                 }, 30000);
             });
 
