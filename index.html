@@ -405,6 +405,7 @@
             <div class="sticky top-0 z-40 border-b border-white/10 bg-black px-4 py-3">
                 <div class="flex items-center justify-end gap-3 text-[11px]">
                     <p class="rounded-full border border-white/10 bg-white/[0.04] px-3 py-2 text-white/60">总杯数 {{ totalDrinkCount }}</p>
+                    <button @click="exportTonightData" type="button" class="rounded-full border border-white/15 px-4 py-2 text-white/75">导出今晚数据</button>
                     <button @click="clearTonightData" type="button" class="rounded-full border border-white/15 px-4 py-2 text-white/75">清空今晚数据</button>
                     <button @click="exitPos" type="button" class="shrink-0 rounded-full border border-white/15 px-4 py-2 text-[11px] tracking-[0.18em] text-white/75">退出系统</button>
                 </div>
@@ -645,6 +646,7 @@
                 { id: 'seasonal', title: '季节 Seasonal', drinks: newDrinks.value },
                 { id: 'trial', title: '风味实验 Trial', drinks: experimentalDrinks.value }
             ]);
+            const allPosDrinks = computed(() => posDrinkGroups.value.flatMap((group) => group.drinks));
 
             const serviceDateLabel = computed(() => activeServiceDate.value.replace(/-/g, '.'));
             const totalDrinkCount = computed(() => posOrders.value.length);
@@ -866,6 +868,33 @@
                 now.value = Date.now();
             };
 
+            const exportTonightData = async () => {
+                const drinkLines = allPosDrinks.value.map((drink) => `${drink.subName}：${getDrinkCount(drink.id)}杯`);
+
+                const topSlots = [...posTimelineSlots.value]
+                    .filter((slot) => slot.orders.length > 0)
+                    .sort((a, b) => b.orders.length - a.orders.length || a.start - b.start)
+                    .slice(0, 3);
+
+                const slotLines = topSlots.length
+                    ? topSlots.map((slot) => `${slot.label}：${slot.orders.length}杯`)
+                    : ['暂无订单'];
+
+                const exportText = [
+                    `总杯数：${totalDrinkCount.value}`,
+                    ...drinkLines,
+                    '点单最多的三个时间段：',
+                    ...slotLines
+                ].join('\n');
+
+                try {
+                    await navigator.clipboard.writeText(exportText);
+                    window.alert('已复制当晚数据到剪切板');
+                } catch (error) {
+                    window.alert(`复制失败，请手动复制：\n\n${exportText}`);
+                }
+            };
+
             let clockTimer = null;
 
             onMounted(() => {
@@ -931,6 +960,7 @@
                 timelineScroller,
                 enterPos,
                 exitPos,
+                exportTonightData,
                 clearTonightData,
                 toggleOrderDrink,
                 toggleOrderDone,
