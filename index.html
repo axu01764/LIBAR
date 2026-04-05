@@ -273,10 +273,33 @@
         <div class="text-center mb-16 md:mb-24 reveal-up">
             <h2 class="text-4xl md:text-6xl font-serif-en mb-6">The Menu</h2>
             <div class="w-8 h-px bg-black mx-auto mb-6"></div>
-            <p class="text-[10px] tracking-[0.3em] text-gray-400 uppercase">Classics & Seasonal</p>
+            <p class="text-[10px] tracking-[0.3em] text-gray-400 uppercase">Seasonal, Classics & Trial</p>
         </div>
 
         <div class="mb-24 md:mb-32 reveal-up">
+            <h3 class="text-xl md:text-2xl font-serif-en mb-10 md:mb-12 tracking-widest uppercase text-gray-800">Seasonal <span class="text-xs text-gray-400 font-serif-cn normal-case italic ml-3">季节限定</span></h3>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-20 gap-y-10 md:gap-y-12">
+                <div v-for="(drink, index) in newDrinks" :key="drink.id" 
+                     class="menu-item group flex flex-col justify-between hover-target"
+                     :class="{'reveal-up': true, 'delay-100': index % 2 === 1}">
+                    
+                    <div class="menu-item-border pb-3 flex justify-between items-end mb-3 gap-4">
+                        <div class="flex items-baseline gap-2 md:gap-3 flex-1 min-w-0" :class="{'opacity-40': drink.soldOut}">
+                            <span class="text-lg font-serif-en font-medium truncate">{{ drink.name }}</span>
+                            <span class="text-[11px] text-gray-400 font-serif-cn whitespace-nowrap flex-shrink-0">{{ drink.subName }}</span>
+                            <span v-if="drink.soldOut" class="ml-2 text-[9px] tracking-[0.2em] text-gray-500 uppercase border border-gray-400 px-1.5 py-0.5 rounded-sm">Sold Out</span>
+                        </div>
+                        <div class="text-sm font-serif-en whitespace-nowrap flex-shrink-0" :class="{'opacity-40 line-through': drink.soldOut}">{{ drink.price }}</div>
+                    </div>
+
+                    <div class="text-[9px] tracking-[0.2em] text-gray-400 mb-2 uppercase">{{ drink.tags }}</div>
+                    <p class="text-xs text-gray-500 font-light leading-relaxed font-serif-cn" style="white-space: pre-line;">{{ drink.desc }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="reveal-up">
             <h3 class="text-xl md:text-2xl font-serif-en mb-10 md:mb-12 tracking-widest uppercase text-gray-800">Classics&twist <span class="text-xs text-gray-400 font-serif-cn normal-case italic ml-3">经典&改编（欢迎与我们沟通风味偏好）</span></h3>
             
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-20 gap-y-10 md:gap-y-12">
@@ -299,31 +322,8 @@
             </div>
         </div>
 
-        <div class="w-full h-48 md:h-96 img-mask reveal-up mb-24 md:mb-32">
+        <div class="w-full h-48 md:h-96 img-mask reveal-up mb-24 md:mb-32 mt-24 md:mt-32">
             <img src="images/6.jpg" class="img-scale">
-        </div>
-
-        <div class="reveal-up">
-            <h3 class="text-xl md:text-2xl font-serif-en mb-10 md:mb-12 tracking-widest uppercase text-gray-800">Seasonal <span class="text-xs text-gray-400 font-serif-cn normal-case italic ml-3">季节限定</span></h3>
-            
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-20 gap-y-10 md:gap-y-12">
-                <div v-for="(drink, index) in newDrinks" :key="drink.id" 
-                     class="menu-item group flex flex-col justify-between hover-target"
-                     :class="{'reveal-up': true, 'delay-100': index % 2 === 1}">
-                    
-                    <div class="menu-item-border pb-3 flex justify-between items-end mb-3 gap-4">
-                        <div class="flex items-baseline gap-2 md:gap-3 flex-1 min-w-0" :class="{'opacity-40': drink.soldOut}">
-                            <span class="text-lg font-serif-en font-medium truncate">{{ drink.name }}</span>
-                            <span class="text-[11px] text-gray-400 font-serif-cn whitespace-nowrap flex-shrink-0">{{ drink.subName }}</span>
-                            <span v-if="drink.soldOut" class="ml-2 text-[9px] tracking-[0.2em] text-gray-500 uppercase border border-gray-400 px-1.5 py-0.5 rounded-sm">Sold Out</span>
-                        </div>
-                        <div class="text-sm font-serif-en whitespace-nowrap flex-shrink-0" :class="{'opacity-40 line-through': drink.soldOut}">{{ drink.price }}</div>
-                    </div>
-
-                    <div class="text-[9px] tracking-[0.2em] text-gray-400 mb-2 uppercase">{{ drink.tags }}</div>
-                    <p class="text-xs text-gray-500 font-light leading-relaxed font-serif-cn" style="white-space: pre-line;">{{ drink.desc }}</p>
-                </div>
-            </div>
         </div>
         <div class="reveal-up mt-24 md:mt-32">
             <h3 class="text-xl md:text-2xl font-serif-en mb-10 md:mb-12 tracking-widest uppercase text-gray-800">Trial <span class="text-xs text-gray-400 font-serif-cn normal-case italic ml-3">风味实验</span></h3>
@@ -626,7 +626,7 @@
         { id: 19, name: 'Matcha Forest', subName: '绿针林', price: '48', color: '#89916B', tags: '抹茶 / 乌龙 / 绵密', desc: '抹茶爱好者的福音，感受抹茶在鸡尾酒中的呈现。\n6%abv 短饮' }
     ];
     const experimentalDrinksList = [
-        
+        { id: 20, name: 'Life Notes', subName: '人生简章', price: '48', color: '#6b4226', tags: '巧克力 / 坚果 / 奶油', desc: '配方来自叉剔老师曾效力的酒吧，波本威士忌与巧克力利口酒勾勒出人生的辛辣甜蜜，金巴利的加入正如人生的苦涩，共同绘制出了属于每个人的酸甜苦辣咸。\n25%abv 短饮' }
     ];
     createApp({
         setup() {
@@ -645,8 +645,8 @@
             };
 
             const posDrinkGroups = computed(() => [
-                { id: 'classic', title: '经典 Classics', drinks: classicDrinks.value },
                 { id: 'seasonal', title: '季节 Seasonal', drinks: newDrinks.value },
+                { id: 'classic', title: '经典 Classics', drinks: classicDrinks.value },
                 { id: 'trial', title: '风味实验 Trial', drinks: experimentalDrinks.value }
             ]);
             const allPosDrinks = computed(() => posDrinkGroups.value.flatMap((group) => group.drinks));
