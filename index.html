@@ -302,22 +302,31 @@
         <div class="reveal-up">
             <h3 class="text-xl md:text-2xl font-serif-en mb-10 md:mb-12 tracking-widest uppercase text-gray-800">Classics&twist <span class="text-xs text-gray-400 font-serif-cn normal-case italic ml-3">经典&改编（欢迎与我们沟通风味偏好）</span></h3>
             
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-20 gap-y-10 md:gap-y-12">
-                <div v-for="(drink, index) in classicDrinks" :key="drink.id" 
-                     class="menu-item group flex flex-col justify-between hover-target"
-                     :class="{'reveal-up': true, 'delay-100': index % 2 === 1}">
-                    
-                    <div class="menu-item-border pb-3 flex justify-between items-end mb-3 gap-4">
-                        <div class="flex items-baseline gap-2 md:gap-3 flex-1 min-w-0" :class="{'opacity-40': drink.soldOut}">
-                            <span class="text-lg font-serif-en font-medium truncate">{{ drink.name }}</span>
-                            <span class="text-[11px] text-gray-400 font-serif-cn whitespace-nowrap flex-shrink-0">{{ drink.subName }}</span>
-                            <span v-if="drink.soldOut" class="ml-2 text-[9px] tracking-[0.2em] text-gray-500 uppercase border border-gray-400 px-1.5 py-0.5 rounded-sm">Sold Out</span>
-                        </div>
-                        <div class="text-sm font-serif-en whitespace-nowrap flex-shrink-0" :class="{'opacity-40 line-through': drink.soldOut}">{{ drink.price }}</div>
+            <div class="space-y-14 md:space-y-16">
+                <div v-for="section in classicDrinkSections" :key="section.id">
+                    <div class="mb-6 md:mb-7 border-b border-black/8 pb-2">
+                        <p class="font-serif-en text-[13px] tracking-[0.22em] uppercase text-gray-700">{{ section.title }}</p>
+                        <p class="mt-1 text-[11px] font-serif-cn tracking-[0.18em] text-gray-400">{{ section.subTitle }}</p>
                     </div>
 
-                    <div class="text-[9px] tracking-[0.2em] text-gray-400 mb-2 uppercase">{{ drink.tags }}</div>
-                    <p class="text-xs text-gray-500 font-light leading-relaxed font-serif-cn" style="white-space: pre-line;">{{ drink.desc }}</p>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-20 gap-y-10 md:gap-y-12">
+                        <div v-for="(drink, index) in section.drinks" :key="drink.id" 
+                             class="menu-item group flex flex-col justify-between hover-target"
+                             :class="{'reveal-up': true, 'delay-100': index % 2 === 1}">
+                            
+                            <div class="menu-item-border pb-3 flex justify-between items-end mb-3 gap-4">
+                                <div class="flex items-baseline gap-2 md:gap-3 flex-1 min-w-0" :class="{'opacity-40': drink.soldOut}">
+                                    <span class="text-lg font-serif-en font-medium truncate">{{ drink.name }}</span>
+                                    <span class="text-[11px] text-gray-400 font-serif-cn whitespace-nowrap flex-shrink-0">{{ drink.subName }}</span>
+                                    <span v-if="drink.soldOut" class="ml-2 text-[9px] tracking-[0.2em] text-gray-500 uppercase border border-gray-400 px-1.5 py-0.5 rounded-sm">Sold Out</span>
+                                </div>
+                                <div class="text-sm font-serif-en whitespace-nowrap flex-shrink-0" :class="{'opacity-40 line-through': drink.soldOut}">{{ drink.price }}</div>
+                            </div>
+
+                            <div class="text-[9px] tracking-[0.2em] text-gray-400 mb-2 uppercase">{{ drink.tags }}</div>
+                            <p class="text-xs text-gray-500 font-light leading-relaxed font-serif-cn" style="white-space: pre-line;">{{ drink.desc }}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -603,18 +612,25 @@
     const isCoarsePointerDevice = () => window.matchMedia('(pointer: coarse)').matches || window.matchMedia('(hover: none)').matches;
 
     const classicDrinksList = [
-        { id: 1, name: 'Dry Martini', subName: '干马天尼', price: '38/48/58', color: '#831843', tags: '金酒 / 清烈 / 杜松子', desc: '鸡尾酒之王，烈酒爱好者的天堂。（可选择4:1、6:1、15:1三种比例）。\n25～33%abv 短饮' },
         { id: 2, name: 'Gimlet', subName: '琴蕾', price: '38', color: '#6b7280', tags: '干净 / 青柠 / 金酒', desc: '干净利落，青柠的酸与金酒的凛冽，可选择多种风格。\n20%abv 短饮' },
+        { id: 1, name: 'Dry Martini', subName: '干马天尼', price: '38/48/58', color: '#831843', tags: '金酒 / 清烈 / 杜松子', desc: '鸡尾酒之王，烈酒爱好者的天堂。（可选择4:1、6:1、15:1三种比例）。\n25～33%abv 短饮' },
         { id: 3, name: 'Negroni [Edited]', subName: '尼格罗尼 [改编]', price: '48', color: '#4c0519', tags: '苦甜 / 复杂', desc: '经典架构、全新配方，感受酒体随时间的风味变化。\n20%abv 短饮' },
-        { id: 18, name: 'Daiquiri', subName: '代其利', price: '38', color: '#0f766e', tags: '清爽 / 青柠 / 香料', desc: '海明威钟情的朗姆鸡尾酒，清凉又酸爽的味觉体验\n20%abv 短饮' },
-        { id: 8, name: 'Zombie', subName: '僵尸', price: '48', color: '#166534', tags: '多种朗姆 / 菠萝 / 百香果', desc: '混合热带风味经典。\n12%abv 长饮' },
-        { id: 4, name: 'Long Island Iced-tea', subName: '长岛冰茶', price: '48', color: '#1e3a8a', tags: '多重烈酒 / 柠檬', desc: '无害的茶色下藏着五种基酒的烈性,后劲十足。\n17%abv 长饮' },
-        { id: 5, name: 'Mamba Libre', subName: '自由曼巴', price: '38', color: '#713f12', tags: '黑朗姆 / 气泡 / 解渴', desc: '这一杯\'进阶版自由古巴\' 将带你穿梭于两个维度。\n12%abv 长饮' },
-        { id: 6, name: 'Paper Plane', subName: '纸飞机', price: '38', color: '#7f1d1d', tags: '谷物 / 草本 / 馥郁', desc: '这款诞生于纽约的现代经典旨在向同名金曲致敬。\n波本威士忌的温润与果味的鲜活轻盈滑翔,好似童年梦境里的纸飞机。\n17%abv 短饮' },
-        { id: 7, name: 'Godfather', subName: '教父', price: '58', color: '#3e2723', soldOut: true, tags: '醇厚 / 肉桂 / 杏仁', desc: '尊尼获加黑牌/拉弗格10年: 选用调和&泥煤威士忌打造这一杯有深度的教父。\n烟熏肉桂封杯。\n30%abv 短饮' },
         { id: 12, name: 'Bloody Mary', subName: '血腥玛丽', price: '38', color: '#dc2626', tags: '番茄 / 鲜辣 / 浓郁', desc: '绵密口感的回魂体验，探索鸡尾酒口感的新边界。\n（观赏rolling的鸡尾酒技法）\n6%abv 长饮' },
+        { id: 9, name: 'Moscow Mule', subName: '莫斯科骡子', price: '38', color: '#9a3412', tags: '姜汁 / 清爽 / 气泡', desc: '青柠的鲜活撞击生姜的辛香，在铜杯中释放出极致凉爽。 \n12%abv 长饮' },
         { id: 14, name: 'coffee Martini', subName: '咖啡马天尼', price: '48', color: '#78350f', tags: '可可 / 咖啡 / 坚果', desc: '口感浓郁顺滑。入口醇厚，随后甜味与酒感浮现，最后留下可可咖啡余味，绵密的泡沫让整体口感更加饱满。\n22%abv 短饮' },
-        { id: 9, name: 'Moscow Mule', subName: '莫斯科骡子', price: '38', color: '#9a3412', tags: '姜汁 / 清爽 / 气泡', desc: '青柠的鲜活撞击生姜的辛香，在铜杯中释放出极致凉爽。 \n12%abv 长饮' }
+        { id: 7, name: 'Godfather', subName: '教父', price: '58', color: '#3e2723', soldOut: true, tags: '醇厚 / 肉桂 / 杏仁', desc: '尊尼获加黑牌/拉弗格10年: 选用调和&泥煤威士忌打造这一杯有深度的教父。\n烟熏肉桂封杯。\n30%abv 短饮' },
+        { id: 6, name: 'Paper Plane', subName: '纸飞机', price: '38', color: '#7f1d1d', tags: '谷物 / 草本 / 馥郁', desc: '这款诞生于纽约的现代经典旨在向同名金曲致敬。\n波本威士忌的温润与果味的鲜活轻盈滑翔,好似童年梦境里的纸飞机。\n17%abv 短饮' },
+        { id: 8, name: 'Zombie', subName: '僵尸', price: '48', color: '#166534', tags: '多种朗姆 / 菠萝 / 百香果', desc: '混合热带风味经典。\n12%abv 长饮' },
+        { id: 18, name: 'Daiquiri', subName: '代其利', price: '38', color: '#0f766e', tags: '清爽 / 青柠 / 香料', desc: '海明威钟情的朗姆鸡尾酒，清凉又酸爽的味觉体验\n20%abv 短饮' },
+        { id: 5, name: 'Mamba Libre', subName: '自由曼巴', price: '38', color: '#713f12', tags: '黑朗姆 / 气泡 / 解渴', desc: '这一杯\'进阶版自由古巴\' 将带你穿梭于两个维度。\n12%abv 长饮' },
+        { id: 4, name: 'Long Island Iced-tea', subName: '长岛冰茶', price: '48', color: '#1e3a8a', tags: '多重烈酒 / 柠檬', desc: '无害的茶色下藏着五种基酒的烈性,后劲十足。\n17%abv 长饮' }
+    ];
+    const classicDrinkSectionDefinitions = [
+        { id: 'gin', title: 'Gin Base', subTitle: '金酒基底', drinkIds: [2, 1, 3] },
+        { id: 'vodka', title: 'Vodka Base', subTitle: '伏特加基底', drinkIds: [12, 9, 14] },
+        { id: 'whisky', title: 'Whisky Base', subTitle: '威士忌基底', drinkIds: [7, 6] },
+        { id: 'rum', title: 'Rum Base', subTitle: '朗姆酒基底', drinkIds: [8, 18, 5] },
+        { id: 'mixed', title: 'Mixed Base', subTitle: '混合基底', drinkIds: [4] }
     ];
 
     const newDrinksList = [
@@ -649,6 +665,12 @@
                 { id: 'classic', title: '经典 Classics', drinks: classicDrinks.value },
                 { id: 'trial', title: '风味实验 Trial', drinks: experimentalDrinks.value }
             ]);
+            const classicDrinkSections = computed(() => classicDrinkSectionDefinitions.map((section) => ({
+                ...section,
+                drinks: section.drinkIds
+                    .map((drinkId) => classicDrinks.value.find((drink) => drink.id === drinkId))
+                    .filter(Boolean)
+            })));
             const allPosDrinks = computed(() => posDrinkGroups.value.flatMap((group) => group.drinks));
 
             const serviceDateLabel = computed(() => activeServiceDate.value.replace(/-/g, '.'));
@@ -952,6 +974,7 @@
 
             return {
                 classicDrinks,
+                classicDrinkSections,
                 newDrinks,
                 experimentalDrinks,
                 showPos,
