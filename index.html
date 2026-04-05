@@ -256,7 +256,7 @@
                         
                         <blockquote class="border-l border-gray-300 pl-6 py-2 italic text-gray-500 mt-8 text-xs leading-loose relative">
                             "Address: 华理 奉贤 风檐广场<br>
-                            Next Event: 4.2 周四  19:30 - 24:00<br>
+                            Next Event: 4.7 周二  19:30 - 24:00<br>
                             Bartender: Gin & XT."<br>
                         </blockquote>
                     </div>
@@ -603,16 +603,18 @@
     const isCoarsePointerDevice = () => window.matchMedia('(pointer: coarse)').matches || window.matchMedia('(hover: none)').matches;
 
     const classicDrinksList = [
-        { id: 1, name: 'Palermo', subName: '巴勒莫', price: '36', color: '#831843', tags: '菠萝 / 草药 / 甜美', desc: '50 Best Bars 榜首 Bar Leone 原配方。意式苦酒与菠萝果肉的西西里邂逅。\n12%abv 短饮' },
-        { id: 2, name: 'Moscow Mule', subName: '莫斯科骡子', price: '38', color: '#9a3412', tags: '姜汁 / 清爽 / 气泡', desc: '青柠的鲜活撞击生姜的辛香，在铜杯中释放出极致凉爽。 \n12%abv 长饮' },
-        { id: 3, name: 'Zombie', subName: '僵尸', price: '38', color: '#166534', tags: '多种朗姆 / 菠萝 / 百香果', desc: '混合热带风味经典。\n12%abv 长饮' },
+        { id: 1, name: 'Dry Martini', subName: '干马天尼', price: '38/48/58', color: '#831843', tags: '金酒 / 清烈 / 杜松子', desc: '鸡尾酒之王，烈酒爱好者的天堂。（可选择4:1、6:1、15:1三种比例）。\n25～33%abv 短饮' },
+        { id: 2, name: 'Gimlet', subName: '琴蕾', price: '38', color: '#6b7280', tags: '干净 / 青柠 / 金酒', desc: '干净利落，青柠的酸与金酒的凛冽，可选择多种风格。\n20%abv 短饮' },
+        { id: 3, name: 'Negroni[Edited]', subName: '尼格罗尼[改编]', price: '48', color: '#4c0519', tags: '苦甜 / 复杂', desc: '经典架构、全新配方，感受酒体随时间的风味变化。\n20%abv 短饮' },
+        { id: 18, name: 'Daquiri', subName: '代其利', price: '38', color: '#0f766e', tags: '清爽 / 青柠 / 香料', desc: '海明威钟情的朗姆鸡尾酒，清凉又酸爽的味觉体验\n20%abv 短饮' },
+        { id: 8, name: 'Zombie', subName: '僵尸', price: '38', color: '#166534', tags: '多种朗姆 / 菠萝 / 百香果', desc: '混合热带风味经典。\n12%abv 长饮' },
         { id: 4, name: 'Long Island Iced-tea', subName: '长岛冰茶', price: '40', color: '#1e3a8a', tags: '多重烈酒 / 柠檬', desc: '无害的茶色下藏着五种基酒的烈性,后劲十足。\n17%abv 长饮' },
         { id: 5, name: 'Mamba Libre', subName: '自由曼巴', price: '36', color: '#713f12', tags: '黑朗姆 / 气泡 / 解渴', desc: '这一杯\'进阶版自由古巴\' 将带你穿梭于两个维度。\n12%abv 长饮' },
         { id: 6, name: 'Paper Plane', subName: '纸飞机', price: '40', color: '#7f1d1d', tags: '谷物 / 草本 / 馥郁', desc: '这款诞生于纽约的现代经典旨在向同名金曲致敬。\n波本威士忌的温润与果味的鲜活轻盈滑翔,好似童年梦境里的纸飞机。\n17%abv 短饮' },
         { id: 7, name: 'Godfather', subName: '教父', price: '55', color: '#3e2723', tags: '醇厚 / 肉桂 / 杏仁', desc: '尊尼获加黑牌/拉弗格10年: 选用调和&泥煤威士忌打造这一杯有深度的教父。\n烟熏肉桂封杯。\n30%abv 短饮' },
-        { id: 8, name: 'Negroni Edited', subName: '尼格罗尼改编', price: '55', color: '#4c0519', tags: '苦甜 / 复杂', desc: '经典架构、全新配方。\n20%abv 短饮' },
-        { id: 9, name: 'Gimlet', subName: '琴蕾', price: '38', color: '#6b7280', tags: '干净 / 青柠 / 金酒', desc: '干净利落，青柠的酸与金酒的凛冽。成名于《漫长的告别》。\n20%abv 短饮' },
-        { id: 14, name: 'coffee Martini', subName: '咖啡马天尼', price: '45', color: '#78350f', tags: '可可 / 咖啡 / 坚果', desc: '口感浓郁顺滑。入口醇厚，随后甜味与酒感浮现，最后留下可可咖啡余味，绵密的泡沫让整体口感更加饱满。\n22%abv 短饮' }
+        { id: 12, name: 'Bloody Mary', subName: '血腥玛丽', price: '45', color: '#dc2626', tags: '番茄 / 鲜辣 / 浓郁', desc: '绵密口感的回魂体验，探索鸡尾酒口感的新边界。\n（观赏rolling的鸡尾酒技法）\n6%abv 长饮' },
+        { id: 14, name: 'coffee Martini', subName: '咖啡马天尼', price: '45', color: '#78350f', tags: '可可 / 咖啡 / 坚果', desc: '口感浓郁顺滑。入口醇厚，随后甜味与酒感浮现，最后留下可可咖啡余味，绵密的泡沫让整体口感更加饱满。\n22%abv 短饮' },
+        { id: 9, name: 'Moscow Mule', subName: '莫斯科骡子', price: '38', color: '#9a3412', tags: '姜汁 / 清爽 / 气泡', desc: '青柠的鲜活撞击生姜的辛香，在铜杯中释放出极致凉爽。 \n12%abv 长饮' }
     ];
 
     const newDrinksList = [
@@ -623,8 +625,7 @@
         { id: 17, name: 'Around the World', subName: '环游世界', price: '38', color: '#0d9488', tags: '薄荷 / 菠萝 / 轻快', desc: '薄荷的凉爽在金酒与菠萝中绽放。\n12%abv 短饮' }
     ];
     const experimentalDrinksList = [
-        { id: 12, name: 'Bloody Mary', subName: '血腥玛丽', price: '45', color: '#dc2626', tags: '番茄 / 鲜辣 / 浓郁', desc: '绵密口感的回魂体验，探索鸡尾酒口感的新边界。\n（观赏rolling的鸡尾酒技法）\n6%abv 长饮' },
-        { id: 18, name: 'Daquiri', subName: '代其利', price: '38', color: '#0f766e', tags: '清爽 / 青柠 / 香料', desc: '海明威钟情的朗姆鸡尾酒，清凉又酸爽的味觉体验\n20%abv 短饮' }
+        
     ];
     createApp({
         setup() {
