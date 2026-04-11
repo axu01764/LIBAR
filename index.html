@@ -175,6 +175,14 @@
             font-family: Arial, "Helvetica Neue", Helvetica, "Noto Sans SC", sans-serif;
             font-weight: 700;
         }
+
+        .drink-ingredient-line {
+            color: #9ca3af;
+            font-family: "Noto Serif SC", serif;
+            font-size: 11px;
+            letter-spacing: 0.06em;
+            line-height: 1.6;
+        }
     </style>
 </head>
 <body class="selection:bg-gray-200 selection:text-black">
@@ -294,7 +302,8 @@
                     </div>
 
                     <div class="text-[9px] tracking-[0.2em] text-gray-400 mb-2 uppercase">{{ drink.tags }}</div>
-                    <p class="text-xs text-gray-500 font-light leading-relaxed font-serif-cn" style="white-space: pre-line;">{{ drink.desc }}</p>
+                    <p v-if="getDrinkIngredientLine(drink.desc)" class="drink-ingredient-line mb-2">{{ getDrinkIngredientLine(drink.desc) }}</p>
+                    <p v-if="getDrinkDescBody(drink.desc)" class="text-xs text-gray-500 font-light leading-relaxed font-serif-cn" style="white-space: pre-line;">{{ getDrinkDescBody(drink.desc) }}</p>
                 </div>
             </div>
         </div>
@@ -324,7 +333,8 @@
                             </div>
 
                             <div class="text-[9px] tracking-[0.2em] text-gray-400 mb-2 uppercase">{{ drink.tags }}</div>
-                            <p class="text-xs text-gray-500 font-light leading-relaxed font-serif-cn" style="white-space: pre-line;">{{ drink.desc }}</p>
+                            <p v-if="getDrinkIngredientLine(drink.desc)" class="drink-ingredient-line mb-2">{{ getDrinkIngredientLine(drink.desc) }}</p>
+                            <p v-if="getDrinkDescBody(drink.desc)" class="text-xs text-gray-500 font-light leading-relaxed font-serif-cn" style="white-space: pre-line;">{{ getDrinkDescBody(drink.desc) }}</p>
                         </div>
                     </div>
                 </div>
@@ -352,7 +362,8 @@
                     </div>
 
                     <div class="text-[9px] tracking-[0.2em] text-gray-400 mb-2 uppercase">{{ drink.tags }}</div>
-                    <p class="text-xs text-gray-500 font-light leading-relaxed font-serif-cn" style="white-space: pre-line;">{{ drink.desc }}</p>
+                    <p v-if="getDrinkIngredientLine(drink.desc)" class="drink-ingredient-line mb-2">{{ getDrinkIngredientLine(drink.desc) }}</p>
+                    <p v-if="getDrinkDescBody(drink.desc)" class="text-xs text-gray-500 font-light leading-relaxed font-serif-cn" style="white-space: pre-line;">{{ getDrinkDescBody(drink.desc) }}</p>
                 </div>
             </div>
         </div>
@@ -681,6 +692,39 @@
 
             const getDrinkCount = (drinkId) => posOrders.value.filter((order) => order.drinkId === drinkId).length;
 
+            const parseDrinkDesc = (desc) => {
+                const lines = String(desc || '').split('\n').map((line) => line.trim());
+                const ingredientLines = [];
+                let bodyStartIndex = lines.length;
+
+                for (let index = 0; index < lines.length; index += 1) {
+                    const line = lines[index];
+                    if (!line) {
+                        continue;
+                    }
+
+                    if (line.includes('/')) {
+                        ingredientLines.push(line);
+                        continue;
+                    }
+
+                    bodyStartIndex = index;
+                    break;
+                }
+
+                const ingredients = ingredientLines
+                    .flatMap((line) => line.split('/'))
+                    .map((item) => item.trim())
+                    .filter(Boolean);
+                const body = lines.slice(bodyStartIndex).filter(Boolean).join('\n');
+
+                return { ingredients, body };
+            };
+
+            const getDrinkIngredients = (desc) => parseDrinkDesc(desc).ingredients;
+            const getDrinkIngredientLine = (desc) => getDrinkIngredients(desc).join(' / ');
+            const getDrinkDescBody = (desc) => parseDrinkDesc(desc).body;
+
             const drinkButtonStyle = (drink) => {
                 if (drink.name === 'Mamba Libre') {
                     return {
@@ -997,6 +1041,9 @@
                 handleOrderTap,
                 handleTimelineWheel,
                 getDrinkCount,
+                getDrinkIngredients,
+                getDrinkIngredientLine,
+                getDrinkDescBody,
                 drinkButtonStyle,
                 orderCardStyle
             };
