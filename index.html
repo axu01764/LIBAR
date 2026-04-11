@@ -195,11 +195,10 @@
             border-radius: 9999px;
             border: 1px solid #c9c6bc;
             background: conic-gradient(
-                #d7ded2 0% 40%,
-                #c7d0c0 40% 58%,
-                #b9c3af 58% 63%,
-                #e4dfd3 63% 98%,
-                #bfc7bf 98% 100%
+                #d7ded2 0% 70%,
+                #c7d0c0 70% 90%,
+                #b9c3af 90% 98%,
+                #e4dfd3 98% 100%
             );
             transform: rotate(var(--wheel-rotation, 0deg));
             transition: transform 6.8s cubic-bezier(0.08, 0.9, 0.12, 1);
@@ -494,20 +493,23 @@
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
                     <div>
                         <h2 class="text-3xl md:text-4xl font-serif-cn leading-tight mb-4">店庆优惠转盘</h2>
-                        <p class="text-sm font-serif-cn text-[#78776d] leading-relaxed mb-7">首杯固定优惠 -3 元；转盘用于后续杯数。以下为转盘概率：</p>
+                        <p class="text-sm font-serif-cn text-[#78776d] leading-relaxed mb-7">每消费一杯都会获得一次独立转盘机会，决定当次消费折扣。</p>
 
                         <div class="space-y-3 text-sm font-serif-cn text-[#5f5d55] mb-7">
-                            <div v-for="option in wheelOptions" :key="option.key" class="flex items-center justify-between border-b border-[#dfdacf] pb-2">
+                            <div
+                                v-for="option in wheelOptions"
+                                :key="option.key"
+                                class="flex items-center justify-between border-b border-[#dfdacf] pb-2 transition-colors"
+                                :class="highlightedWheelOptionKey === option.key ? 'text-[#2f4a36] bg-[#e8efe4] px-2 rounded-sm border-[#b8c7b6]' : ''"
+                            >
                                 <span>{{ option.label }}</span>
-                                <span class="text-[#969487]">{{ option.weight }}%</span>
+                                <span :class="highlightedWheelOptionKey === option.key ? 'text-[#2f4a36]' : 'text-[#969487]'">{{ option.weight }}%</span>
                             </div>
                         </div>
 
                         <button @click="runAnniversaryWheel" :disabled="isWheelSpinning" class="px-6 py-2.5 text-xs tracking-[0.16em] uppercase border border-[#8e8b7e] text-[#5f5d55] hover:bg-[#5f5d55] hover:text-[#f4f1e8] transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
                             {{ isWheelSpinning ? '转动中...' : '开始转盘' }}
                         </button>
-
-                        <p v-if="wheelLastResult" class="mt-5 text-sm font-serif-cn text-[#66645d] leading-relaxed">{{ wheelLastResult }}</p>
                     </div>
 
                     <div class="flex flex-col items-center justify-center">
@@ -757,11 +759,10 @@
         { id: 23, name: 'A Study in Purple', subName: '紫', price: '38', color: '#3F2B36', tags: '甜美 / 柔顺 / 平衡', desc: '红酒 / 乐嘉黑加仑利口酒\n红酒鸡尾酒的创新，调酒师Shuotong的作品。\n14%abv 短饮'}
     ];
     const anniversaryWheelOptions = [
-        { key: 'minus-2', label: '-2元', discount: -2, weight: 40, start: 0, end: 40 },
-        { key: 'minus-3', label: '-3元', discount: -3, weight: 18, start: 40, end: 58 },
-        { key: 'minus-5', label: '-5元', discount: -5, weight: 5, start: 58, end: 63 },
-        { key: 'same', label: '不变', discount: 0, weight: 35, start: 63, end: 98 },
-        { key: 'reset', label: '优惠清零', discount: null, weight: 2, start: 98, end: 100 }
+        { key: 'off-3', label: '3元优惠', discount: 3, weight: 70, start: 0, end: 70 },
+        { key: 'off-5', label: '5元优惠', discount: 5, weight: 20, start: 70, end: 90 },
+        { key: 'off-8', label: '8元优惠', discount: 8, weight: 8, start: 90, end: 98 },
+        { key: 'off-10', label: '10元优惠', discount: 10, weight: 2, start: 98, end: 100 }
     ];
 
     createApp({
@@ -772,8 +773,7 @@
             const wheelOptions = ref(anniversaryWheelOptions);
             const wheelRotation = ref(0);
             const isWheelSpinning = ref(false);
-            const wheelLastResult = ref('');
-            const wheelSpinCount = ref(0);
+            const highlightedWheelOptionKey = ref('');
             const showWheel = ref(false);
             const showPos = ref(false);
             const posOrders = ref([]);
@@ -843,6 +843,7 @@
             };
 
             const enterWheel = () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
                 showWheel.value = true;
             };
 
@@ -864,18 +865,11 @@
                 const extraTurns = 8 * 360;
 
                 isWheelSpinning.value = true;
-                wheelLastResult.value = '';
+                highlightedWheelOptionKey.value = '';
                 wheelRotation.value += extraTurns + delta;
 
                 window.setTimeout(() => {
-                    wheelSpinCount.value += 1;
-                    if (selected.key === 'reset') {
-                        wheelLastResult.value = `第${wheelSpinCount.value}次抽中：优惠清零。`;
-                    } else if (selected.key === 'same') {
-                        wheelLastResult.value = `第${wheelSpinCount.value}次抽中：不变。`;
-                    } else {
-                        wheelLastResult.value = `第${wheelSpinCount.value}次抽中：${selected.label}。`;
-                    }
+                    highlightedWheelOptionKey.value = selected.key;
                     isWheelSpinning.value = false;
                 }, 6900);
             };
@@ -1169,7 +1163,7 @@
 
             watch([showPos, showWheel], async ([posVisible, wheelVisible]) => {
                 document.body.classList.toggle('pos-mode', posVisible);
-                document.body.style.overflow = posVisible ? 'hidden' : '';
+                document.body.style.overflow = (posVisible || wheelVisible) ? 'hidden' : '';
                 if (posVisible) {
                     await scrollTimelineToEnd();
                 }
@@ -1186,7 +1180,7 @@
                 wheelOptions,
                 wheelRotation,
                 isWheelSpinning,
-                wheelLastResult,
+                highlightedWheelOptionKey,
                 showWheel,
                 showPos,
                 posOrders,
