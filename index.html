@@ -183,6 +183,64 @@
             letter-spacing: 0.06em;
             line-height: 1.6;
         }
+
+        .promo-wheel-wrap {
+            border: 1px solid #d7d4cc;
+            background: #f7f5ef;
+        }
+
+        .promo-wheel {
+            width: min(72vw, 320px);
+            height: min(72vw, 320px);
+            border-radius: 9999px;
+            border: 1px solid #c9c6bc;
+            background: conic-gradient(
+                #d7ded2 0% 40%,
+                #c7d0c0 40% 58%,
+                #b9c3af 58% 63%,
+                #e4dfd3 63% 98%,
+                #bfc7bf 98% 100%
+            );
+            transform: rotate(var(--wheel-rotation, 0deg));
+            transition: transform 6.8s cubic-bezier(0.08, 0.9, 0.12, 1);
+            position: relative;
+        }
+
+        .promo-wheel::after {
+            content: "";
+            position: absolute;
+            inset: 18%;
+            border-radius: 9999px;
+            background: rgba(247, 245, 239, 0.94);
+            border: 1px solid #d7d4cc;
+        }
+
+        .promo-pointer {
+            width: 0;
+            height: 0;
+            border-left: 9px solid transparent;
+            border-right: 9px solid transparent;
+            border-top: 16px solid #4b5563;
+            filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.15));
+        }
+
+        .screen-fade {
+            transition: opacity 900ms cubic-bezier(0.2, 0.8, 0.2, 1),
+                        visibility 900ms cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .screen-visible {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        .screen-hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
     </style>
 </head>
 <body class="selection:bg-gray-200 selection:text-black">
@@ -195,7 +253,7 @@
 </div>
 
 <div id="app" v-cloak>
-    <div v-show="!showPos">
+    <div class="screen-fade" :class="!showPos && !showWheel ? 'screen-visible' : 'screen-hidden'">
     <header class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-50 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
             <div class="text-xl font-serif-en tracking-widest font-semibold uppercase hover-target">LI BAR</div>
@@ -203,6 +261,7 @@
                 <a href="#event" class="hover:text-black transition-colors hover-target">Event</a>
                 <a href="#about" class="hover:text-black transition-colors hover-target">About</a>
                 <a href="#menu" class="hover:text-black transition-colors hover-target">Menu</a>
+                <a href="#" @click.prevent="enterWheel" class="hover:text-black transition-colors hover-target">Wheel</a>
             </nav>
             <a href="#menu" class="text-[11px] tracking-[0.1em] uppercase font-medium border-b border-black pb-0.5 md:hidden hover-target">Menu</a>
         </div>
@@ -218,7 +277,10 @@
         <div class="relative z-10 max-w-7xl mx-auto w-full reveal-up delay-100">
             <h1 class="text-[9.5vw] md:text-7xl lg:text-8xl text-white font-serif-en mb-4 tracking-wide whitespace-nowrap">ECUST BAR.</h1>
             <p class="text-white/80 text-xs md:text-sm tracking-[0.2em] uppercase mb-10 font-light"></p>
-            <a href="#menu" class="btn-outline !text-white !border-white hover:!bg-white hover:!text-black hover-target whitespace-nowrap">探索酒单 / Explore Menu</a>
+            <div class="flex flex-wrap items-center gap-4">
+                <a href="#menu" class="btn-outline !text-white !border-white hover:!bg-white hover:!text-black hover-target whitespace-nowrap">探索酒单 / Explore Menu</a>
+                <a href="#" @click.prevent="enterWheel" class="btn-outline !text-white !border-white hover:!bg-white hover:!text-black hover-target whitespace-nowrap">店庆转盘 / Anniversary Wheel</a>
+            </div>
         </div>
 
     </section>
@@ -419,6 +481,42 @@
             </div>
         </div>
     </footer>
+    </div>
+
+    <div class="screen-fade fixed inset-0 z-[60] overflow-y-auto bg-[#f4f1e8] text-[#3f3f39] px-6 py-8 md:py-12" :class="showWheel ? 'screen-visible' : 'screen-hidden'">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex items-center justify-between mb-8 md:mb-10">
+                <p class="text-[10px] tracking-[0.25em] uppercase text-[#8b8a80]">Anniversary Special</p>
+                <button @click="exitWheel" class="text-[11px] tracking-[0.18em] uppercase border-b border-[#b7b5aa] pb-1 text-[#6f6d63] hover:text-[#3f3f39] hover:border-[#3f3f39] transition-colors">返回主页</button>
+            </div>
+
+            <div class="promo-wheel-wrap rounded-2xl p-6 md:p-10">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+                    <div>
+                        <h2 class="text-3xl md:text-4xl font-serif-cn leading-tight mb-4">店庆优惠转盘</h2>
+                        <p class="text-sm font-serif-cn text-[#78776d] leading-relaxed mb-7">首杯固定优惠 -3 元；转盘用于后续杯数。以下为转盘概率：</p>
+
+                        <div class="space-y-3 text-sm font-serif-cn text-[#5f5d55] mb-7">
+                            <div v-for="option in wheelOptions" :key="option.key" class="flex items-center justify-between border-b border-[#dfdacf] pb-2">
+                                <span>{{ option.label }}</span>
+                                <span class="text-[#969487]">{{ option.weight }}%</span>
+                            </div>
+                        </div>
+
+                        <button @click="runAnniversaryWheel" :disabled="isWheelSpinning" class="px-6 py-2.5 text-xs tracking-[0.16em] uppercase border border-[#8e8b7e] text-[#5f5d55] hover:bg-[#5f5d55] hover:text-[#f4f1e8] transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                            {{ isWheelSpinning ? '转动中...' : '开始转盘' }}
+                        </button>
+
+                        <p v-if="wheelLastResult" class="mt-5 text-sm font-serif-cn text-[#66645d] leading-relaxed">{{ wheelLastResult }}</p>
+                    </div>
+
+                    <div class="flex flex-col items-center justify-center">
+                        <div class="promo-pointer mb-2"></div>
+                        <div class="promo-wheel" :style="{ '--wheel-rotation': wheelRotation + 'deg' }"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div v-show="showPos" class="h-[100dvh] overflow-hidden bg-[#050505] text-white">
@@ -658,11 +756,25 @@
         { id: 22, name: 'Aperol Spritz', subName: '阿佩罗橙光', price: '38', color: '#F75C2F', tags: '橙香 / 气泡 / 清爽', desc: '阿佩罗配制酒 / 泰象气泡水 / Prosecco起泡酒\n意大利的经典开胃酒，在滋滋气泡中迎接夏季的到来。\n6%abv 长饮'},
         { id: 23, name: 'A Study in Purple', subName: '紫', price: '38', color: '#3F2B36', tags: '甜美 / 柔顺 / 平衡', desc: '红酒 / 乐嘉黑加仑利口酒\n红酒鸡尾酒的创新，调酒师Shuotong的作品。\n14%abv 短饮'}
     ];
+    const anniversaryWheelOptions = [
+        { key: 'minus-2', label: '-2元', discount: -2, weight: 40, start: 0, end: 40 },
+        { key: 'minus-3', label: '-3元', discount: -3, weight: 18, start: 40, end: 58 },
+        { key: 'minus-5', label: '-5元', discount: -5, weight: 5, start: 58, end: 63 },
+        { key: 'same', label: '不变', discount: 0, weight: 35, start: 63, end: 98 },
+        { key: 'reset', label: '优惠清零', discount: null, weight: 2, start: 98, end: 100 }
+    ];
+
     createApp({
         setup() {
             const classicDrinks = ref(classicDrinksList);
             const newDrinks = ref(newDrinksList);
             const experimentalDrinks = ref(experimentalDrinksList);
+            const wheelOptions = ref(anniversaryWheelOptions);
+            const wheelRotation = ref(0);
+            const isWheelSpinning = ref(false);
+            const wheelLastResult = ref('');
+            const wheelSpinCount = ref(0);
+            const showWheel = ref(false);
             const showPos = ref(false);
             const posOrders = ref([]);
             const timelineScroller = ref(null);
@@ -724,6 +836,49 @@
             const getDrinkIngredients = (desc) => parseDrinkDesc(desc).ingredients;
             const getDrinkIngredientLine = (desc) => getDrinkIngredients(desc).join(' / ');
             const getDrinkDescBody = (desc) => parseDrinkDesc(desc).body;
+
+            const pickWheelOption = () => {
+                const randomValue = Math.random() * 100;
+                return wheelOptions.value.find((option) => randomValue >= option.start && randomValue < option.end) || wheelOptions.value[0];
+            };
+
+            const enterWheel = () => {
+                showWheel.value = true;
+            };
+
+            const exitWheel = () => {
+                showWheel.value = false;
+            };
+
+            const runAnniversaryWheel = () => {
+                if (isWheelSpinning.value) {
+                    return;
+                }
+
+                const selected = pickWheelOption();
+                const stopPercent = selected.start + Math.random() * (selected.end - selected.start);
+                const targetDegree = stopPercent * 3.6;
+                const normalizedCurrent = ((wheelRotation.value % 360) + 360) % 360;
+                const destination = (360 - targetDegree) % 360;
+                const delta = ((destination - normalizedCurrent) + 360) % 360;
+                const extraTurns = 8 * 360;
+
+                isWheelSpinning.value = true;
+                wheelLastResult.value = '';
+                wheelRotation.value += extraTurns + delta;
+
+                window.setTimeout(() => {
+                    wheelSpinCount.value += 1;
+                    if (selected.key === 'reset') {
+                        wheelLastResult.value = `第${wheelSpinCount.value}次抽中：优惠清零。`;
+                    } else if (selected.key === 'same') {
+                        wheelLastResult.value = `第${wheelSpinCount.value}次抽中：不变。`;
+                    } else {
+                        wheelLastResult.value = `第${wheelSpinCount.value}次抽中：${selected.label}。`;
+                    }
+                    isWheelSpinning.value = false;
+                }, 6900);
+            };
 
             const drinkButtonStyle = (drink) => {
                 if (drink.name === 'Mamba Libre') {
@@ -882,6 +1037,7 @@
             };
 
             const enterPos = async () => {
+                showWheel.value = false;
                 showPos.value = true;
                 await scrollTimelineToEnd();
             };
@@ -1011,11 +1167,14 @@
                 persistTonightData();
             }, { deep: true });
 
-            watch(showPos, async (value) => {
-                document.body.classList.toggle('pos-mode', value);
-                document.body.style.overflow = value ? 'hidden' : '';
-                if (value) {
+            watch([showPos, showWheel], async ([posVisible, wheelVisible]) => {
+                document.body.classList.toggle('pos-mode', posVisible);
+                document.body.style.overflow = posVisible ? 'hidden' : '';
+                if (posVisible) {
                     await scrollTimelineToEnd();
+                }
+                if (wheelVisible && posVisible) {
+                    showWheel.value = false;
                 }
             }, { immediate: true });
 
@@ -1024,6 +1183,11 @@
                 classicDrinkSections,
                 newDrinks,
                 experimentalDrinks,
+                wheelOptions,
+                wheelRotation,
+                isWheelSpinning,
+                wheelLastResult,
+                showWheel,
                 showPos,
                 posOrders,
                 posDrinkGroups,
@@ -1044,6 +1208,9 @@
                 getDrinkIngredients,
                 getDrinkIngredientLine,
                 getDrinkDescBody,
+                enterWheel,
+                exitWheel,
+                runAnniversaryWheel,
                 drinkButtonStyle,
                 orderCardStyle
             };
