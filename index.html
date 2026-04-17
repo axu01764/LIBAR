@@ -555,12 +555,16 @@
                                     type="button"
                                     @click="handleDrinkTap(drink)"
                                     @dblclick="toggleOrderDrink(drink)"
-                                    class="min-h-[72px] rounded-2xl px-3 py-2.5 text-left text-white shadow-[0_14px_28px_rgba(0,0,0,0.28)] active:scale-[0.98] touch-manipulation"
+                                    class="min-h-[64px] rounded-2xl px-3 py-2 text-left text-white shadow-[0_14px_28px_rgba(0,0,0,0.28)] active:scale-[0.98] touch-manipulation"
                                     :style="drinkButtonStyle(drink)"
                                 >
-                                    <div class="text-[13px] font-serif-cn font-medium leading-tight text-white">{{ drink.subName }}</div>
-                                    <div class="mt-2 flex items-center justify-between gap-2">
-                                        <span class="text-[10px] tracking-[0.16em] uppercase text-white/65">{{ drink.price }}</span>
+                                    <div
+                                        class="font-serif-cn font-medium leading-tight text-white"
+                                        :class="isLongPosDrinkName(drink.subName) ? 'text-[11px]' : 'text-[13px]'"
+                                    >
+                                        {{ drink.subName }}
+                                    </div>
+                                    <div class="mt-2 flex items-center justify-end gap-2">
                                         <span class="rounded-full bg-black/15 px-2 py-0.5 text-[10px] text-white/80">{{ getDrinkCount(drink.id) }}</span>
                                     </div>
                                 </button>
@@ -813,6 +817,7 @@
             const totalDrinkCount = computed(() => posOrders.value.length);
 
             const getDrinkCount = (drinkId) => posOrders.value.filter((order) => order.drinkId === drinkId).length;
+            const isLongPosDrinkName = (name) => String(name || '').replace(/\s+/g, '').length > 5;
 
             const parseDrinkDesc = (desc) => {
                 const lines = String(desc || '').split('\n').map((line) => line.trim());
@@ -1209,6 +1214,7 @@
                 handleOrderTap,
                 handleTimelineWheel,
                 getDrinkCount,
+                isLongPosDrinkName,
                 getDrinkIngredients,
                 getDrinkIngredientLine,
                 getDrinkDescBody,
