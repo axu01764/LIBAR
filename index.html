@@ -548,19 +548,18 @@
                     <div class="space-y-5">
                         <div v-for="group in posDrinkGroups" :key="group.id">
                             <div class="mb-3 text-[11px] tracking-[0.24em] uppercase text-white/35">{{ group.title }}</div>
-                            <div class="grid grid-cols-3 gap-2.5 sm:grid-cols-4">
+                            <div class="grid grid-cols-3 gap-2 sm:grid-cols-4">
                                 <button
                                     v-for="drink in group.drinks"
                                     :key="drink.id"
                                     type="button"
                                     @click="handleDrinkTap(drink)"
                                     @dblclick="toggleOrderDrink(drink)"
-                                    class="min-h-[92px] rounded-2xl px-3 py-3 text-left text-white shadow-[0_14px_28px_rgba(0,0,0,0.28)] active:scale-[0.98] touch-manipulation"
+                                    class="min-h-[72px] rounded-2xl px-3 py-2.5 text-left text-white shadow-[0_14px_28px_rgba(0,0,0,0.28)] active:scale-[0.98] touch-manipulation"
                                     :style="drinkButtonStyle(drink)"
                                 >
-                                    <div class="text-sm font-serif-en leading-tight">{{ drink.name }}</div>
-                                    <div class="mt-1 text-[11px] font-serif-cn text-white/80">{{ drink.subName }}</div>
-                                    <div class="mt-3 flex items-center justify-between gap-2">
+                                    <div class="text-[13px] font-serif-cn font-medium leading-tight text-white">{{ drink.subName }}</div>
+                                    <div class="mt-2 flex items-center justify-between gap-2">
                                         <span class="text-[10px] tracking-[0.16em] uppercase text-white/65">{{ drink.price }}</span>
                                         <span class="rounded-full bg-black/15 px-2 py-0.5 text-[10px] text-white/80">{{ getDrinkCount(drink.id) }}</span>
                                     </div>
@@ -798,9 +797,9 @@
             };
 
             const posDrinkGroups = computed(() => [
-                { id: 'seasonal', title: '季节 Seasonal', drinks: newDrinks.value },
-                { id: 'classic', title: '经典 Classics', drinks: classicDrinks.value },
-                { id: 'trial', title: '风味实验 Trial', drinks: experimentalDrinks.value }
+                { id: 'seasonal', title: '季节 Seasonal', drinks: newDrinks.value.filter((drink) => !drink.soldOut) },
+                { id: 'classic', title: '经典 Classics', drinks: classicDrinks.value.filter((drink) => !drink.soldOut) },
+                { id: 'trial', title: '风味实验 Trial', drinks: experimentalDrinks.value.filter((drink) => !drink.soldOut) }
             ]);
             const classicDrinkSections = computed(() => classicDrinkSectionDefinitions.map((section) => ({
                 ...section,
