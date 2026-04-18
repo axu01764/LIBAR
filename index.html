@@ -647,7 +647,7 @@
                         @error="handleRecipeImageError"
                     >
                     <div v-if="recipeImageMissing" class="flex h-full min-h-[180px] items-center justify-center text-center text-sm text-white/55">
-                        未找到配方图。请确认图片命名为 `id-{{ recipePreviewDrinkId }}.png` 并放在项目可访问路径中。
+                        未找到配方图。请确认图片命名为 `images/id-{{ recipePreviewDrinkId }}.png` 并放在项目可访问路径中。
                     </div>
                 </div>
             </div>
@@ -930,10 +930,12 @@
             const buildRecipeImageCandidates = (drinkId) => {
                 const id = String(drinkId || '').trim();
                 return [
-                    `id-${id}.png`,
-                    `id-${id}png.png`,
+                    `images/id-${id}.png`,
+                    `images/id-${id}png.png`,
                     `images/recipes/id-${id}.png`,
                     `images/recipes/${id}.png`,
+                    `id-${id}.png`,
+                    `id-${id}png.png`,
                     `recipes/id-${id}.png`,
                     `recipes/${id}.png`
                 ];
