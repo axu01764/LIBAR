@@ -561,7 +561,6 @@
                                     :key="drink.id"
                                     type="button"
                                     @click="handleDrinkTap(drink)"
-                                    @dblclick="toggleOrderDrink(drink)"
                                     class="min-h-[64px] rounded-2xl px-3 py-2 text-left text-white shadow-[0_14px_28px_rgba(0,0,0,0.28)] active:scale-[0.98] touch-manipulation"
                                     :style="drinkButtonStyle(drink)"
                                 >
@@ -746,6 +745,7 @@
     const POS_SLOT_MS = 5 * 60 * 1000;
     const POS_UNDO_WINDOW_MS = 3 * 1000;
     const POS_DOUBLE_TAP_MS = 320;
+    const POS_SINGLE_CLICK_DECISION_MS = 240;
     const WHEEL_ENABLED = false;
 
     const getServiceDateKey = (timestamp = Date.now()) => {
@@ -790,7 +790,7 @@
         { id: 16, name: 'Blossom', subName: '樱·桃', price: '48', color: '#ec4899', tags: '樱花 / 白桃 / 清新', desc: '百加得白朗姆 / 三得利奏系列樱花利口酒 / 三得利奏系列白桃利口酒 / 柠檬汁 / 蔓越莓糖浆\n樱花与白桃的丰富结合带来清新含蓄的花果味。\n18%abv 短饮' },
         { id: 10, name: 'Raspberry Gimlet', subName: '树莓', price: '38', color: '#be185d', tags: '莓果 / 甜润', desc: '莓瑰金酒 / 乐嘉黑加仑利口酒 / 蔓越莓糖浆 / 柠檬汁\n酸甜修饰树莓的饱满口感,回味无穷。\n20%abv 短饮' },
         { id: 11, name: 'Sakura/White Peach Gin Tonic', subName: '樱花/白桃金汤力', price: '48', color: '#ec4899', tags: '清爽 / 气泡', desc: '三得利奏系列白桃/樱花利口酒 / 神户居留地汤力水 / 青柠汁\n白桃感觉不如元气森林，不过樱花是什么味道？\n10%abv 长饮' },
-        { id: 13, name: 'Aviation', subName: '飞行', price: '48', color: '#3b82f6', tags: '花香 / 紫罗兰 / 清冽', desc: '海曼金酒 / 路萨朵黑樱桃配制酒 / 比特储斯紫罗兰利口酒 / 柠檬汁\n诞生于上世纪初的浪漫之作。紫罗兰利口酒赋予其迷人的天际色彩，金酒的凛冽与优雅花香在舌尖轻盈起飞。\n25%abv 短饮' },
+        { id: 13, name: 'Aviation', subName: '飞行', price: '38', color: '#3b82f6', tags: '花香 / 紫罗兰 / 清冽', desc: '海曼金酒 / 路萨朵黑樱桃配制酒 / 比特储斯紫罗兰利口酒 / 柠檬汁\n诞生于上世纪初的浪漫之作。紫罗兰利口酒赋予其迷人的天际色彩，金酒的凛冽与优雅花香在舌尖轻盈起飞。\n25%abv 短饮' },
         { id: 17, name: 'Around the World', soldOut: true, subName: '环游世界', price: '48', color: '#0d9488', tags: '绵密 / 清凉', desc: '诺迪斯金酒 / 必富达金酒 / 新鲜薄荷 / 新鲜菠萝\n薄荷的凉爽在金酒与菠萝中绽放，新鲜材料让味觉更上一层楼。\n环游世界又去环游了...\n12%abv 短饮' },
         { id: 19, name: 'Matcha Forest', subName: '绿针林', price: '38', color: '#89916B', tags: '抹茶 / 乌龙 / 清淡', desc: '伏特加 / 糯米酒 / 五十铃抹茶 / 乐嘉黑加仑利口酒 / 乌龙茶\n抹茶爱好者的福音，轻松的口感赋予它第一杯的首选。\n配方鸣谢：BoyanSHI\n6%abv 短饮' }
     ];
@@ -833,6 +833,11 @@
                 type: '',
                 key: '',
                 time: 0
+            };
+            const drinkClickState = {
+                key: '',
+                time: 0,
+                timer: null
             };
 
             const posDrinkGroups = computed(() => [
@@ -1115,8 +1120,36 @@
             };
 
             const handleDrinkTap = (drink) => {
-                openRecipePreview(drink);
-                runMobileDoubleTap('drink', drink.id, () => toggleOrderDrink(drink));
+                const tapTime = Date.now();
+                const tapKey = String(drink.id);
+                const isSameDrinkDoubleTap = drinkClickState.key === tapKey && tapTime - drinkClickState.time <= POS_DOUBLE_TAP_MS;
+
+                if (isSameDrinkDoubleTap) {
+                    if (drinkClickState.timer) {
+                        window.clearTimeout(drinkClickState.timer);
+                    }
+                    drinkClickState.key = '';
+                    drinkClickState.time = 0;
+                    drinkClickState.timer = null;
+                    toggleOrderDrink(drink);
+                    return;
+                }
+
+                if (drinkClickState.timer) {
+                    window.clearTimeout(drinkClickState.timer);
+                    drinkClickState.timer = null;
+                }
+
+                drinkClickState.key = tapKey;
+                drinkClickState.time = tapTime;
+                drinkClickState.timer = window.setTimeout(() => {
+                    openRecipePreview(drink);
+                    if (drinkClickState.key === tapKey) {
+                        drinkClickState.key = '';
+                        drinkClickState.time = 0;
+                        drinkClickState.timer = null;
+                    }
+                }, POS_SINGLE_CLICK_DECISION_MS);
             };
 
             const handleOrderTap = (orderId) => {
@@ -1316,6 +1349,9 @@
 </script>
 </body>
 </html>
+
+
+
 
 
 
