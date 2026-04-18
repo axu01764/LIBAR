@@ -260,7 +260,7 @@
                 <a href="#event" class="hover:text-black transition-colors hover-target">Event</a>
                 <a href="#about" class="hover:text-black transition-colors hover-target">About</a>
                 <a href="#menu" class="hover:text-black transition-colors hover-target">Menu</a>
-                <a href="#" @click.prevent="enterWheel" class="hover:text-black transition-colors hover-target">Wheel</a>
+                <a v-if="wheelEnabled" href="#" @click.prevent="enterWheel" class="hover:text-black transition-colors hover-target">Wheel</a>
             </nav>
             <a href="#menu" class="text-[11px] tracking-[0.1em] uppercase font-medium border-b border-black pb-0.5 md:hidden hover-target">Menu</a>
         </div>
@@ -278,7 +278,7 @@
             <p class="text-white/80 text-xs md:text-sm tracking-[0.2em] uppercase mb-10 font-light"></p>
             <div class="flex flex-wrap items-center gap-4">
                 <a href="#menu" class="btn-outline !text-white !border-white hover:!bg-white hover:!text-black hover-target whitespace-nowrap">探索酒单 / Explore Menu</a>
-                <a href="#" @click.prevent="enterWheel" class="btn-outline !text-white !border-white hover:!bg-white hover:!text-black hover-target whitespace-nowrap">店庆转盘 / Anniversary Wheel</a>
+                <a v-if="wheelEnabled" href="#" @click.prevent="enterWheel" class="btn-outline !text-white !border-white hover:!bg-white hover:!text-black hover-target whitespace-nowrap">店庆转盘 / Anniversary Wheel</a>
             </div>
         </div>
 
@@ -342,7 +342,7 @@
         <div class="text-center mb-16 md:mb-24 reveal-up">
             <h2 class="text-4xl md:text-6xl font-serif-en mb-6">The Menu</h2>
             <div class="w-8 h-px bg-black mx-auto mb-6"></div>
-            <p class="text-[10px] tracking-[0.3em] text-gray-400 uppercase">Special, Signature, Classics & Trial</p>
+            <p class="text-[10px] tracking-[0.3em] text-gray-400 uppercase">Seasonal, Signature, Trial & Classic</p>
         </div>
 
         <div class="mb-24 md:mb-32 reveal-up">
@@ -369,8 +369,42 @@
             </div>
         </div>
 
-        <div class="reveal-up">
-            <h3 class="text-xl md:text-2xl font-serif-en mb-10 md:mb-12 tracking-widest uppercase text-gray-800">Classics&twist <span class="text-xs text-gray-400 font-serif-cn normal-case italic ml-3">\n经典&改编（欢迎与我们沟通风味偏好）</span></h3>
+        <div class="reveal-up mb-24 md:mb-32">
+            <h3 class="text-xl md:text-2xl font-serif-en mb-10 md:mb-12 tracking-widest uppercase text-gray-800">Signature <span class="text-xs text-gray-400 font-serif-cn normal-case italic ml-3">敬请期待</span></h3>
+            <div class="menu-item-border pb-5">
+                <p class="text-xs text-gray-400 font-serif-cn italic">敬请期待</p>
+            </div>
+        </div>
+
+        <div class="w-full h-48 md:h-96 img-mask reveal-up mb-24 md:mb-32 mt-24 md:mt-32">
+            <img src="images/6.jpg" class="img-scale">
+        </div>
+        <div class="reveal-up mt-24 md:mt-32">
+            <h3 class="text-xl md:text-2xl font-serif-en mb-10 md:mb-12 tracking-widest uppercase text-gray-800">Trial <span class="text-xs text-gray-400 font-serif-cn normal-case italic ml-3">一期一会</span></h3>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-20 gap-y-10 md:gap-y-12">
+                <div v-for="(drink, index) in experimentalDrinks" :key="drink.id" 
+                     class="menu-item group flex flex-col justify-between hover-target"
+                     :class="{'reveal-up': true, 'delay-100': index % 2 === 1}">
+                    
+                    <div class="menu-item-border pb-3 flex justify-between items-end mb-3 gap-4">
+                        <div class="flex items-baseline gap-2 md:gap-3 flex-1 min-w-0" :class="{'opacity-40': drink.soldOut}">
+                            <span class="text-lg font-serif-en font-medium truncate">{{ drink.name }}</span>
+                            <span class="text-[11px] text-gray-400 font-serif-cn whitespace-nowrap flex-shrink-0">{{ drink.subName }}</span>
+                            <span v-if="drink.soldOut" class="ml-2 text-[9px] tracking-[0.2em] text-gray-500 uppercase border border-gray-400 px-1.5 py-0.5 rounded-sm">Sold Out</span>
+                        </div>
+                        <div class="text-sm font-serif-en whitespace-nowrap flex-shrink-0" :class="{'opacity-40 line-through': drink.soldOut}">{{ drink.price }}</div>
+                    </div>
+
+                    <div class="text-[9px] tracking-[0.2em] text-gray-400 mb-2 uppercase">{{ drink.tags }}</div>
+                    <p v-if="getDrinkIngredientLine(drink.desc)" class="drink-ingredient-line mb-2">{{ getDrinkIngredientLine(drink.desc) }}</p>
+                    <p v-if="getDrinkDescBody(drink.desc)" class="text-xs text-gray-500 font-light leading-relaxed font-serif-cn" style="white-space: pre-line;">{{ getDrinkDescBody(drink.desc) }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="reveal-up mt-24 md:mt-32">
+            <h3 class="text-xl md:text-2xl font-serif-en mb-10 md:mb-12 tracking-widest uppercase text-gray-800">Classic <span class="text-xs text-gray-400 font-serif-cn normal-case italic ml-3">经典&改编（欢迎与我们沟通风味偏好）</span></h3>
             
             <div class="space-y-14 md:space-y-16">
                 <div v-for="section in classicDrinkSections" :key="section.id">
@@ -398,33 +432,6 @@
                             <p v-if="getDrinkDescBody(drink.desc)" class="text-xs text-gray-500 font-light leading-relaxed font-serif-cn" style="white-space: pre-line;">{{ getDrinkDescBody(drink.desc) }}</p>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="w-full h-48 md:h-96 img-mask reveal-up mb-24 md:mb-32 mt-24 md:mt-32">
-            <img src="images/6.jpg" class="img-scale">
-        </div>
-        <div class="reveal-up mt-24 md:mt-32">
-            <h3 class="text-xl md:text-2xl font-serif-en mb-10 md:mb-12 tracking-widest uppercase text-gray-800">Special <span class="text-xs text-gray-400 font-serif-cn normal-case italic ml-3">一期一会</span></h3>
-            
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-20 gap-y-10 md:gap-y-12">
-                <div v-for="(drink, index) in experimentalDrinks" :key="drink.id" 
-                     class="menu-item group flex flex-col justify-between hover-target"
-                     :class="{'reveal-up': true, 'delay-100': index % 2 === 1}">
-                    
-                    <div class="menu-item-border pb-3 flex justify-between items-end mb-3 gap-4">
-                        <div class="flex items-baseline gap-2 md:gap-3 flex-1 min-w-0" :class="{'opacity-40': drink.soldOut}">
-                            <span class="text-lg font-serif-en font-medium truncate">{{ drink.name }}</span>
-                            <span class="text-[11px] text-gray-400 font-serif-cn whitespace-nowrap flex-shrink-0">{{ drink.subName }}</span>
-                            <span v-if="drink.soldOut" class="ml-2 text-[9px] tracking-[0.2em] text-gray-500 uppercase border border-gray-400 px-1.5 py-0.5 rounded-sm">Sold Out</span>
-                        </div>
-                        <div class="text-sm font-serif-en whitespace-nowrap flex-shrink-0" :class="{'opacity-40 line-through': drink.soldOut}">{{ drink.price }}</div>
-                    </div>
-
-                    <div class="text-[9px] tracking-[0.2em] text-gray-400 mb-2 uppercase">{{ drink.tags }}</div>
-                    <p v-if="getDrinkIngredientLine(drink.desc)" class="drink-ingredient-line mb-2">{{ getDrinkIngredientLine(drink.desc) }}</p>
-                    <p v-if="getDrinkDescBody(drink.desc)" class="text-xs text-gray-500 font-light leading-relaxed font-serif-cn" style="white-space: pre-line;">{{ getDrinkDescBody(drink.desc) }}</p>
                 </div>
             </div>
         </div>
@@ -482,7 +489,7 @@
     </footer>
     </div>
 
-    <div class="screen-fade fixed inset-0 z-[60] overflow-y-auto bg-[#f4f1e8] text-[#3f3f39] px-6 py-8 md:py-12" :class="showWheel ? 'screen-visible' : 'screen-hidden'">
+    <div v-if="wheelEnabled" class="screen-fade fixed inset-0 z-[60] overflow-y-auto bg-[#f4f1e8] text-[#3f3f39] px-6 py-8 md:py-12" :class="showWheel ? 'screen-visible' : 'screen-hidden'">
         <div class="max-w-6xl mx-auto">
             <div class="flex items-center justify-between mb-8 md:mb-10">
                 <p class="text-[10px] tracking-[0.25em] uppercase text-[#8b8a80]">Anniversary Special</p>
@@ -623,6 +630,28 @@
                 </div>
             </section>
         </div>
+
+        <div v-show="showRecipePreview" class="absolute inset-0 z-[70] bg-black/70 backdrop-blur-[2px] px-4 py-6">
+            <div class="mx-auto flex h-full w-full max-w-3xl flex-col rounded-2xl border border-white/15 bg-[#111] p-4 md:p-5">
+                <div class="mb-4 flex items-center justify-between">
+                    <p class="text-[11px] tracking-[0.16em] uppercase text-white/70">Recipe Preview</p>
+                    <button @click="closeRecipePreview" type="button" class="rounded-full border border-white/20 px-3 py-1 text-[11px] text-white/75">关闭</button>
+                </div>
+                <p class="mb-3 text-sm font-serif-cn text-white/80">{{ recipePreviewTitle }}</p>
+                <div class="min-h-0 flex-1 overflow-auto rounded-xl border border-white/10 bg-black/20 p-2">
+                    <img
+                        v-if="recipePreviewSrc"
+                        :src="recipePreviewSrc"
+                        :alt="recipePreviewTitle"
+                        class="mx-auto h-auto max-h-full w-auto rounded-lg"
+                        @error="handleRecipeImageError"
+                    >
+                    <div v-if="recipeImageMissing" class="flex h-full min-h-[180px] items-center justify-center text-center text-sm text-white/55">
+                        未找到配方图。请确认图片命名为 `id-{{ recipePreviewDrinkId }}.png` 并放在项目可访问路径中。
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 </div>
@@ -717,6 +746,7 @@
     const POS_SLOT_MS = 5 * 60 * 1000;
     const POS_UNDO_WINDOW_MS = 3 * 1000;
     const POS_DOUBLE_TAP_MS = 320;
+    const WHEEL_ENABLED = false;
 
     const getServiceDateKey = (timestamp = Date.now()) => {
         const date = new Date(timestamp);
@@ -785,8 +815,16 @@
             const wheelRotation = ref(0);
             const isWheelSpinning = ref(false);
             const highlightedWheelOptionKey = ref('');
+            const wheelEnabled = ref(WHEEL_ENABLED);
             const showWheel = ref(false);
             const showPos = ref(false);
+            const showRecipePreview = ref(false);
+            const recipePreviewTitle = ref('');
+            const recipePreviewDrinkId = ref('');
+            const recipePreviewSrc = ref('');
+            const recipeImageMissing = ref(false);
+            const recipeImageCandidates = ref([]);
+            const recipeImageCandidateIndex = ref(0);
             const posOrders = ref([]);
             const timelineScroller = ref(null);
             const now = ref(Date.now());
@@ -799,8 +837,8 @@
 
             const posDrinkGroups = computed(() => [
                 { id: 'seasonal', title: '季节 Seasonal', drinks: newDrinks.value.filter((drink) => !drink.soldOut) },
-                { id: 'classic', title: '经典 Classics', drinks: classicDrinks.value.filter((drink) => !drink.soldOut) },
-                { id: 'trial', title: '风味实验 Trial', drinks: experimentalDrinks.value.filter((drink) => !drink.soldOut) }
+                { id: 'trial', title: '风味实验 Trial', drinks: experimentalDrinks.value.filter((drink) => !drink.soldOut) },
+                { id: 'classic', title: '经典 Classics', drinks: classicDrinks.value.filter((drink) => !drink.soldOut) }
             ]);
             const classicDrinkSections = computed(() => classicDrinkSectionDefinitions.map((section) => ({
                 ...section,
@@ -855,6 +893,9 @@
             };
 
             const enterWheel = () => {
+                if (!wheelEnabled.value) {
+                    return;
+                }
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 showWheel.value = true;
             };
@@ -884,6 +925,43 @@
                     highlightedWheelOptionKey.value = selected.key;
                     isWheelSpinning.value = false;
                 }, 6900);
+            };
+
+            const buildRecipeImageCandidates = (drinkId) => {
+                const id = String(drinkId || '').trim();
+                return [
+                    `id-${id}.png`,
+                    `id-${id}png.png`,
+                    `images/recipes/id-${id}.png`,
+                    `images/recipes/${id}.png`,
+                    `recipes/id-${id}.png`,
+                    `recipes/${id}.png`
+                ];
+            };
+
+            const openRecipePreview = (drink) => {
+                recipePreviewDrinkId.value = String(drink.id);
+                recipePreviewTitle.value = `${drink.name} / ${drink.subName}`;
+                recipeImageCandidates.value = buildRecipeImageCandidates(drink.id);
+                recipeImageCandidateIndex.value = 0;
+                recipePreviewSrc.value = recipeImageCandidates.value[0] || '';
+                recipeImageMissing.value = recipeImageCandidates.value.length === 0;
+                showRecipePreview.value = true;
+            };
+
+            const handleRecipeImageError = () => {
+                const nextIndex = recipeImageCandidateIndex.value + 1;
+                if (nextIndex < recipeImageCandidates.value.length) {
+                    recipeImageCandidateIndex.value = nextIndex;
+                    recipePreviewSrc.value = recipeImageCandidates.value[nextIndex];
+                    return;
+                }
+                recipeImageMissing.value = true;
+                recipePreviewSrc.value = '';
+            };
+
+            const closeRecipePreview = () => {
+                showRecipePreview.value = false;
             };
 
             const drinkButtonStyle = (drink) => {
@@ -1035,6 +1113,7 @@
             };
 
             const handleDrinkTap = (drink) => {
+                openRecipePreview(drink);
                 runMobileDoubleTap('drink', drink.id, () => toggleOrderDrink(drink));
             };
 
@@ -1050,6 +1129,7 @@
 
             const exitPos = () => {
                 showPos.value = false;
+                closeRecipePreview();
             };
 
             const findLatestOrderIndexByDrink = (drinkId) => {
@@ -1193,8 +1273,14 @@
                 wheelRotation,
                 isWheelSpinning,
                 highlightedWheelOptionKey,
+                wheelEnabled,
                 showWheel,
                 showPos,
+                showRecipePreview,
+                recipePreviewTitle,
+                recipePreviewDrinkId,
+                recipePreviewSrc,
+                recipeImageMissing,
                 posOrders,
                 posDrinkGroups,
                 serviceDateLabel,
@@ -1218,6 +1304,8 @@
                 enterWheel,
                 exitWheel,
                 runAnniversaryWheel,
+                handleRecipeImageError,
+                closeRecipePreview,
                 drinkButtonStyle,
                 orderCardStyle
             };
