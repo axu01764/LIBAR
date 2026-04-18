@@ -342,11 +342,11 @@
         <div class="text-center mb-16 md:mb-24 reveal-up">
             <h2 class="text-4xl md:text-6xl font-serif-en mb-6">The Menu</h2>
             <div class="w-8 h-px bg-black mx-auto mb-6"></div>
-            <p class="text-[10px] tracking-[0.3em] text-gray-400 uppercase">Seasonal, Classics & Trial</p>
+            <p class="text-[10px] tracking-[0.3em] text-gray-400 uppercase">Special, Signature, Classics & Trial</p>
         </div>
 
         <div class="mb-24 md:mb-32 reveal-up">
-            <h3 class="text-xl md:text-2xl font-serif-en mb-10 md:mb-12 tracking-widest uppercase text-gray-800">Seasonal <span class="text-xs text-gray-400 font-serif-cn normal-case italic ml-3">季节限定</span></h3>
+            <h3 class="text-xl md:text-2xl font-serif-en mb-10 md:mb-12 tracking-widest uppercase text-gray-800">Seasonal <span class="text-xs text-gray-400 font-serif-cn normal-case italic ml-3">随季节更新</span></h3>
             
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-20 gap-y-10 md:gap-y-12">
                 <div v-for="(drink, index) in newDrinks" :key="drink.id" 
@@ -370,7 +370,7 @@
         </div>
 
         <div class="reveal-up">
-            <h3 class="text-xl md:text-2xl font-serif-en mb-10 md:mb-12 tracking-widest uppercase text-gray-800">Classics&twist <span class="text-xs text-gray-400 font-serif-cn normal-case italic ml-3">经典&改编（欢迎与我们沟通风味偏好）</span></h3>
+            <h3 class="text-xl md:text-2xl font-serif-en mb-10 md:mb-12 tracking-widest uppercase text-gray-800">Classics&twist <span class="text-xs text-gray-400 font-serif-cn normal-case italic ml-3">\n经典&改编（欢迎与我们沟通风味偏好）</span></h3>
             
             <div class="space-y-14 md:space-y-16">
                 <div v-for="section in classicDrinkSections" :key="section.id">
@@ -406,7 +406,7 @@
             <img src="images/6.jpg" class="img-scale">
         </div>
         <div class="reveal-up mt-24 md:mt-32">
-            <h3 class="text-xl md:text-2xl font-serif-en mb-10 md:mb-12 tracking-widest uppercase text-gray-800">Trial&Encore <span class="text-xs text-gray-400 font-serif-cn normal-case italic ml-3">创新&返场</span></h3>
+            <h3 class="text-xl md:text-2xl font-serif-en mb-10 md:mb-12 tracking-widest uppercase text-gray-800">Special <span class="text-xs text-gray-400 font-serif-cn normal-case italic ml-3">一期一会</span></h3>
             
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-20 gap-y-10 md:gap-y-12">
                 <div v-for="(drink, index) in experimentalDrinks" :key="drink.id" 
@@ -738,22 +738,20 @@
 
     const classicDrinksList = [
         { id: 2, name: 'Gimlet', subName: '琴蕾', price: '38', color: '#6b7280', tags: '干净 / 青柠 / 杜松子', desc: '金酒 / 柠檬汁 / 基础糖浆\n青柠的酸与金酒的凛冽，干净利落\n20%abv 短饮' },
-        { id: 1, name: 'Dry Martini', soldOut: true, subName: '干马天尼', price: '38/48/58', color: '#831843', tags: '金酒 / 清烈 / 杜松子', desc: '4:1 必富达金酒 / 杜林干味美思\n6:1 必富达金酒 / 杜林干味美思\n15:1 必富达24金酒 / 杜林干味美思\n鸡尾酒之王，烈酒爱好者的天堂，三种比例提供选择。\n25～33%abv 短饮' },
         { id: 3, name: 'Negroni [Edited]', subName: '尼格罗尼 [改编]', price: '48', color: '#4c0519', tags: '苦甜 / 复杂 / 深沉', desc: '必富达金酒 / 金巴利配制酒 / 阿佩罗配制酒 / 红味美思\n经典架构、全新配方，感受酒体随时间的风味变化。\n20%abv 短饮' },
         { id: 12, name: 'Bloody Mary', subName: '血腥玛丽', price: '38', color: '#dc2626', tags: '番茄 / 鲜辣 / 浓郁', desc: '伏特加 / 番茄汁 / 柠檬汁 / 蔓越莓糖浆 / 李派隐喼汁 / 辣椒仔\n绵密口感的回魂体验，探索鸡尾酒口感的新边界。\n6%abv 长饮' },
         { id: 9, name: 'Moscow Mule', subName: '莫斯科骡子', price: '38', color: '#9a3412', tags: '姜汁 / 清爽 / 气泡', desc: '伏特加 / 姜汁啤酒 / 青柠汁\n青柠的鲜活撞击生姜的辛香，在铜杯中释放出极致凉爽。 \n12%abv 长饮' },
         { id: 14, name: 'Coffee Martini', subName: '咖啡马天尼', price: '48', color: '#78350f', tags: '可可 / 咖啡 / 坚果', desc: '伏特加 / 咖啡利口酒 / 浓缩咖啡 / 基础糖浆 \n浓郁的口感与绵密的泡沫，咖啡与酒精，清醒与沉醉。\n可定制甜度\n22%abv 短饮' },
         { id: 7, name: 'Godfather', subName: '教父', price: '48', color: '#3e2723', tags: '醇厚 / 肉桂 / 杏仁', desc: '尊尼获加黑牌 / 拉弗格10年 / 蒂萨诺杏仁利口酒\n选用调和&泥煤威士忌打造这一杯有深度的教父。\n烟熏肉桂封杯。\n30%abv 短饮' },
-        { id: 6, name: 'Paper Plane', soldOut: true, subName: '纸飞机', price: '38', color: '#7f1d1d', tags: '谷物 / 草本 / 馥郁', desc: '波本威士忌 / 自制Amaro苦酒 / 柠檬汁 / 阿佩罗配制酒 \n这款诞生于纽约的现代经典旨在向同名金曲致敬。\n波本威士忌的温润与果味的鲜活轻盈滑翔,好似童年梦境里的纸飞机。\n17%abv 短饮' },
         { id: 8, name: 'Zombie', subName: '僵尸', price: '38', color: '#166534', tags: '热带 / 酸甜 / 百香果', desc: '百加得白朗姆 / 摩根船长香料朗姆 / 美雅士黑朗姆 / 青柠汁 / 菠萝汁 / 百香果糖浆 / 原味苦精\n混合热带风味经典，酸酸甜甜。\n12%abv 长饮' },
         { id: 18, name: 'Daiquiri', subName: '代其利', price: '38', color: '#6b7280', tags: '清爽 / 青柠 / 香料', desc: '百加得白朗姆 / 蔗园三星朗姆酒 / 青柠汁 / 基础糖浆 / 食盐\n海明威钟情的朗姆鸡尾酒，清凉又酸爽的味觉体验。\n20%abv 短饮' },
         { id: 5, name: 'Mamba Libre', subName: '自由曼巴', price: '38', color: '#713f12', tags: '香料 / 气泡 / 可乐', desc: '摩根船长香料朗姆 / 美雅士黑朗姆 / 可口可乐 / 青柠汁 \n这一杯\'进阶版自由古巴\' 将带你穿梭于两个维度。\n12%abv 长饮' },
         { id: 4, name: 'Long Island Iced-tea', subName: '长岛冰茶', price: '38', color: '#1e3a8a', tags: '冰凉 / 柠檬 / 鲜爽', desc: '金龙舌兰 / 哥顿金酒 / 百加得白朗姆 / 伏特加 / 君度橙酒 / 黄柠片 / 青柠汁 / 基础糖浆 / 可口可乐\n无害的茶色下藏着五种基酒的烈性,后劲十足。\n17%abv 长饮' }
     ];
     const classicDrinkSectionDefinitions = [
-        { id: 'gin', title: 'Gin Base', subTitle: '金酒基底', drinkIds: [2, 1, 3] },
+        { id: 'gin', title: 'Gin Base', subTitle: '金酒基底', drinkIds: [2, 3] },
         { id: 'vodka', title: 'Vodka Base', subTitle: '伏特加基底', drinkIds: [12, 9, 14] },
-        { id: 'whisky', title: 'Whisky Base', subTitle: '威士忌基底', drinkIds: [7, 6] },
+        { id: 'whisky', title: 'Whisky Base', subTitle: '威士忌基底', drinkIds: [7] },
         { id: 'rum', title: 'Rum Base', subTitle: '朗姆酒基底', drinkIds: [8, 18, 5] },
         { id: 'mixed', title: 'Mixed Base', subTitle: '混合基底', drinkIds: [4] }
     ];
@@ -761,16 +759,15 @@
     const newDrinksList = [
         { id: 16, name: 'Blossom', subName: '樱·桃', price: '48', color: '#ec4899', tags: '樱花 / 白桃 / 清新', desc: '百加得白朗姆 / 三得利奏系列樱花利口酒 / 三得利奏系列白桃利口酒 / 柠檬汁 / 蔓越莓糖浆\n樱花与白桃的丰富结合带来清新含蓄的花果味。\n18%abv 短饮' },
         { id: 10, name: 'Raspberry Gimlet', subName: '树莓', price: '38', color: '#be185d', tags: '莓果 / 甜润', desc: '莓瑰金酒 / 乐嘉黑加仑利口酒 / 蔓越莓糖浆 / 柠檬汁\n酸甜修饰树莓的饱满口感,回味无穷。\n20%abv 短饮' },
-        { id: 11, name: 'Sakura Gin Tonic', subName: '樱花/白桃金汤力', price: '48', color: '#ec4899', tags: '清爽 / 气泡', desc: '三得利奏系列白桃/樱花利口酒 / 神户居留地汤力水 / 青柠汁\n白桃感觉不如元气森林，不过樱花是什么味道？\n10%abv 长饮' },
-        { id: 13, name: 'Aviation', soldOut: true, subName: '飞行', price: '48', color: '#3b82f6', tags: '花香 / 紫罗兰 / 清冽', desc: '海曼金酒 / 路萨朵黑樱桃配制酒 / 比特储斯紫罗兰利口酒 / 柠檬汁\n诞生于上世纪初的浪漫之作。紫罗兰利口酒赋予其迷人的天际色彩，金酒的凛冽与优雅花香在舌尖轻盈起飞。\n25%abv 短饮' },
-        { id: 17, name: 'Around the World', subName: '环游世界', price: '48', color: '#0d9488', tags: '绵密 / 清凉', desc: '诺迪斯金酒 / 必富达金酒 / 新鲜薄荷 / 新鲜菠萝\n薄荷的凉爽在金酒与菠萝中绽放，新鲜材料让味觉更上一层楼。\n12%abv 短饮' },
-        { id: 19, name: 'Matcha Forest', subName: '绿针林', price: '38', color: '#89916B', tags: '抹茶 / 乌龙 / 清淡', desc: '伏特加 / 糯米酒 / 五十铃抹茶 / 乐嘉黑加仑利口酒 / 乌龙茶\n抹茶爱好者的福音，轻松的口感赋予它第一杯的首选。\n可半价续杯一次。\n6%abv 短饮' }
+        { id: 11, name: 'Sakura/White Peach Gin Tonic', subName: '樱花/白桃金汤力', price: '48', color: '#ec4899', tags: '清爽 / 气泡', desc: '三得利奏系列白桃/樱花利口酒 / 神户居留地汤力水 / 青柠汁\n白桃感觉不如元气森林，不过樱花是什么味道？\n10%abv 长饮' },
+        { id: 13, name: 'Aviation', subName: '飞行', price: '38', color: '#3b82f6', tags: '花香 / 紫罗兰 / 清冽', desc: '海曼金酒 / 路萨朵黑樱桃配制酒 / 比特储斯紫罗兰利口酒 / 柠檬汁\n诞生于上世纪初的浪漫之作。紫罗兰利口酒赋予其迷人的天际色彩，金酒的凛冽与优雅花香在舌尖轻盈起飞。\n25%abv 短饮' },
+        { id: 17, name: 'Around the World', soldOut: true, subName: '环游世界', price: '48', color: '#0d9488', tags: '绵密 / 清凉', desc: '诺迪斯金酒 / 必富达金酒 / 新鲜薄荷 / 新鲜菠萝\n薄荷的凉爽在金酒与菠萝中绽放，新鲜材料让味觉更上一层楼。\n环游世界又去环游了...\n12%abv 短饮' },
+        { id: 19, name: 'Matcha Forest', subName: '绿针林', price: '38', color: '#89916B', tags: '抹茶 / 乌龙 / 清淡', desc: '伏特加 / 糯米酒 / 五十铃抹茶 / 乐嘉黑加仑利口酒 / 乌龙茶\n抹茶爱好者的福音，轻松的口感赋予它第一杯的首选。\n配方鸣谢：BoyanSHI\n6%abv 短饮' }
     ];
     const experimentalDrinksList = [
-        { id: 20, name: 'Chester', subName: '人生简章', price: '48', color: '#6b4226', tags: '巧克力 / 坚果 / 药草', desc: '波本威士忌 / 金巴利配制酒 / 巧克力利口酒\n配方来自调酒师叉剔曾效力的酒吧。\n辛辣、甜蜜、苦涩，在这杯酒中倒映出来。\n25%abv 短饮' },
-        { id: 21, name: 'Mojito', subName: '莫吉托', price: '38', color: '#D7C4BB', tags: '薄荷 / 气泡 / 清爽', desc: '哈瓦那3年朗姆酒 / 美雅士黑朗姆 / 海南小青柑 / 青柠汁 / 基础糖浆 / 泰象气泡水\n简单易饮的气泡经典，漂浮的香料朗姆酒延续了香气。\n"麻烦给我的爱人来一杯MOJITO"\n10%abv 长饮' },
-        { id: 22, name: 'Aperol Spritz', subName: '阿佩罗橙光', price: '38', color: '#F75C2F', tags: '橙香 / 气泡 / 清爽', desc: '阿佩罗配制酒 / 泰象气泡水 / Prosecco起泡酒\n意大利的经典开胃酒，在滋滋气泡中迎接夏季的到来。\n6%abv 长饮'},
-        { id: 23, name: 'A Study in Purple', subName: '紫', price: '38', color: '#3F2B36', tags: '甜美 / 柔顺 / 平衡', desc: '红酒 / 乐嘉黑加仑利口酒\n红酒鸡尾酒的创新，调酒师Shuotong的作品。\n14%abv 短饮'}
+        { id: 24, name: 'XYZ', subName: '最后一杯', price: '38', color: '#FB966E', tags: '香料 / 饱满 / 尾声', desc: '蔗园三星朗姆酒 / 君度橙酒 / 柠檬汁\n象征着结束的一杯酒，热烈道别。\n20%abv 短饮' },
+        { id: 25, name: 'Farewell', subName: '告别', price: '48', color: '#F05E1C', tags: '橙香 / 气泡 / 清新', desc: '清酒 / 金巴利配制酒 / 三得利奏白桃利口酒 / 鲜榨橙汁 / 起泡酒\n选用日式清酒带来一份别样的含蓄告别。\n配方鸣谢：Tribeca\n11%abv 短饮' },
+        { id: 26, name: 'A Study in Mango', subName: '脏芒果', price: '38', color: '#B4A582', tags: '咸鲜 / 芒果 / 清爽', desc: '缇欧佩佩雪莉酒 / 杜林干味美思 / 清酒 / 莫林芒果糖浆 / 咸橄榄汁 \采用奶洗的处理方法带来这一杯极致清爽的芒果味饮品。\n配方鸣谢：BoyanSHI\n10%abv 长饮'},
     ];
     const anniversaryWheelOptions = [
         { key: 'off-3', label: '3元优惠', discount: 3, weight: 70, start: 0, end: 70 },
