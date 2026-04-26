@@ -795,14 +795,13 @@
         { id: 2, name: 'Gimlet', subName: '琴蕾', price: '38', color: '#6b7280', tags: '干净 / 青柠 / 杜松子', desc: '金酒 / 柠檬汁 / 基础糖浆\n青柠的酸与金酒的凛冽，干净利落\n20%abv 短饮' },
         { id: 3, name: 'Negroni [Edited]', subName: '尼格罗尼 [改编]', price: '48', color: '#4c0519', tags: '苦甜 / 复杂 / 深沉', desc: '必富达金酒 / 金巴利配制酒 / 阿佩罗配制酒 / 红味美思\n经典架构、全新配方，感受酒体随时间的风味变化。\n20%abv 短饮' },
         { id: 9, name: 'Moscow Mule', subName: '莫斯科骡子', price: '38', color: '#9a3412', tags: '姜汁 / 清爽 / 气泡', desc: '伏特加 / 姜汁啤酒 / 青柠汁\n青柠的鲜活撞击生姜的辛香，在铜杯中释放出极致凉爽。 \n12%abv 长饮' },
-        { id: 14, name: 'Espresso Martini', subName: '咖啡马天尼', price: '48', color: '#78350f', tags: '可可 / 咖啡 / 坚果', desc: '伏特加 / 咖啡利口酒 / 浓缩咖啡 / 基础糖浆 \n浓郁的口感与绵密的泡沫，咖啡与酒精，清醒与沉醉。\n可定制甜度\n22%abv 短饮' },
+        { id: 14, name: 'Espresso Martini', subName: '咖啡马天尼', soldOut: true, price: '48', color: '#78350f', tags: '可可 / 咖啡 / 坚果', desc: '伏特加 / 咖啡利口酒 / 浓缩咖啡 / 基础糖浆 \n浓郁的口感与绵密的泡沫，咖啡与酒精，清醒与沉醉。\n可定制甜度\n22%abv 短饮' },
         { id: 7, name: 'Godfather', subName: '教父', soldOut: true, price: '48', color: '#3e2723', tags: '醇厚 / 肉桂 / 杏仁', desc: '尊尼获加黑牌 / 拉弗格10年 / 蒂萨诺杏仁利口酒\n选用调和&泥煤威士忌打造这一杯有深度的教父。\n烟熏肉桂封杯。\n30%abv 短饮' },
         { id: 8, name: 'Zombie', subName: '僵尸', price: '38', color: '#166534', tags: '热带 / 酸甜 / 百香果', desc: '百加得白朗姆 / 摩根船长香料朗姆 / 美雅士黑朗姆 / 青柠汁 / 菠萝汁 / 百香果糖浆 / 原味苦精\n混合热带风味经典，酸酸甜甜。\n12%abv 长饮' },
         { id: 18, name: 'Daiquiri', subName: '代其利', price: '38', color: '#6b7280', tags: '清爽 / 青柠 / 香料', desc: '百加得白朗姆 / 蔗园三星朗姆酒 / 青柠汁 / 基础糖浆 / 食盐\n海明威钟情的朗姆鸡尾酒，清凉又酸爽的味觉体验。\n20%abv 短饮' },
         { id: 5, name: 'Mamba Libre', subName: '自由曼巴', price: '38', color: '#713f12', tags: '香料 / 气泡 / 可乐', desc: '摩根船长香料朗姆 / 美雅士黑朗姆 / 可口可乐 / 青柠汁 \n这一杯\'进阶版自由古巴\' 将带你穿梭于两个维度。\n12%abv 长饮' },
-        { id: 4, name: 'Long Island Iced-tea', subName: '长岛冰茶', price: '48', color: '#1e3a8a', tags: '冰凉 / 柠檬 / 鲜爽', desc: '金龙舌兰 / 哥顿金酒 / 百加得白朗姆 / 伏特加 / 君度橙酒 / 黄柠片 / 青柠汁 / 基础糖浆 / 可口可乐\n无害的茶色下藏着五种基酒的烈性,后劲十足。\n17%abv 长饮' }
+        { id: 4, name: 'Long Island Iced-tea', subName: '长岛冰茶', price: '48', color: '#1e3a8a', tags: '冰凉 / 柠檬 / 鲜爽', desc: '金龙舌兰 / 哥顿金酒 / 百加得白朗姆 / 伏特加 / 君度橙酒 / 黄柠片 / 青柠汁 / 基础糖浆 / 可口可乐\n无害的茶色下藏着五种基酒的烈性,后劲十足。\n17%abv 长饮' },
         { id: 27, name: 'Whisky Sour', subName: '威士忌酸', price: '38', color: '#884C3A', tags: '馥郁 / 绵密 / 醇厚', desc: '波本威士忌 / 柠檬汁 / 基础糖浆\n威士忌鸡尾酒的时代经典，酸甜均衡。\n22%abv 短饮' }
-    
     ];
     const classicDrinkSectionDefinitions = [
         { id: 'gin', title: 'Gin Base', subTitle: '金酒基底', drinkIds: [2, 3] },
@@ -823,7 +822,7 @@
         { id: 31, name: 'After the Rain', subName: '雨后', price: '48', color: '#B4A582', tags: '咸鲜 / 罗勒 / 清爽', desc: '菩托雪莉酒 / 杜林干味美思 / 杜林红味美思 / 圣哲曼接骨木花利口酒 / 青柠汁 / 新鲜罗勒 / 汤力水 \n雨后花园阔别许久后的复刻，全新升级配方，更加鲜美。\n7%abv 长饮'},
         { id: 32, name: 'Orange Blossom', subName: '橙花', price: '38', color: '#F05E1C', tags: '橙子 / 草本 / 清新', desc: '添加利金酒 / 杜林红味美思 / 新鲜橙汁\n清新的橙味，轻盈不做作。\n15%abv 短饮' },
         { id: 33, name: 'Mocking Bird', subName: '反舌鸟', price: '38', color: '#86C166', tags: '薄荷 / 清冽', desc: '奥美嘉龙舌兰 / 青柠汁 / 绿薄荷利口酒 \n薄荷的清凉与龙舌兰的热烈交织，完美的夏季饮品\n18%abv 短饮' },
-        { id: 34, name: 'Passion Fruit Gin Fizz', subName: '百香果金菲士', price: '48', color: '#FFC408', tags: '百香果 / 草本 / 气泡', desc: '添加利金酒 / 新鲜百香果 / 百香果糖浆 / 柠檬汁 / 泰象苏打水\n清新的百香果气泡饮，轻松愉悦的酒体。\n15%abv 短饮' },
+        { id: 34, name: 'Passion Fruit Gin Fizz', subName: '百香果金菲士', price: '48', color: '#FFC408', tags: '百香果 / 草本 / 气泡', desc: '添加利金酒 / 新鲜百香果 / 百香果糖浆 / 柠檬汁 / 泰象苏打水\n清新的百香果气泡饮，轻松愉悦的酒体。\n15%abv 短饮' }
     ];
     const anniversaryWheelOptions = [
         { key: 'off-3', label: '3元优惠', discount: 3, weight: 70, start: 0, end: 70 },
