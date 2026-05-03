@@ -748,7 +748,7 @@
         { id: 18, name: 'Daiquiri', subName: '代其利', price: '38', color: '#6b7280', tags: '清爽 / 青柠 / 香料', desc: '百加得白朗姆 / 蔗园三星朗姆酒 / 青柠汁 / 基础糖浆 / 食盐\n海明威钟情的朗姆鸡尾酒，清凉又酸爽的味觉体验。\n20%abv 短饮' },
         { id: 35, name: 'Gin Fizz', subName: '金菲士', price: '38', color: '#DAC9A6', tags: '清爽 / 柠檬 / 气泡', desc: '必富达金酒 / 泰象气泡水 / 柠檬汁 / 基础糖浆 \n极致清爽的草本酸甜鸡尾酒。\n7%abv 长饮' },
         { id: 14, name: 'Coffee Martini', subName: '咖啡马天尼', price: '48', color: '#78350f', tags: '可可 / 咖啡 / 坚果', desc: '伏特加 / 咖啡利口酒 / 浓缩咖啡 / 基础糖浆 \n浓郁的口感与绵密的泡沫，咖啡与酒精，清醒与沉醉。\n可定制甜度\n22%abv 短饮' },
-        { id: 36, name: 'Iron Ranger', subName: '钢铁游侠', price: '48', color: '#828282', tags: '馥郁 / 热带 / 浓烈', desc: '波本威士忌 / 菠萝汁 / 柠檬汁 / 基础糖浆 / 法兰纳姆糖浆 / 苦精 \n浓郁的威士忌配上热带风情的材料，热烈奔放。\n11%abv 长饮' },
+        { id: 36, name: 'Iron Ranger', subName: '钢铁游侠', price: '48', color: '#828282', tags: '馥郁 / 热带 / 浓烈', desc: '波本威士忌 / 菠萝汁 / 柠檬汁 / 基础糖浆 / 法兰纳姆糖浆 / 苦精 \n浓郁的威士忌配上热带风情的材料，热烈奔放。\n11%abv 长饮' }
     ];
     const classicDrinkSectionDefinitions = [
         { id: 'gin', title: 'Gin Base', subTitle: '金酒基底', drinkIds: [2, 35] },
@@ -758,11 +758,16 @@
         { id: 'mixed', title: 'Mixed Base', subTitle: '混合基底', drinkIds: [4] }
     ];
 
-    const newDrinksList = [
-    ];
-    const signatureDrinksList = [
-    ];
-    const experimentalDrinksList = [
+    const fruitCocktailsList = [
+        { id: 88, name: 'BALE', subName: '芭乐', price: '48', color: '#C46243', tags: 'Credits: Carrot、Alan', desc: '红心芭乐 / 蔗园三星白朗姆 / 三得利奏白桃利口酒\n 顾客要求用芭乐做酒，我创作了这杯，吧台的所有人都喜欢。\n15%abv 短饮' },
+        { id: 28, name: 'Tangerine', subName: '蜜柑', price: '48', color: '#C46243', tags: Credits: Gin', desc: '诺迪斯金酒 / 添加利金酒 / 金巴利配制酒 / 三得利奏白桃利口酒 / 绿薄荷利口酒 / 新鲜橙汁\用橙子与白桃交织出甜美清凉的柑橘风味。\n14%abv 短饮'},
+        { id: 101, name: 'Lychee', subName: '荔枝', price: '48', color: '#4F4F48', desc: '灰雁伏特加 / 干味美思 / 荔枝 / 葡萄 / \n干净清甜的荔枝味饮品。\n18%abv 短饮' },
+        { id: 102, name: 'Watermelon', subName: '西瓜', price: '38', color: '#F596AA', desc: '西瓜澄清液 / 椰青 / Fino雪莉酒 / 蔗园三星白朗姆 / 苦艾酒 / 佩乔苦精 / 法兰纳姆糖浆 \n在我身上有一个不可战胜的夏天。\n6%abv 长饮' },
+        { id: 103, name: 'Grape', subName: '葡萄', price: '48', color: '#954A45',desc: '必富达金酒 / 圣哲曼接骨木花利口酒 / 葡萄 / 青柠汁 / 基础糖浆 / 泰象苏打水 \n清爽的葡萄味花香气泡鸡尾酒。\n8%abv 长饮' },
+        { id: 104, name: 'Wax Apple', subName: '莲雾', price: '38', color: '#D7C4BB', desc: 'Fino雪莉酒 / 干味美思 / 莲雾 / 君度橙酒 / 橙味苦精 \n竹子鸡尾酒的改编，莲雾带来幽玄的氛围感受。\n14%abv 短饮' },
+        { id: 105, name: '✝️Frozen✝️ Around the World', subName: '环游世界（冰沙）', price: '48', color: '#7BA23F', desc: '植物学家金酒 / 诺迪斯金酒 / 新鲜薄荷 / 绿薄荷利口酒 / 新鲜菠萝汁 \n环游世界，再次复活。\n12%abv 短饮' },
+        { id: 106, name: 'Blueberry', subName: '蓝莓（甜品）', price: '48', color: '#3C2F41', desc: '植物学家金酒 / 黑加仑利口酒 / 香草曲奇冰激淋 / 蓝莓 / 鲜牛奶 \n鸡尾酒与冰激淋的碰撞，甜甜甜美。\n7%abv 短饮' },
+        { id: 106, name: 'Passion Fruit', subName: '百香果', price: '38', color: '#F75C2F', desc: '阿卡维拉斯龙舌兰 / Fino雪莉酒 / 鲜榨橙汁 / 百香果 \n新鲜浓郁的百香果热情四溢。\n12%abv 短饮' }
     ];
     const anniversaryWheelOptions = [
         { key: 'off-3', label: '3元优惠', discount: 3, weight: 70, start: 0, end: 70 },
@@ -774,9 +779,7 @@
     createApp({
         setup() {
             const classicDrinks = ref(classicDrinksList);
-            const newDrinks = ref(newDrinksList);
-            const signatureDrinks = ref(signatureDrinksList);
-            const experimentalDrinks = ref(experimentalDrinksList);
+            const fruitCocktails = ref(fruitCocktailsList);
             const wheelOptions = ref(anniversaryWheelOptions);
             const wheelRotation = ref(0);
             const isWheelSpinning = ref(false);
@@ -810,11 +813,10 @@
                 {
                     id: 'fruit',
                     title: '水果 Fruit Cocktails',
-                    drinks: [...newDrinks.value, ...signatureDrinks.value, ...experimentalDrinks.value].filter((drink) => !drink.soldOut)
+                    drinks: fruitCocktails.value.filter((drink) => !drink.soldOut)
                 },
                 { id: 'classic', title: '经典 Classics', drinks: classicDrinks.value.filter((drink) => !drink.soldOut) }
             ]);
-            const fruitCocktails = computed(() => [...newDrinks.value, ...signatureDrinks.value, ...experimentalDrinks.value]);
             const classicDrinkSections = computed(() => classicDrinkSectionDefinitions.map((section) => ({
                 ...section,
                 drinks: section.drinkIds
@@ -1273,9 +1275,6 @@
                 classicDrinks,
                 classicDrinkSections,
                 fruitCocktails,
-                newDrinks,
-                signatureDrinks,
-                experimentalDrinks,
                 wheelOptions,
                 wheelRotation,
                 isWheelSpinning,
@@ -1321,6 +1320,31 @@
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
