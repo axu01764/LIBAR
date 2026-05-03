@@ -288,9 +288,9 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-center">
             <div class="lg:col-span-5 reveal-up">
                 <div class="text-[10px] tracking-[0.25em] text-gray-400 uppercase mb-4">Spring 2026</div>
-                <h2 class="text-3xl md:text-5xl font-serif-cn mb-8 leading-tight">风味实验 <br><span class="italic font-serif-en text-gray-400">Flavor Experiments</span></h2>
+                <h2 class="text-3xl md:text-5xl font-serif-cn mb-8 leading-tight">水果水果<br><span class="italic font-serif-en text-gray-400">Fruit Party<span></h2>
                 <div class="space-y-6 text-gray-600 font-light leading-relaxed text-sm">
-                    <p>本周，在这春夏交界的时间，筹划夏季酒单的同时，我们也准备了非常多的新品，带来——“风味实验”主题活动，致力于不断探索风味的新边界！</p>
+                    <p>夏季将至，我们急需一场清凉的水果鸡尾酒派对！九款水果鸡尾酒+七款经典清爽鸡尾酒，夏日前的风味狂想曲！</p>
                     <p>无论你是喜欢清爽的长饮，还是钟情于浓烈的短饮，我们的酒单都能满足你的期待。快来加入我们，一起探索这些令人兴奋的新口味吧！</p>
                 </div>
                 <div class="mt-10">
@@ -343,40 +343,14 @@
         <div class="text-center mb-16 md:mb-24 reveal-up">
             <h2 class="text-4xl md:text-6xl font-serif-en mb-6">The Menu</h2>
             <div class="w-8 h-px bg-black mx-auto mb-6"></div>
-            <p class="text-[10px] tracking-[0.3em] text-gray-400 uppercase">Seasonal, Signature, Trial & Classic</p>
+            <p class="text-[10px] tracking-[0.3em] text-gray-400 uppercase">Fruit Cocktails & Classic&Twists</p>
         </div>
 
         <div class="mb-24 md:mb-32 reveal-up">
-            <h3 class="text-xl md:text-2xl font-serif-en mb-10 md:mb-12 tracking-widest uppercase text-gray-800">Seasonal <span class="text-xs text-gray-400 font-serif-cn normal-case italic ml-3">随季节更新</span></h3>
+            <h3 class="text-xl md:text-2xl font-serif-en mb-10 md:mb-12 tracking-widest uppercase text-gray-800">Fruit Cocktails <span class="text-xs text-gray-400 font-serif-cn normal-case italic ml-3">水果鸡尾酒</span></h3>
             
-            <div v-if="newDrinks.length" class="grid grid-cols-1 lg:grid-cols-2 gap-x-20 gap-y-10 md:gap-y-12">
-                <div v-for="(drink, index) in newDrinks" :key="drink.id" 
-                     class="menu-item group flex flex-col justify-between hover-target"
-                     :class="{'reveal-up': true, 'delay-100': index % 2 === 1}">
-                    
-                    <div class="menu-item-border pb-3 flex justify-between items-end mb-3 gap-4">
-                        <div class="flex items-baseline gap-2 md:gap-3 flex-1 min-w-0" :class="{'opacity-40': drink.soldOut}">
-                            <span class="text-lg font-serif-en font-medium truncate">{{ drink.name }}</span>
-                            <span class="text-[11px] text-gray-400 font-serif-cn whitespace-nowrap flex-shrink-0">{{ drink.subName }}</span>
-                            <span v-if="drink.soldOut" class="ml-2 text-[9px] tracking-[0.2em] text-gray-500 uppercase border border-gray-400 px-1.5 py-0.5 rounded-sm">Sold Out</span>
-                        </div>
-                        <div class="text-sm font-serif-en whitespace-nowrap flex-shrink-0" :class="{'opacity-40 line-through': drink.soldOut}">{{ drink.price }}</div>
-                    </div>
-
-                    <div class="text-[9px] tracking-[0.2em] text-gray-400 mb-2 uppercase">{{ drink.tags }}</div>
-                    <p v-if="getDrinkIngredientLine(drink.desc)" class="drink-ingredient-line mb-2">{{ getDrinkIngredientLine(drink.desc) }}</p>
-                    <p v-if="getDrinkDescBody(drink.desc)" class="text-xs text-gray-500 font-light leading-relaxed font-serif-cn" style="white-space: pre-line;">{{ getDrinkDescBody(drink.desc) }}</p>
-                </div>
-            </div>
-            <div v-else class="menu-item-border pb-5">
-                <p class="text-xs text-gray-400 font-serif-cn italic">敬请期待</p>
-            </div>
-        </div>
-
-        <div class="reveal-up mb-24 md:mb-32">
-            <h3 class="text-xl md:text-2xl font-serif-en mb-10 md:mb-12 tracking-widest uppercase text-gray-800">Signature <span class="text-xs text-gray-400 font-serif-cn normal-case italic ml-3">原创鸡尾酒</span></h3>
-            <div v-if="signatureDrinks.length" class="grid grid-cols-1 lg:grid-cols-2 gap-x-20 gap-y-10 md:gap-y-12">
-                <div v-for="(drink, index) in signatureDrinks" :key="drink.id" 
+            <div v-if="fruitCocktails.length" class="grid grid-cols-1 lg:grid-cols-2 gap-x-20 gap-y-10 md:gap-y-12">
+                <div v-for="(drink, index) in fruitCocktails" :key="drink.id" 
                      class="menu-item group flex flex-col justify-between hover-target"
                      :class="{'reveal-up': true, 'delay-100': index % 2 === 1}">
                     
@@ -402,32 +376,9 @@
         <div class="w-full h-48 md:h-96 img-mask reveal-up mb-24 md:mb-32 mt-24 md:mt-32">
             <img src="images/6.jpg" class="img-scale">
         </div>
-        <div class="reveal-up mt-24 md:mt-32">
-            <h3 class="text-xl md:text-2xl font-serif-en mb-10 md:mb-12 tracking-widest uppercase text-gray-800">Trial <span class="text-xs text-gray-400 font-serif-cn normal-case italic ml-3">一期一会</span></h3>
-            
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-20 gap-y-10 md:gap-y-12">
-                <div v-for="(drink, index) in experimentalDrinks" :key="drink.id" 
-                     class="menu-item group flex flex-col justify-between hover-target"
-                     :class="{'reveal-up': true, 'delay-100': index % 2 === 1}">
-                    
-                    <div class="menu-item-border pb-3 flex justify-between items-end mb-3 gap-4">
-                        <div class="flex items-baseline gap-2 md:gap-3 flex-1 min-w-0" :class="{'opacity-40': drink.soldOut}">
-                            <span class="text-lg font-serif-en font-medium truncate">{{ drink.name }}</span>
-                            <span class="text-[11px] text-gray-400 font-serif-cn whitespace-nowrap flex-shrink-0">{{ drink.subName }}</span>
-                            <span v-if="drink.soldOut" class="ml-2 text-[9px] tracking-[0.2em] text-gray-500 uppercase border border-gray-400 px-1.5 py-0.5 rounded-sm">Sold Out</span>
-                        </div>
-                        <div class="text-sm font-serif-en whitespace-nowrap flex-shrink-0" :class="{'opacity-40 line-through': drink.soldOut}">{{ drink.price }}</div>
-                    </div>
-
-                    <div class="text-[9px] tracking-[0.2em] text-gray-400 mb-2 uppercase">{{ drink.tags }}</div>
-                    <p v-if="getDrinkIngredientLine(drink.desc)" class="drink-ingredient-line mb-2">{{ getDrinkIngredientLine(drink.desc) }}</p>
-                    <p v-if="getDrinkDescBody(drink.desc)" class="text-xs text-gray-500 font-light leading-relaxed font-serif-cn" style="white-space: pre-line;">{{ getDrinkDescBody(drink.desc) }}</p>
-                </div>
-            </div>
-        </div>
 
         <div class="reveal-up mt-24 md:mt-32">
-            <h3 class="text-xl md:text-2xl font-serif-en mb-10 md:mb-12 tracking-widest uppercase text-gray-800">Classic <span class="text-xs text-gray-400 font-serif-cn normal-case italic ml-3">经典&改编（欢迎与我们沟通风味偏好）</span></h3>
+            <h3 class="text-xl md:text-2xl font-serif-en mb-10 md:mb-12 tracking-widest uppercase text-gray-800">Classic&Twists <span class="text-xs text-gray-400 font-serif-cn normal-case italic ml-3">经典&改编（欢迎与我们沟通风味偏好）</span></h3>
             
             <div class="space-y-14 md:space-y-16">
                 <div v-for="section in classicDrinkSections" :key="section.id">
@@ -793,37 +744,25 @@
 
     const classicDrinksList = [
         { id: 2, name: 'Gimlet', subName: '琴蕾', price: '38', color: '#6b7280', tags: '干净 / 青柠 / 杜松子', desc: '金酒 / 柠檬汁 / 基础糖浆\n青柠的酸与金酒的凛冽，干净利落\n20%abv 短饮' },
-        { id: 3, name: 'Negroni [Edited]', subName: '尼格罗尼 [改编]', price: '48', color: '#4c0519', tags: '苦甜 / 复杂 / 深沉', desc: '必富达金酒 / 金巴利配制酒 / 阿佩罗配制酒 / 红味美思\n经典架构、全新配方，感受酒体随时间的风味变化。\n20%abv 短饮' },
-        { id: 9, name: 'Moscow Mule', subName: '莫斯科骡子', price: '38', color: '#9a3412', tags: '姜汁 / 清爽 / 气泡', desc: '伏特加 / 姜汁啤酒 / 青柠汁\n青柠的鲜活撞击生姜的辛香，在铜杯中释放出极致凉爽。 \n12%abv 长饮' },
-        { id: 14, name: 'Espresso Martini', subName: '咖啡马天尼', soldOut: true, price: '48', color: '#78350f', tags: '可可 / 咖啡 / 坚果', desc: '伏特加 / 咖啡利口酒 / 浓缩咖啡 / 基础糖浆 \n浓郁的口感与绵密的泡沫，咖啡与酒精，清醒与沉醉。\n可定制甜度\n22%abv 短饮' },
-        { id: 7, name: 'Godfather', subName: '教父', soldOut: true, price: '48', color: '#3e2723', tags: '醇厚 / 肉桂 / 杏仁', desc: '尊尼获加黑牌 / 拉弗格10年 / 蒂萨诺杏仁利口酒\n选用调和&泥煤威士忌打造这一杯有深度的教父。\n烟熏肉桂封杯。\n30%abv 短饮' },
-        { id: 8, name: 'Zombie', subName: '僵尸', price: '38', color: '#166534', tags: '热带 / 酸甜 / 百香果', desc: '百加得白朗姆 / 摩根船长香料朗姆 / 美雅士黑朗姆 / 青柠汁 / 菠萝汁 / 百香果糖浆 / 原味苦精\n混合热带风味经典，酸酸甜甜。\n12%abv 长饮' },
+        { id: 4, name: 'Long Island Iced-tea', subName: '长岛冰茶', price: '38', color: '#1e3a8a', tags: '冰凉 / 柠檬 / 鲜爽', desc: '金龙舌兰 / 哥顿金酒 / 百加得白朗姆 / 伏特加 / 君度橙酒 / 黄柠片 / 青柠汁 / 基础糖浆 / 可口可乐\n无害的茶色下藏着五种基酒的烈性,后劲十足。\n17%abv 长饮' },
         { id: 18, name: 'Daiquiri', subName: '代其利', price: '38', color: '#6b7280', tags: '清爽 / 青柠 / 香料', desc: '百加得白朗姆 / 蔗园三星朗姆酒 / 青柠汁 / 基础糖浆 / 食盐\n海明威钟情的朗姆鸡尾酒，清凉又酸爽的味觉体验。\n20%abv 短饮' },
-        { id: 5, name: 'Mamba Libre', subName: '自由曼巴', price: '38', color: '#713f12', tags: '香料 / 气泡 / 可乐', desc: '摩根船长香料朗姆 / 美雅士黑朗姆 / 可口可乐 / 青柠汁 \n这一杯\'进阶版自由古巴\' 将带你穿梭于两个维度。\n12%abv 长饮' },
-        { id: 4, name: 'Long Island Iced-tea', subName: '长岛冰茶', price: '48', color: '#1e3a8a', tags: '冰凉 / 柠檬 / 鲜爽', desc: '金龙舌兰 / 哥顿金酒 / 百加得白朗姆 / 伏特加 / 君度橙酒 / 黄柠片 / 青柠汁 / 基础糖浆 / 可口可乐\n无害的茶色下藏着五种基酒的烈性,后劲十足。\n17%abv 长饮' },
-        { id: 27, name: 'Whisky Sour', subName: '威士忌酸', price: '38', color: '#884C3A', tags: '馥郁 / 绵密 / 醇厚', desc: '波本威士忌 / 柠檬汁 / 基础糖浆\n威士忌鸡尾酒的时代经典，酸甜均衡。\n22%abv 短饮' }
+        { id: 35, name: 'Gin Fizz', subName: '金菲士', price: '38', color: '#DAC9A6', tags: '清爽 / 柠檬 / 气泡', desc: '必富达金酒 / 泰象气泡水 / 柠檬汁 / 基础糖浆 \n极致清爽的草本酸甜鸡尾酒。\n7%abv 长饮' },
+        { id: 14, name: 'Coffee Martini', subName: '咖啡马天尼', price: '48', color: '#78350f', tags: '可可 / 咖啡 / 坚果', desc: '伏特加 / 咖啡利口酒 / 浓缩咖啡 / 基础糖浆 \n浓郁的口感与绵密的泡沫，咖啡与酒精，清醒与沉醉。\n可定制甜度\n22%abv 短饮' },
+        { id: 36, name: 'Iron Ranger', subName: '钢铁游侠', price: '48', color: '#828282', tags: '馥郁 / 热带 / 浓烈', desc: '波本威士忌 / 菠萝汁 / 柠檬汁 / 基础糖浆 / 法兰纳姆糖浆 / 苦精 \n浓郁的威士忌配上热带风情的材料，热烈奔放。\n11%abv 长饮' },
     ];
     const classicDrinkSectionDefinitions = [
-        { id: 'gin', title: 'Gin Base', subTitle: '金酒基底', drinkIds: [2, 3] },
-        { id: 'vodka', title: 'Vodka Base', subTitle: '伏特加基底', drinkIds: [9, 14] },
-        { id: 'whisky', title: 'Whisky Base', subTitle: '威士忌基底', drinkIds: [7, 27] },
-        { id: 'rum', title: 'Rum Base', subTitle: '朗姆酒基底', drinkIds: [8, 18, 5] },
+        { id: 'gin', title: 'Gin Base', subTitle: '金酒基底', drinkIds: [2, 35] },
+        { id: 'vodka', title: 'Vodka Base', subTitle: '伏特加基底', drinkIds: [14] },
+        { id: 'whisky', title: 'Whisky Base', subTitle: '威士忌基底', drinkIds: [36] },
+        { id: 'rum', title: 'Rum Base', subTitle: '朗姆酒基底', drinkIds: [18] },
         { id: 'mixed', title: 'Mixed Base', subTitle: '混合基底', drinkIds: [4] }
     ];
 
     const newDrinksList = [
     ];
     const signatureDrinksList = [
-        { id: 28, name: 'Tangerine', subName: '蜜柑', price: '48', color: '#C46243', tags: '橙香 / 饱满 / 甜美', desc: '诺迪斯金酒 / 添加利金酒 / 金巴利配制酒 / 三得利奏白桃利口酒 / 绿薄荷利口酒 / 新鲜橙汁\n用橙子与白桃交织出甜美清凉的柑橘风味。\n14%abv 短饮' },
-        { id: 88, name: 'BALE', subName: '芭乐', price: '48', color: '#C46243', tags: 'Credits: Carrot、Alan', desc: '红心芭乐 / 蔗园三星白朗姆 / 三得利奏白桃利口酒\n 顾客要求用芭乐做酒，我创作了这杯，吧台的所有人都喜欢。\n15%abv 短饮' }
     ];
     const experimentalDrinksList = [
-        { id: 29, name: 'Bamboo', subName: '竹子', price: '38', color: '#554236', tags: '竹子 / 大海 / 清新', desc: 'Tio pepe雪莉酒 / 菩托雪莉酒 / 杜林干味美思\n将竹子与大海融入进鸡尾酒的风味，清新独特。\n10%abv 短饮' },
-        { id: 30, name: 'Adonis', subName: '美少年', price: '38', color: '#F05E1C', tags: '鲜甜 / 清新', desc: 'Tio pepe雪莉酒 / 杜林红味美思\n雪莉酒的另一种形态，更加甜美，又不失咸鲜。\n10%abv 短饮' },
-        { id: 31, name: 'After the Rain', subName: '雨后', price: '48', color: '#B4A582', tags: '咸鲜 / 罗勒 / 清爽', desc: '菩托雪莉酒 / 杜林干味美思 / 杜林红味美思 / 圣哲曼接骨木花利口酒 / 青柠汁 / 新鲜罗勒 / 汤力水 \n雨后花园阔别许久后的复刻，全新升级配方，更加鲜美。\n7%abv 长饮'},
-        { id: 32, name: 'Orange Blossom', subName: '橙花', price: '38', color: '#F05E1C', tags: '橙子 / 草本 / 清新', desc: '添加利金酒 / 杜林红味美思 / 新鲜橙汁\n清新的橙味，轻盈不做作。\n15%abv 短饮' },
-        { id: 33, name: 'Mocking Bird', subName: '反舌鸟', price: '38', color: '#86C166', tags: '薄荷 / 清冽', desc: '奥美嘉龙舌兰 / 青柠汁 / 绿薄荷利口酒 \n薄荷的清凉与龙舌兰的热烈交织，完美的夏季饮品\n18%abv 短饮' },
-        { id: 34, name: 'Passion Fruit Gin Fizz', subName: '百香果金菲士', price: '48', color: '#FFC408', tags: '百香果 / 草本 / 气泡', desc: '添加利金酒 / 新鲜百香果 / 百香果糖浆 / 柠檬汁 / 泰象苏打水\n清新的百香果气泡饮，轻松愉悦的酒体。\n15%abv 短饮' }
     ];
     const anniversaryWheelOptions = [
         { key: 'off-3', label: '3元优惠', discount: 3, weight: 70, start: 0, end: 70 },
@@ -868,11 +807,14 @@
             };
 
             const posDrinkGroups = computed(() => [
-                { id: 'seasonal', title: '季节 Seasonal', drinks: newDrinks.value.filter((drink) => !drink.soldOut) },
-                { id: 'signature', title: '招牌 Signature', drinks: signatureDrinks.value.filter((drink) => !drink.soldOut) },
-                { id: 'trial', title: '风味实验 Trial', drinks: experimentalDrinks.value.filter((drink) => !drink.soldOut) },
+                {
+                    id: 'fruit',
+                    title: '水果 Fruit Cocktails',
+                    drinks: [...newDrinks.value, ...signatureDrinks.value, ...experimentalDrinks.value].filter((drink) => !drink.soldOut)
+                },
                 { id: 'classic', title: '经典 Classics', drinks: classicDrinks.value.filter((drink) => !drink.soldOut) }
             ]);
+            const fruitCocktails = computed(() => [...newDrinks.value, ...signatureDrinks.value, ...experimentalDrinks.value]);
             const classicDrinkSections = computed(() => classicDrinkSectionDefinitions.map((section) => ({
                 ...section,
                 drinks: section.drinkIds
@@ -1330,6 +1272,7 @@
             return {
                 classicDrinks,
                 classicDrinkSections,
+                fruitCocktails,
                 newDrinks,
                 signatureDrinks,
                 experimentalDrinks,
@@ -1378,6 +1321,18 @@
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
