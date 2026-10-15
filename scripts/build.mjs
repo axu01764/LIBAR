@@ -38,7 +38,6 @@ const menu = drinks.map((drink, i) => `<article class="menu-item" data-reveal>
 const gallery = moments.map((photo, i) => `<figure class="moment" data-reveal>
   <a class="photo-link" href="${esc(photo.src)}" data-photo="${i}" aria-label="放大照片：${esc(photo.alt)}">
     <img src="${esc(photo.src)}" alt="${esc(photo.alt)}" loading="lazy" decoding="async" width="800" height="1000">
-    <span class="photo-open">查看照片</span>
   </a>
   <figcaption>${esc(photo.caption)}</figcaption>
 </figure>`).join('\n');
@@ -98,7 +97,7 @@ const publicPage = `<div class="public-site" :class="{'site-hidden': showPos || 
   </section>
 
   <section id="moments" class="moments-section section-pad" aria-labelledby="moments-title">
-    <div class="moments-heading" data-reveal><h2 id="moments-title">A little of<br><em>the night.</em></h2><p>杯中的风味会散去，<br>相聚的片刻会留下。</p></div>
+    <div class="moments-heading" data-reveal><h2 id="moments-title">A little of<br><em>the night.</em></h2></div>
     <div class="moments-grid">${gallery}</div>
     <p class="gallery-hint">往期活动记录</p>
   </section>
