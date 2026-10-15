@@ -1,0 +1,112 @@
+    <div v-cloak v-show="showPos" class="fixed inset-0 z-[50] h-[100dvh] overflow-hidden bg-[#050505] text-white">
+        <div class="flex h-full flex-col">
+            <div class="sticky top-0 z-40 border-b border-white/10 bg-black px-4 py-3">
+                <div class="flex items-center justify-end gap-3 text-[11px]">
+                    <p class="rounded-full border border-white/10 bg-white/[0.04] px-3 py-2 text-white/60">总杯数 {{ totalDrinkCount }}</p>
+                    <button @click="exportTonightData" type="button" class="rounded-full border border-white/15 px-4 py-2 text-white/75">导出今晚数据</button>
+                    <button @click="clearTonightData" type="button" class="rounded-full border border-white/15 px-4 py-2 text-white/75">清空今晚数据</button>
+                    <button @click="exitPos" type="button" class="shrink-0 rounded-full border border-white/15 px-4 py-2 text-[11px] tracking-[0.18em] text-white/75">退出系统</button>
+                </div>
+            </div>
+
+            <section class="h-[42dvh] shrink-0 border-b border-white/10 px-4 py-4">
+                <div class="pos-scrollbar-hidden pos-touch-y h-full overflow-y-auto overflow-x-hidden">
+                    <div class="space-y-5">
+                        <div v-for="group in posDrinkGroups" :key="group.id">
+                            <div class="mb-3 text-[11px] tracking-[0.24em] uppercase text-white/35">{{ group.title }}</div>
+                            <div class="grid grid-cols-3 gap-2 sm:grid-cols-4">
+                                <button
+                                    v-for="drink in group.drinks"
+                                    :key="drink.id"
+                                    type="button"
+                                    @click="handleDrinkTap(drink)"
+                                    class="min-h-[64px] rounded-2xl px-3 py-2 text-left text-white shadow-[0_14px_28px_rgba(0,0,0,0.28)] active:scale-[0.98] touch-manipulation"
+                                    :style="drinkButtonStyle(drink)"
+                                >
+                                    <div
+                                        class="font-serif-cn font-medium leading-tight text-white"
+                                        :class="isLongPosDrinkName(drink.subName) ? 'text-[11px]' : 'text-[13px]'"
+                                    >
+                                        {{ drink.subName }}
+                                    </div>
+                                    <div class="mt-2 flex items-center justify-end gap-2">
+                                        <span class="rounded-full bg-black/15 px-2 py-0.5 text-[10px] text-white/80">{{ getDrinkCount(drink.id) }}</span>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="pos-timeline-type min-h-0 flex-1 overflow-hidden px-4 py-4">
+                <div class="mb-3 flex items-center justify-between gap-3">
+                    <h3 class="text-sm font-bold tracking-[0.14em] text-white/65">出杯时间轴</h3>
+                    <p class="text-[11px] font-bold text-white/35">{{ serviceDateLabel }}</p>
+                </div>
+
+                <div
+                    ref="timelineScroller"
+                    class="timeline-pan-zone pos-scrollbar-hidden pos-touch-pan h-full overflow-auto pb-2"
+                    @wheel="handleTimelineWheel"
+                >
+                    <div class="flex min-h-full min-w-max items-start gap-3">
+                        <div
+                            v-for="slot in posTimelineSlots"
+                            :key="slot.start"
+                            class="flex min-h-full w-[156px] shrink-0 self-start flex-col rounded-3xl border border-white/10 bg-white/[0.03] p-3"
+                        >
+                            <div class="mb-3 border-b border-white/10 pb-2">
+                                <div class="text-sm font-bold text-white">{{ slot.label }}</div>
+                                <div class="text-[10px] font-bold tracking-[0.18em] uppercase text-white/35">{{ slot.orders.length }} orders</div>
+                            </div>
+
+                            <div class="space-y-2 pr-1">
+                                <button
+                                    v-for="order in slot.orders"
+                                    :key="order.id"
+                                    type="button"
+                                    @click="handleOrderTap(order.id)"
+                                    @dblclick="toggleOrderDone(order.id)"
+                                    class="w-full rounded-2xl border px-3 py-2.5 text-left"
+                                    :class="order.done ? 'border-white/10 bg-white/5 text-white/35' : 'border-transparent bg-white/8 text-white'"
+                                    :style="orderCardStyle(order)"
+                                >
+                                    <div class="flex items-start justify-between gap-2">
+                                        <div class="min-w-0">
+                                            <div class="truncate text-[15px] font-bold leading-tight">{{ order.name }}</div>
+                                            <div class="mt-1 truncate text-[12px] font-bold" :class="order.done ? 'text-white/30' : 'text-white/85'">{{ order.subName }}</div>
+                                        </div>
+                                        <span v-if="order.done" class="text-xs text-white/60">✓</span>
+                                    </div>
+                                </button>
+
+                                <div v-if="!slot.orders.length" class="rounded-2xl border border-dashed border-white/10 px-3 py-4 text-[11px] text-white/20">暂无订单</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div v-show="showRecipePreview" class="absolute inset-0 z-[70] bg-black/70 backdrop-blur-[2px] px-4 py-6">
+            <div class="mx-auto flex h-full w-full max-w-3xl flex-col rounded-2xl border border-white/15 bg-[#111] p-4 md:p-5">
+                <div class="mb-4 flex items-center justify-between gap-3">
+                    <p class="text-sm font-serif-cn text-white/80 truncate">{{ recipePreviewTitle }}</p>
+                    <button @click="closeRecipePreview" type="button" class="text-3xl leading-none text-white/75 hover:text-white transition-colors" aria-label="Close recipe preview">&times;</button>
+                </div>
+                <div class="min-h-0 flex-1 overflow-auto rounded-xl border border-white/10 bg-black/20 p-2">
+                    <img
+                        v-if="recipePreviewSrc"
+                        :src="recipePreviewSrc"
+                        :alt="recipePreviewTitle"
+                        class="mx-auto h-auto max-h-full w-auto rounded-lg"
+                        @error="handleRecipeImageError"
+                    >
+                    <div v-if="recipeImageMissing" class="flex h-full min-h-[180px] items-center justify-center text-center text-sm text-white/55">
+                        未找到配方图。请确认图片命名为 `images/id-{{ recipePreviewDrinkId }}.png` 并放在项目可访问路径中。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

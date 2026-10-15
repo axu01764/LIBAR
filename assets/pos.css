@@ -1,0 +1,39 @@
+        .pos-scrollbar-hidden {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .pos-scrollbar-hidden::-webkit-scrollbar {
+            display: none;
+        }
+
+        .pos-mode {
+            background-color: #050505;
+            cursor: auto !important;
+        }
+
+        .pos-mode .cursor-dot,
+        .pos-mode .cursor-outline {
+            display: none !important;
+        }
+
+        .pos-touch-y {
+            touch-action: pan-y;
+            overscroll-behavior: contain;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .pos-touch-pan {
+            touch-action: pan-x pan-y;
+            overscroll-behavior: contain;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .pos-timeline-type {
+            font-family: Arial, "Helvetica Neue", Helvetica, "Noto Sans SC", sans-serif;
+            font-weight: 700;
+        }
+
+
+.font-serif-en { font-family: Cormorant, Georgia, serif; }
+.font-serif-cn { font-family: var(--cn); }
