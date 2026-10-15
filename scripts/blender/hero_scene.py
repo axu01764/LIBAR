@@ -1,30 +1,33 @@
 """Reproducible Cycles cocktail studio. Run with Blender --background --python ...
-Arguments after --: --frames 0,30,59 or --frames all; --preview for small proofs.
+Arguments after --: --frames 0,60,119 or --frames all; --preview for small proofs.
 """
 import bpy, math, os, sys, argparse
 from mathutils import Vector
 
 args = argparse.ArgumentParser()
-args.add_argument('--frames', default='0,30,59')
+args.add_argument('--frames', default='0,60,119')
 args.add_argument('--preview', action='store_true')
 args.add_argument('--cpu', action='store_true')
 args.add_argument('--scene-only', action='store_true')
 opts = args.parse_args(sys.argv[sys.argv.index('--')+1:] if '--' in sys.argv else [])
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
-OUT = os.path.join(ROOT, 'render-output')
+OUT = os.path.join(ROOT, 'render-output', 'v2')
 os.makedirs(OUT, exist_ok=True)
 bpy.ops.object.select_all(action='SELECT')
 bpy.ops.object.delete(use_global=False)
 scene = bpy.context.scene
 scene.render.engine = 'CYCLES'
-scene.cycles.samples = 24 if opts.preview else 32
+scene.cycles.samples = 24 if opts.preview else 64
 scene.cycles.use_denoising = True
 scene.cycles.max_bounces = 12
 scene.cycles.transmission_bounces = 10
 scene.cycles.transparent_max_bounces = 8
 scene.cycles.seed = 17
-scene.render.resolution_x = 1280
-scene.render.resolution_y = 888
+scene.cycles.use_adaptive_sampling = True
+scene.cycles.adaptive_threshold = .045
+scene.cycles.adaptive_min_samples = 16
+scene.render.resolution_x = 1440
+scene.render.resolution_y = 1000
 scene.render.resolution_percentage = 50 if opts.preview else 100
 scene.render.image_settings.file_format = 'PNG'
 scene.render.image_settings.color_mode = 'RGB'
@@ -54,13 +57,15 @@ def material(name, color, rough=.3, metal=0, transmission=0, ior=1.45):
     p.inputs['IOR'].default_value = ior
     return m
 
-glass = material('Fine crystal · 1.45 IOR', (.97,.985,1), .035, transmission=1)
-liquid = material('Clear cocktail · 1.333 IOR', (.97,.955,.85), .022, transmission=1, ior=1.333)
+glass = material('Fine crystal · 1.45 IOR', (.985,.99,1), .022, transmission=1)
+liquid = material('Clear cocktail · 1.333 IOR', (.985,.98,.93), .012, transmission=1, ior=1.333)
 metal = material('Brushed silver pick', (.64,.59,.48), .19, metal=1)
 olive = material('Olive skin', (.28,.32,.065), .32)
 nodes=olive.node_tree.nodes; links=olive.node_tree.links
 noise=nodes.new('ShaderNodeTexNoise'); noise.inputs['Scale'].default_value=65
 bump=nodes.new('ShaderNodeBump'); bump.inputs['Strength'].default_value=.12; bump.inputs['Distance'].default_value=.025
+ramp=nodes.new('ShaderNodeValToRGB'); ramp.color_ramp.elements[0].position=.2; ramp.color_ramp.elements[0].color=(.12,.17,.022,1); ramp.color_ramp.elements[1].position=.8; ramp.color_ramp.elements[1].color=(.34,.38,.09,1)
+links.new(noise.outputs['Fac'],ramp.inputs['Fac']); links.new(ramp.outputs['Color'],nodes.get('Principled BSDF').inputs['Base Color'])
 links.new(noise.outputs['Fac'], bump.inputs['Height']); links.new(bump.outputs['Normal'],nodes.get('Principled BSDF').inputs['Normal'])
 pimento=material('Pimento', (.25,.032,.009), .4)
 wine=material('Burgundy velvet', (.075,.008,.006), .68)
@@ -116,34 +121,35 @@ sub=backdrop.modifiers.new('Soft curve','SUBSURF');sub.levels=2
 scene.world.color=(.13,.08,.065)
 scene.world.use_nodes=True
 scene.world.node_tree.nodes['Background'].inputs['Color'].default_value=(.22,.12,.09,1)
-scene.world.node_tree.nodes['Background'].inputs['Strength'].default_value=.3
+scene.world.node_tree.nodes['Background'].inputs['Strength'].default_value=.22
 
 def aim(obj,point):obj.rotation_euler=(Vector(point)-obj.location).to_track_quat('-Z','Y').to_euler()
 def area(name,location,power,color,size,shape='DISK',size_y=None):
     data=bpy.data.lights.new(name,'AREA');data.energy=power;data.color=color;data.shape=shape;data.size=size
     if size_y is not None:data.size_y=size_y
     obj=bpy.data.objects.new(name,data);scene.collection.objects.link(obj);obj.location=location;aim(obj,(0,0,2.9))
-area('Left silk strip',(-3,-2,5.5),450,(1,.88,.72),1.1,'RECTANGLE',5)
-area('Right crystal rim',(3,1,4.5),550,(1,.94,.85),.8,'RECTANGLE',4)
+area('Left silk strip',(-3,-2,5.5),240,(1,.88,.72),.55,'RECTANGLE',5)
+area('Right crystal rim',(3,1,4.5),330,(1,.94,.85),.45,'RECTANGLE',4)
 area('Stem edge reflection',(-2,1,2),75,(1,.8,.6),.28,'RECTANGLE',3.5)
-area('Softbox above',(-.5,0,7),280,(1,.9,.77),3)
+area('Softbox above',(-.5,0,7),110,(1,.9,.77),2.2)
 area('Warm background wash',(-4,1,3),110,(1,.23,.08),3)
 bpy.ops.object.camera_add(location=(0,-12.8,6.1))
 camera=bpy.context.object;scene.camera=camera;camera.data.lens=42
 camera.data.dof.use_dof=False
 def pose(index):
-    t=index/59
+    t=index/119
     smooth=t*t*(3-2*t)
     root.rotation_euler.z=-math.pi*smooth
-    camera.location=(0,-12.8+2.35*smooth,6.1+1.2*smooth)
-    aim(camera,(0,0,2.65+.45*smooth))
+    camera.location=(0,-12.8+7.2*smooth,6.1+.55*smooth)
+    aim(camera,(0,0,2.65+1.35*smooth))
 def frame(index):
     scene.frame_set(index+1)
     scene.render.filepath=os.path.join(OUT,('proof-' if opts.preview else 'frame-')+f'{index:03d}.png')
+    if not opts.preview and os.path.exists(scene.render.filepath): return
     bpy.ops.render.render(write_still=True)
-indices=range(60) if opts.frames=='all' else [int(i) for i in opts.frames.split(',')]
-scene.frame_start=1;scene.frame_end=60;scene.render.fps=30
-for i in range(60):
+indices=range(120) if opts.frames=='all' else [int(i) for i in opts.frames.split(',')]
+scene.frame_start=1;scene.frame_end=120;scene.render.fps=60
+for i in range(120):
     pose(i)
     root.keyframe_insert(data_path='rotation_euler',frame=i+1)
     camera.keyframe_insert(data_path='location',frame=i+1)

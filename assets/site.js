@@ -55,6 +55,7 @@
   // Every public section is readable before animation or if animation cannot load.
   if (!window.gsap || !window.ScrollTrigger || navigator.connection?.saveData) return;
   gsap.registerPlugin(ScrollTrigger);
+  ScrollTrigger.config({ ignoreMobileResize: true });
   const media = gsap.matchMedia();
   media.add('(prefers-reduced-motion: no-preference)', () => {
     const observer = new IntersectionObserver((entries) => {
@@ -74,14 +75,18 @@
     const hero = document.querySelector('.hero-story');
     // Absolute document offsets also work when the browser restores a mid-page scroll on reload.
     const heroStart = () => hero.getBoundingClientRect().top + window.scrollY;
-    const timeline = gsap.timeline({ scrollTrigger: { trigger: hero, start: heroStart, end: () => heroStart() + Math.max(1, hero.offsetHeight - window.innerHeight), scrub: .55, invalidateOnRefresh: true } });
+    const timeline = gsap.timeline({ scrollTrigger: { trigger: hero, start: heroStart, end: () => heroStart() + Math.max(1, hero.offsetHeight - document.querySelector('.hero-stage').offsetHeight), scrub: .55, invalidateOnRefresh: true } });
     timeline.to(playhead, { progress: 1, duration: .7, ease: 'none', onUpdate: () => sequence?.setProgress(playhead.progress) }, .15)
       .to('.hero-left', { y: -28, autoAlpha: 0, duration: .3, ease: 'power1.inOut' }, .2)
       .to('.hero-right', { y: -18, autoAlpha: 0, duration: .3, ease: 'power1.inOut' }, .28)
       .to('.hero-bottom', { autoAlpha: 0, duration: .2 }, .1)
-      .to(['.hero-image', '.hero-canvas'], { opacity: .16, duration: .18, ease: 'power1.inOut' }, .82)
-      .fromTo('.hero-transition', { y: 22, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: .18 }, .82);
+      .to(['.hero-image', '.hero-canvas'], { opacity: .16, duration: .1, ease: 'power1.inOut' }, .9)
+      .fromTo('.hero-transition', { y: 22, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: .1 }, .9);
+    // Refresh/restored scroll positions can seek a timeline with tween callbacks suppressed.
+    const syncSequence = () => sequence?.setProgress(playhead.progress);
+    ScrollTrigger.addEventListener('refresh', syncSequence);
     ScrollTrigger.refresh();
-    return () => { sequence?.dispose(); document.documentElement.classList.remove('motion-ready'); };
+    syncSequence();
+    return () => { ScrollTrigger.removeEventListener('refresh', syncSequence); sequence?.dispose(); document.documentElement.classList.remove('motion-ready'); };
   });
 })();

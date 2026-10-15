@@ -36,8 +36,8 @@ npm run dev
 - `scripts/pos-template.html`、`assets/pos.js`、`assets/pos.css`：原有隐藏点单系统。
 - `assets/site.css`、`assets/site.js`：响应式样式、导航、照片灯箱、微信复制与滚动过渡。
 - `assets/countdown.js`：东八区倒计时；`scripts/countdown.test.cjs` 覆盖跨时区和到点边界。
-- `images/hero-sequence/`：Cycles 渲染的首帧、桌面 60 帧、手机 36 帧 WebP 序列。
-- `assets/hero-sequence.js`：Canvas 帧选择、压缩帧预取、有限解码缓存与回收。
+- `images/hero-sequence/v2/`：Cycles 渲染的首帧，桌面与手机各 120 帧 WebP 序列。
+- `assets/hero-sequence.js`、`hero-renderer.js`、`hero-worker.js`：Canvas 帧选择、后台绘制、压缩帧预取、有限解码缓存与回收。
 - `scripts/blender/hero_scene.py`、`pack_frames.py`：可重复生成的 Blender 场景和 WebP 打包脚本。
 - `images/moment-*.webp`：现有真实吧台照片的压缩版本，懒加载。
 - `assets/vendor/`：随站点托管的运行库及字体，避免访客加载外部运行时 CDN。
@@ -46,17 +46,17 @@ npm run dev
 
 桌面与手机端均为 260svh 滚动容器和粘性首屏（动画滚动距离 160svh，是原来的两倍），滚动控制文案淡出、真实酒杯旋转镜头、活动信息进入。向上滚动可逆。手机端使用相同的可逆动画；`prefers-reduced-motion` 或省流量模式使用静态展示。
 
-主视觉由 Blender 4.5 Cycles 离线渲染：顺时针 180° 旋转、镜头推进和微俯视均包含在帧中。首段 15% 保持构图，15%–85% 推进镜头，末段转入原有活动信息。GSAP 同一个进度值控制 Canvas 和 DOM，向上滚动沿相同路径倒放。压缩帧按需预取，解码缓存上限为桌面 12 帧、手机 10 帧；不创建持续空转的绘制循环。加载失败保留海报或最后有效帧。
+主视觉由 Blender 4.5 Cycles 离线渲染（1440 × 1000、64 samples，手机输出 864 × 600）：顺时针 180° 旋转、镜头推进和微俯视均包含在帧中。首段 15% 保持构图，15%–85% 推进镜头，85%–90% 保留完整近景，末段再转入原有活动信息。GSAP 同一个进度值控制 Canvas 和 DOM，向上滚动沿相同路径倒放。压缩帧按需预取，支持时通过 OffscreenCanvas Worker 解码和绘制，不支持时使用主线程 Canvas；解码缓存上限为桌面 16 帧、手机 28 帧，方向预取同时照顾反向回滚。绘制按浏览器刷新节奏合并，同一帧不重复绘制；不创建持续空转的绘制循环。加载失败保留海报或最后有效帧。
 
-重新生成素材（本地需要 Blender 和 Python Pillow，Vercel 不运行 Blender）：
+重新生成素材（本地需要 Blender 和 Python Pillow，Vercel 不运行 Blender；默认尝试 oneAPI GPU，可用 `--cpu` 强制 CPU）：
 
 ```powershell
-blender --background --python scripts/blender/hero_scene.py -- --cpu --frames all
+blender --background --python scripts/blender/hero_scene.py -- --frames all
 python scripts/blender/pack_frames.py
 npm run build
 ```
 
-`--preview --frames 0,30,59` 可先生成半分辨率关键帧。场景 `.blend` 和原始 PNG 输出至忽略的 `render-output/`；公开部署仅使用压缩后资源。
+`--preview --frames 0,60,119` 可先生成半分辨率关键帧。场景 `.blend` 和原始 PNG 输出至忽略的 `render-output/v2/`；公开部署仅使用压缩后资源。
 
 照片支持点击放大、上一张/下一张、左右方向键和 Escape 关闭；手机照片区支持横向滑动。导航和入口具备可见键盘焦点，页面允许缩放。
 

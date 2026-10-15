@@ -1,0 +1,14 @@
+{
+  "renderer": "Blender 4.5 Cycles",
+  "rotationDegrees": 180,
+  "desktop": {
+    "frames": 120,
+    "width": 1440,
+    "height": 1000
+  },
+  "mobile": {
+    "frames": 120,
+    "width": 864,
+    "height": 600
+  }
+}

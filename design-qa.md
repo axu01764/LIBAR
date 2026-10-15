@@ -81,3 +81,16 @@ final result: passed
 - Visible page text matches the previously published version. No extra page copy introduced.
 - Build validates existence of every desktop/mobile frame. Node tests cover reverse selection, clamping, resource disposal, late-frame races, unavailable-image fallback and the existing timezone countdown.
 - Screenshots: qa/hero-cycles-final.png, qa/hero-cycles-desktop-turn.png, qa/hero-mobile-rotation.png. Mobile validation is browser emulation, not a physical iPhone or WeChat device test.
+
+
+## Detail, frame density and close-up revision · 2026-10-15
+
+- Re-rendered 120 distinct Cycles frames at 1440 × 1000, 64 samples with adaptive sampling. Sharper crystal/liquid highlights and olive color/normal variation; camera moves from y=-12.8 to y=-5.6, with a raised aim for the final close-up. Final bowl spans approximately 61% of the master width, versus approximately 32% in the previous endpoint. The stem/base intentionally leave the final composition.
+- Desktop sequence: 120 frames, 4.18 MiB; mobile: 120 frames at 864 × 600, 1.95 MiB. Versioned URLs prevent old frame-cache collisions. All 240 WebP files decoded/verified at their expected dimensions.
+- OffscreenCanvas Worker handles decode and drawing when available. Normal Canvas fallback verified by temporarily removing transferControlToOffscreen in the development browser and then reloading to restore it. Both reach frame 119. Preference toggles correctly restore the poster and recreate a transferable canvas.
+- Direction-aware prefetch, 28 mobile / 16 desktop decoded-frame caps, only changed-frame painting, requestAnimationFrame-coalesced messages and no redundant canvas resizing. Address-bar resize jumps reduced with stable stage-based scroll bounds and ScrollTrigger ignoreMobileResize.
+- Full near view remains visible from 85% to 90% scroll progress before transitioning to the existing event overlay. Mobile composition keeps the enlarged bowl within the viewport; no document horizontal overflow at 390 × 844. Desktop composition inspected at 1440 × 900.
+- Eight-second mobile-size forward/reverse trace: 481 browser refresh intervals, p95 16.7 ms, no interval above 34 ms, no long tasks, zero cache misses; frame range 0–119 and return to 0. Repeated under CDP 4× CPU slowdown: 480 intervals, p95 16.8 ms, no interval above 34 ms, no long tasks, zero cache misses and all 120 frame indices observed. These are warm-cache desktop-browser simulations, not physical-phone FPS measurements or cold-network guarantees.
+- Build and five Node tests passed. Text extracted from generated HTML matches the previous deployed commit exactly. No new public copy.
+- Evidence: qa/hero-v2-mobile-closeup.png. QA artifacts and raw renders remain local and are excluded from deployment.
+- Refresh-position regression verified: reload at 87% scroll retains frame 119. Refresh events explicitly synchronize the frame even when GSAP suppresses tween callbacks. Final browser evidence: qa/hero-v2-final.png.

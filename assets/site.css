@@ -39,3 +39,6 @@ body{margin:0;background:var(--wine);color:var(--cream);font-family:var(--sans);
 .sequence-ready .hero-image{visibility:hidden}
 @media(max-width:699px){.hero-canvas{inset:30% 0 auto;height:54%;mask-image:linear-gradient(transparent,#000 12%,#000 82%,transparent);-webkit-mask-image:linear-gradient(transparent,#000 12%,#000 82%,transparent)}}
 @media(max-width:699px) and (max-height:740px){.hero-canvas{top:31%;height:51%}}
+
+@media(max-width:699px){.hero-image,.hero-canvas{height:48%}}
+@media(max-width:699px) and (max-height:740px){.hero-image,.hero-canvas{height:46%}}

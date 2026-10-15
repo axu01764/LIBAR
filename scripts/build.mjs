@@ -3,9 +3,9 @@ import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 
 process.chdir(resolve(dirname(fileURLToPath(import.meta.url)), '..'));
-for (const [device, count] of [['desktop', 60], ['mobile', 36]]) {
+for (const [device, count] of [['desktop', 120], ['mobile', 120]]) {
   for (let i = 0; i < count; i++) {
-    const frame = `images/hero-sequence/${device}/${String(i).padStart(3, '0')}.webp`;
+    const frame = `images/hero-sequence/v2/${device}/${String(i).padStart(3, '0')}.webp`;
     if (!existsSync(frame)) throw new Error(`Missing rendered hero frame: ${frame}`);
   }
 }
@@ -58,7 +58,7 @@ const publicPage = `<div class="public-site" :class="{'site-hidden': showPos || 
 <main>
   <section id="home" class="hero-story" aria-labelledby="hero-title">
     <div class="hero-stage">
-      <picture><source media="(max-width: 699px)" srcset="images/hero-sequence/poster-mobile.webp"><img class="hero-image" src="images/hero-sequence/poster.webp" alt="深酒红光影中，一只盛着清澈酒液与橄榄的高脚鸡尾酒杯" width="1280" height="888" fetchpriority="high" decoding="async"></picture>
+      <picture><source media="(max-width: 699px)" srcset="images/hero-sequence/v2/poster-mobile.webp"><img class="hero-image" src="images/hero-sequence/v2/poster.webp" alt="深酒红光影中，一只盛着清澈酒液与橄榄的高脚鸡尾酒杯" width="1440" height="1000" fetchpriority="high" decoding="async"></picture>
       <canvas class="hero-canvas" aria-hidden="true"></canvas>
       <div class="hero-left">
         <p class="eyebrow hero-date"><time datetime="${e.date}">${dateEnglish}</time><span>${e.time}</span></p>
@@ -128,8 +128,8 @@ const page = `<!DOCTYPE html>
   <title>${e.name} · ${dateShort} — 理 BAR</title>
   <link rel="icon" href="favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="favicon.png">
-  <link rel="preload" href="images/hero-sequence/poster.webp" as="image" media="(min-width:700px)" fetchpriority="high">
-  <link rel="preload" href="images/hero-sequence/poster-mobile.webp" as="image" media="(max-width:699px)" fetchpriority="high">
+  <link rel="preload" href="images/hero-sequence/v2/poster.webp" as="image" media="(min-width:700px)" fetchpriority="high">
+  <link rel="preload" href="images/hero-sequence/v2/poster-mobile.webp" as="image" media="(max-width:699px)" fetchpriority="high">
   <link rel="preload" href="assets/vendor/cormorant-regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/utilities.css">
   <link rel="stylesheet" href="assets/site.css">
@@ -143,6 +143,7 @@ const page = `<!DOCTYPE html>
   <script defer src="assets/vendor/gsap.js"></script>
   <script defer src="assets/vendor/ScrollTrigger.js"></script>
   <script defer src="assets/countdown.js"></script>
+  <script defer src="assets/hero-renderer.js"></script>
   <script defer src="assets/hero-sequence.js"></script>
   <script defer src="assets/site.js"></script>
 </head>
