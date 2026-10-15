@@ -9,7 +9,6 @@ const [year, month, day] = event.date.split('-').map(Number);
 const dateChinese = `${month} 月 ${day} 日`;
 const dateShort = `${month}/${day}`;
 const dateEnglish = new Intl.DateTimeFormat('en-US', {month: 'short', timeZone: 'Asia/Shanghai'}).format(new Date(event.startsAt)).toUpperCase() + '. ' + day;
-const startClock = new Intl.DateTimeFormat('en-GB', {hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'Asia/Shanghai'}).format(new Date(event.startsAt));
 const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
 const e = Object.fromEntries(Object.entries(event).map(([key, value]) => [key, esc(value)]));
 mkdirSync('assets/vendor', { recursive: true });
@@ -41,7 +40,7 @@ const gallery = moments.map((photo, i) => `<figure class="moment" data-reveal>
 const publicPage = `<div class="public-site" :class="{'site-hidden': showPos || showWheel}">
 <a class="skip-link" href="#menu">跳至酒单</a>
 <header class="site-header">
-  <a href="#home" class="brand" aria-label="理 BAR 首页">理 <span>BAR</span><small>ECUST · STUDENT RUN</small></a>
+  <a href="#home" class="brand" aria-label="理 BAR 首页">理 <span>BAR</span></a>
   <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav">菜单</button>
   <nav id="site-nav" aria-label="主导航">
     <a href="#event">本次活动<span>THE EVENT</span></a>
@@ -65,14 +64,13 @@ const publicPage = `<div class="public-site" :class="{'site-hidden': showPos || 
         <a class="text-link hero-cta" href="#menu">查看酒单 <span>OUR MENU</span></a>
       </div>
       <div class="hero-transition" aria-hidden="true"><p class="eyebrow">LI BAR · BACK TO THE NIGHT</p><p class="transition-title">${e.name}</p><p>${e.displayDate} &nbsp; / &nbsp; ${e.time}</p><p>${e.location}</p></div>
-      <div class="hero-bottom"><span>COCKTAILS & GOOD COMPANY</span><a href="#event">向下探索 <span class="scroll-rule" aria-hidden="true"></span> SCROLL TO DISCOVER</a><span>SHANGHAI · FENGXIAN</span></div>
+      <div class="hero-bottom"><span>ALAN</span><a href="#event">向下探索 <span class="scroll-rule" aria-hidden="true"></span> SCROLL TO DISCOVER</a><span>GIN</span></div>
     </div>
   </section>
 
   <section id="event" class="event-section section-pad" aria-labelledby="event-title">
     <div class="countdown-row" data-reveal>
-      <div><p class="eyebrow copper" id="countdown-label">距离复活</p><p class="countdown-target"><time datetime="${e.startsAt}">${dateChinese} · ${startClock}</time></p></div>
-      <div class="countdown" role="timer" aria-labelledby="countdown-label" aria-live="off" hidden>
+      <div class="countdown" role="timer" aria-label="活动倒计时" aria-live="off" hidden>
         <span><strong data-count="days" aria-label="天">00</strong></span><span><strong data-count="hours" aria-label="小时">00</strong></span><span><strong data-count="minutes" aria-label="分钟">00</strong></span><span><strong data-count="seconds" aria-label="秒">00</strong></span>
       </div>
       <p class="countdown-ended" role="status" hidden>复活已开场</p>
