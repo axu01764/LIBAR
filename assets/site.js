@@ -43,7 +43,9 @@
     dialog.showModal();
     document.body.style.overflow = 'hidden';
   }));
-  dialog.querySelector('.dialog-close').addEventListener('click', () => dialog.close());
+  dialog.addEventListener('click', (event) => {
+    if (!event.target.closest('img, button, .photo-caption, .photo-counter')) dialog.close();
+  });
   dialog.querySelector('[data-gallery-prev]').addEventListener('click', () => displayPhoto(photoIndex - 1));
   dialog.querySelector('[data-gallery-next]').addEventListener('click', () => displayPhoto(photoIndex + 1));
   dialog.addEventListener('keydown', (event) => {

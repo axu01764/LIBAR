@@ -100,7 +100,7 @@ const publicPage = `<div class="public-site" :class="{'site-hidden': showPos || 
   <section id="moments" class="moments-section section-pad" aria-labelledby="moments-title">
     <div class="moments-heading" data-reveal><h2 id="moments-title">A little of<br><em>the night.</em></h2><p>杯中的风味会散去，<br>相聚的片刻会留下。</p></div>
     <div class="moments-grid">${gallery}</div>
-    <p class="gallery-hint">往期活动记录 · 点击照片放大<span>手机端可左右滑动浏览</span></p>
+    <p class="gallery-hint">往期活动记录</p>
   </section>
 
   <section id="visit" class="visit-section section-pad" aria-labelledby="visit-title">
@@ -114,7 +114,7 @@ const publicPage = `<div class="public-site" :class="{'site-hidden': showPos || 
     <footer class="site-footer"><button @click="enterPos" class="pos-entry" type="button" aria-label="打开点单系统">© ${year} LI BAR</button><p>Synchronicity is an ever-present reality.</p><a href="#home">回到顶部 / BACK TO TOP</a></footer>
   </section>
 </main>
-<dialog class="photo-dialog" aria-label="往期活动照片"><button type="button" class="dialog-close">关闭 / CLOSE</button><div class="photo-dialog-content"><img alt=""><p class="photo-caption"></p></div><div class="photo-navigation"><button type="button" data-gallery-prev>上一张</button><span class="photo-counter" aria-live="polite"></span><button type="button" data-gallery-next>下一张</button></div></dialog>
+<dialog class="photo-dialog" aria-label="往期活动照片"><div class="photo-dialog-content"><img alt=""><p class="photo-caption"></p></div><div class="photo-navigation"><button type="button" data-gallery-prev>上一张</button><span class="photo-counter" aria-live="polite"></span><button type="button" data-gallery-next>下一张</button></div></dialog>
 </div>`;
 
 const pos = readFileSync('scripts/pos-template.html', 'utf8');

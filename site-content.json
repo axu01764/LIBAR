@@ -52,32 +52,32 @@
     {
       "src": "images/moment-guava.webp",
       "alt": "芭乐",
-      "caption": "芭乐"
+      "caption": "01 / 芭乐"
     },
     {
       "src": "images/moment-white-wine.webp",
       "alt": "白葡萄酒",
-      "caption": "白葡萄酒"
+      "caption": "02 / 白葡萄酒"
     },
     {
       "src": "images/moment-3.webp",
-      "alt": "吧台上的柠檬鸡尾酒与基酒",
-      "caption": "03 / 从一杯开始"
+      "alt": "Penicillin",
+      "caption": "03 / Penicillin"
     },
     {
       "src": "images/moment-4.webp",
-      "alt": "暖色灯光下的红色鸡尾酒",
-      "caption": "04 / 风味的温度"
+      "alt": "Palermo",
+      "caption": "04 / Palermo"
     },
     {
       "src": "images/moment-8.webp",
-      "alt": "吧台上的金色鸡尾酒与柠檬",
-      "caption": "05 / 微醺的颜色"
+      "alt": "威士忌酸",
+      "caption": "05 / 威士忌酸"
     },
     {
       "src": "images/moment-5.webp",
-      "alt": "校园夜色里的户外吧台",
-      "caption": "06 / 校园里的吧台"
+      "alt": "Gin&Tonic",
+      "caption": "06 / Gin&Tonic"
     }
   ]
 }
