@@ -68,3 +68,10 @@ body{margin:0;background:var(--wine);color:var(--cream);font-family:var(--sans);
 .visit-info .copy-wechat{margin-top:24px}
 .visit-info .social-links{margin-top:12px}
 @media(max-width:699px){.bartender-section{padding:10px 24px 80px}.bartender-portrait{width:190px}.bartender-portrait figcaption{font-size:34px}.visit-grid{grid-template-columns:1fr;gap:30px;margin-bottom:55px}.visit-info{border-left:0;border-top:1px solid var(--line);padding:26px 0 0}.visit-campus{font-size:23px;letter-spacing:1px}.visit-grid h2{font-size:68px}}
+
+.hero-left{text-align:center}
+.hero-chinese{padding-left:.14em}
+.bartender-label{font:11px/1.5 var(--sans);letter-spacing:2px;margin:0 0 36px;text-align:center;color:#786554}
+.visit-info .copy-wechat{margin-top:0}
+@media(min-width:700px){.hero-left{top:42%}}
+@media(max-width:699px){.hero-chinese{padding-left:.18em}.bartender-label{font-size:10px;margin-bottom:32px}}

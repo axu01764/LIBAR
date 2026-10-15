@@ -61,13 +61,11 @@ const publicPage = `<div class="public-site" :class="{'site-hidden': showPos || 
       <picture><source media="(max-width: 699px)" srcset="images/hero-sequence/v2/poster-mobile.webp"><img class="hero-image" src="images/hero-sequence/v2/poster.webp" alt="深酒红光影中，一只盛着清澈酒液与橄榄的高脚鸡尾酒杯" width="1440" height="1000" fetchpriority="high" decoding="async"></picture>
       <canvas class="hero-canvas" aria-hidden="true"></canvas>
       <div class="hero-left">
-        <p class="eyebrow hero-date"><time datetime="${e.date}">${dateEnglish}</time><span>${e.time}</span></p>
         <h1 id="hero-title"><span class="hero-chinese">${e.name}</span><span class="hero-english">${e.english}.</span></h1>
         <p class="hero-tagline">${e.intro}</p>
       </div>
       <div class="hero-right">
-        <p class="hero-invitation">在夜色里相聚，<br>在一杯之间重逢。</p>
-        <p class="hero-location">华东理工大学 · ${e.location}</p>
+        <p class="hero-invitation">夜色里相聚，<br>杯盏间重逢。</p>
         <a class="text-link hero-cta" href="#menu">查看酒单 <span>OUR MENU</span></a>
       </div>
       <div class="hero-transition" aria-hidden="true"><p class="eyebrow">LI BAR · BACK TO THE NIGHT</p><p class="transition-title">${e.name}</p><p>${e.displayDate} &nbsp; / &nbsp; ${e.time}</p><p>${e.location}</p></div>
@@ -77,7 +75,7 @@ const publicPage = `<div class="public-site" :class="{'site-hidden': showPos || 
 
   <section id="event" class="event-section section-pad" aria-labelledby="event-title">
     <div class="event-grid">
-      <div data-reveal><p class="eyebrow copper">AUTUMN, TOGETHER AGAIN.</p><h2 id="event-title">${e.name}<em>${e.english}.</em></h2></div>
+      <div data-reveal><h2 id="event-title">${e.name}<em>${e.english}.</em></h2></div>
       <div class="event-copy" data-reveal><h3>${e.intro}</h3><p>${e.description}</p>
         <dl class="event-details"><div><dt class="sr-only">时间</dt><dd><time datetime="${e.date}">${dateChinese}</time><small>${e.time}</small></dd></div><div><dt class="sr-only">地点</dt><dd>${e.location}<small>华东理工大学 · 奉贤校区</small></dd></div></dl>
 
@@ -93,6 +91,7 @@ const publicPage = `<div class="public-site" :class="{'site-hidden': showPos || 
 
   <section class="bartender-section" aria-label="调酒师介绍">
     <figure class="bartender-portrait" data-reveal>
+      <p class="bartender-label">new bartender</p>
       <div class="portrait-frame"><img src="images/jill-st.jpg" alt="调酒师 Jill.St" width="1080" height="1920" loading="lazy" decoding="async"></div>
       <figcaption>Jill.St</figcaption>
     </figure>
@@ -106,7 +105,7 @@ const publicPage = `<div class="public-site" :class="{'site-hidden': showPos || 
 
   <section id="visit" class="visit-section section-pad" aria-labelledby="visit-title">
     <div class="visit-grid"><div data-reveal><h2 id="visit-title">Find Us</h2></div>
-      <div class="visit-info" data-reveal><p class="visit-campus">华东理工大学 · 上海</p>
+      <div class="visit-info" data-reveal>
         <button class="text-link copy-wechat" type="button" data-copy="17601382093">微信 17601382093 <span>点击复制</span></button>
         <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
         <div class="social-links"><a href="https://b23.tv/KLiRgD0" target="_blank" rel="noopener noreferrer">bilibili</a><a href="https://xhslink.com/m/9IN1QDcfLlw" target="_blank" rel="noopener noreferrer">小红书</a><a href="#menu">酒单</a></div>
