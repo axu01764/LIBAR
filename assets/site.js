@@ -66,7 +66,8 @@
     document.querySelectorAll('[data-reveal]').forEach((element) => observer.observe(element));
     return () => observer.disconnect();
   });
-  media.add('(min-width: 1000px) and (prefers-reduced-motion: no-preference)', () => {
+  // The same reversible sequence runs on desktop and touch screens.
+  media.add('(prefers-reduced-motion: no-preference)', () => {
     document.documentElement.classList.add('motion-ready');
     const timeline = gsap.timeline({ scrollTrigger: { trigger: '.hero-story', start: 'top top', end: 'bottom bottom', scrub: .35, invalidateOnRefresh: true } });
     timeline.to('.hero-left', { x: -35, autoAlpha: 0, duration: .25 }, .15)
@@ -77,8 +78,5 @@
       .fromTo('.hero-transition', { y: 25, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: .25 }, .75);
     ScrollTrigger.refresh();
     return () => document.documentElement.classList.remove('motion-ready');
-  });
-  media.add('(max-width: 999px) and (prefers-reduced-motion: no-preference)', () => {
-    gsap.to('.hero-image', { y: 24, scale: 1.025, ease: 'none', scrollTrigger: { trigger: '.hero-stage', start: 'top top', end: 'bottom top', scrub: .3 } });
   });
 })();

@@ -56,3 +56,16 @@ final result: passed
 - [x] Reduced-motion/static fallback
 - [x] Build, static output and countdown tests
 - [x] No outstanding P0/P1/P2 findings
+
+
+## 2026-10-15 requested refinements
+
+final result: passed
+
+- Followed the user's explicit text deletion list. Removed all four section labels, visible timezone and countdown unit labels, the extra menu slogan and currency note. Footer is now Find Us with no repeated event date/time. No new promotional text was added.
+- Replaced the first two gallery assets with the two user-provided photographs. Captions and lightbox labels are exactly 芭乐 and 白葡萄酒.
+- Countdown title and numbers enlarged, with colon separators. Unit descriptions remain accessible to screen readers without visible label clutter. UTC+8 target and calculation are unchanged.
+- Unified the complete scroll timeline for mobile and desktop; removed the mobile-only parallax branch and the CSS rule hiding the transition. Active scroll distance doubled from 80svh to 160svh (260svh total scene including the screen height).
+- Browser checks: 390 × 844 mobile scene measured 2194 px with 844 px sticky stage; at scroll 1200 the title transition is visible, and returning to zero restores the original hero. Desktop 1440 × 800 active distance measured 1280 px. No horizontal overflow on mobile.
+- Opened and inspected updated browser screenshots: qa/mobile-motion-updated.png, qa/countdown-updated.png, qa/gallery-updated.png, qa/find-us-updated.png. New photos loaded; captions match; Find Us has no date/time. No console errors.
+- Countdown tests and build pass. Static visible-text assertions pass for every requested deletion. Existing earlier design comparison remains the baseline for untouched layout; the explicit latest user instructions supersede its copy and motion constraints.

@@ -24,12 +24,13 @@
     timer.hidden = state.ended;
     ended.hidden = !state.ended;
     if (state.ended) {
-      document.querySelector('#countdown-label').textContent = 'THE NIGHT IS HERE';
       clearInterval(interval);
       return;
     }
     for (const unit of ['days', 'hours', 'minutes', 'seconds']) {
-      timer.querySelector(`[data-count="${unit}"]`).textContent = String(state[unit]).padStart(2, '0');
+      const field = timer.querySelector(`[data-count="${unit}"]`);
+      field.textContent = String(state[unit]).padStart(2, '0');
+      field.setAttribute('aria-label', `${state[unit]}${{ days: '天', hours: '小时', minutes: '分钟', seconds: '秒' }[unit]}`);
     }
   }
   interval = setInterval(update, 1000);

@@ -8,7 +8,6 @@ const { event, drinks, moments } = content;
 const [year, month, day] = event.date.split('-').map(Number);
 const dateChinese = `${month} 月 ${day} 日`;
 const dateShort = `${month}/${day}`;
-const dateDot = `${month}.${String(day).padStart(2, '0')}`;
 const dateEnglish = new Intl.DateTimeFormat('en-US', {month: 'short', timeZone: 'Asia/Shanghai'}).format(new Date(event.startsAt)).toUpperCase() + '. ' + day;
 const startClock = new Intl.DateTimeFormat('en-GB', {hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'Asia/Shanghai'}).format(new Date(event.startsAt));
 const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
@@ -63,7 +62,7 @@ const publicPage = `<div class="public-site" :class="{'site-hidden': showPos || 
       <div class="hero-right">
         <p class="hero-invitation">在夜色里相聚，<br>在一杯之间重逢。</p>
         <p class="hero-location">华东理工大学 · ${e.location}</p>
-        <a class="text-link hero-cta" href="#menu">查看本期酒单 <span>OUR MENU</span></a>
+        <a class="text-link hero-cta" href="#menu">查看酒单 <span>OUR MENU</span></a>
       </div>
       <div class="hero-transition" aria-hidden="true"><p class="eyebrow">LI BAR · BACK TO THE NIGHT</p><p class="transition-title">${e.name}</p><p>${e.displayDate} &nbsp; / &nbsp; ${e.time}</p><p>${e.location}</p></div>
       <div class="hero-bottom"><span>COCKTAILS & GOOD COMPANY</span><a href="#event">向下探索 <span class="scroll-rule" aria-hidden="true"></span> SCROLL TO DISCOVER</a><span>SHANGHAI · FENGXIAN</span></div>
@@ -71,11 +70,10 @@ const publicPage = `<div class="public-site" :class="{'site-hidden': showPos || 
   </section>
 
   <section id="event" class="event-section section-pad" aria-labelledby="event-title">
-    <div class="section-kicker" data-reveal><span>01 / THE GATHERING</span><span>本期活动</span></div>
     <div class="countdown-row" data-reveal>
-      <div><p class="eyebrow copper" id="countdown-label">距离复活 / THE NIGHT AWAITS</p><p class="countdown-target"><time datetime="${e.startsAt}">${dateChinese} · ${startClock}</time><span>北京时间 UTC+8</span></p></div>
+      <div><p class="eyebrow copper" id="countdown-label">距离复活</p><p class="countdown-target"><time datetime="${e.startsAt}">${dateChinese} · ${startClock}</time></p></div>
       <div class="countdown" role="timer" aria-labelledby="countdown-label" aria-live="off" hidden>
-        <span><strong data-count="days">00</strong><small>天 / DAYS</small></span><span><strong data-count="hours">00</strong><small>时 / HRS</small></span><span><strong data-count="minutes">00</strong><small>分 / MIN</small></span><span><strong data-count="seconds">00</strong><small>秒 / SEC</small></span>
+        <span><strong data-count="days" aria-label="天">00</strong></span><span><strong data-count="hours" aria-label="小时">00</strong></span><span><strong data-count="minutes" aria-label="分钟">00</strong></span><span><strong data-count="seconds" aria-label="秒">00</strong></span>
       </div>
       <p class="countdown-ended" role="status" hidden>复活已开场</p>
     </div>
@@ -89,26 +87,23 @@ const publicPage = `<div class="public-site" :class="{'site-hidden': showPos || 
   </section>
 
   <section id="menu" class="menu-section section-pad" aria-labelledby="menu-title">
-    <div class="section-kicker" data-reveal><span>02 / THE SELECTION</span><span>本期酒单</span></div>
-    <div class="menu-heading" data-reveal><p class="eyebrow">FOUR DRINKS. ONE NIGHT.</p><h2 id="menu-title">The Menu</h2><p>四杯酒，四种重逢的方式。</p></div>
+    <div class="menu-heading" data-reveal><h2 id="menu-title">The Menu</h2></div>
     <div class="menu-grid">${menu}</div>
-    <div class="menu-footnote"><span>价格单位：人民币 / 杯</span><span>欢迎与我们沟通风味偏好。</span></div>
+    <div class="menu-footnote"><span>欢迎与我们沟通风味偏好。</span></div>
   </section>
 
   <section id="moments" class="moments-section section-pad" aria-labelledby="moments-title">
-    <div class="section-kicker" data-reveal><span>03 / AFTER HOURS</span><span>往期片刻</span></div>
     <div class="moments-heading" data-reveal><h2 id="moments-title">A little of<br><em>the night.</em></h2><p>杯中的风味会散去，<br>相聚的片刻会留下。</p></div>
     <div class="moments-grid">${gallery}</div>
     <p class="gallery-hint">往期活动记录 · 点击照片放大<span>手机端可左右滑动浏览</span></p>
   </section>
 
   <section id="visit" class="visit-section section-pad" aria-labelledby="visit-title">
-    <div class="section-kicker" data-reveal><span>04 / FIND YOUR WAY</span><span>关于与到场</span></div>
-    <div class="visit-grid"><div data-reveal><p class="eyebrow copper">A SMALL BAR. A SHARED NIGHT.</p><h2 id="visit-title">夜晚有处，<br><em>相聚有时。</em></h2><p class="about-copy">理 BAR，学生自运营的校园鸡尾酒活动。<br>从一杯酒开始，让熟悉的校园多一种相遇。</p></div>
-      <div class="visit-info" data-reveal><p class="eyebrow">NEXT GATHERING</p><p class="visit-date">${dateDot} <span>${e.time}</span></p><p class="visit-location">${e.location}</p><p class="muted">华东理工大学 · 上海</p>
+    <div class="visit-grid"><div data-reveal><h2 id="visit-title">Find Us</h2></div>
+      <div class="visit-info" data-reveal><p class="visit-location">${e.location}</p><p class="muted">华东理工大学 · 上海</p>
         <button class="text-link copy-wechat" type="button" data-copy="17601382093">微信 17601382093 <span>点击复制</span></button>
         <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
-        <div class="social-links"><a href="https://b23.tv/KLiRgD0" target="_blank" rel="noopener noreferrer">bilibili</a><a href="https://xhslink.com/m/9IN1QDcfLlw" target="_blank" rel="noopener noreferrer">小红书</a><a href="#menu">本期酒单</a></div>
+        <div class="social-links"><a href="https://b23.tv/KLiRgD0" target="_blank" rel="noopener noreferrer">bilibili</a><a href="https://xhslink.com/m/9IN1QDcfLlw" target="_blank" rel="noopener noreferrer">小红书</a><a href="#menu">酒单</a></div>
       </div>
     </div>
     <footer class="site-footer"><button @click="enterPos" class="pos-entry" type="button" aria-label="打开点单系统">© ${year} LI BAR</button><p>Synchronicity is an ever-present reality.</p><a href="#home">回到顶部 / BACK TO TOP</a></footer>
