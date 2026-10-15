@@ -4,7 +4,7 @@
 
 ## 当前活动
 
-复活 · 2026-10-22 · 19:00 till late · 奉贤风檐广场。
+复活 · 2026-10-20 · 19:00 till late · 奉贤风檐广场。
 
 酒单保留原有中英文名称、价格、饮品类型、描述和 ABV 排版：长岛冰茶 48 元、僵尸 48 元、巧克力咖啡马天尼 48 元、恶魔 Diablo 38 元。
 
@@ -12,7 +12,7 @@
 
 编辑 `site-content.json` 中的 `event`、`drinks` 和 `moments`，然后运行 `npm run build`。`index.html` 和 `assets/content.js` 是生成文件，请勿直接修改。
 
-- `event.startsAt` 必须包含明确时区，例如 `2026-10-22T19:00:00+08:00`。倒计时按绝对时间计算，到点后显示“复活已开场”，不会出现负数。
+- `event.startsAt` 必须包含明确时区，例如 `2026-10-20T19:00:00+08:00`。倒计时按绝对时间计算，到点后显示“复活已开场”，不会出现负数。
 - `event.date` 用于活动日期，`event.time` 用于展示时段；二者应与 `startsAt` 对齐。
 - 修改酒单时保留已有饮品的 `id`，避免影响点单记录。`desc` 中以换行分隔描述和 ABV。
 - 公开酒单在构建时生成，点单系统使用同一个数据源。无 JavaScript 时活动资料与酒单仍然可读。
@@ -35,7 +35,7 @@ npm run dev
 - `scripts/build.mjs`：页面结构和静态内容生成；复制已锁定版本的 Vue、GSAP 和字体到本地资源目录。
 - `scripts/pos-template.html`、`assets/pos.js`、`assets/pos.css`：原有隐藏点单系统。
 - `assets/site.css`、`assets/site.js`：响应式样式、导航、照片灯箱、微信复制与滚动过渡。
-- `assets/countdown.js`：东八区倒计时；`scripts/countdown.test.cjs` 覆盖跨时区和到点边界。
+- `assets/entry.js`：开场全屏倒计时与素材就绪门控；`assets/countdown.js`：东八区倒计时；`scripts/countdown.test.cjs` 覆盖跨时区和到点边界。
 - `images/hero-sequence/v2/`：Cycles 渲染的首帧，桌面与手机各 120 帧 WebP 序列。
 - `assets/hero-sequence.js`、`hero-renderer.js`、`hero-worker.js`：Canvas 帧选择、后台绘制、压缩帧预取、有限解码缓存与回收。
 - `scripts/blender/hero_scene.py`、`pack_frames.py`：可重复生成的 Blender 场景和 WebP 打包脚本。
@@ -69,3 +69,5 @@ npm run build
 已检查桌面和手机尺寸、菜单导航、酒单完整文字、照片灯箱、点单计数与完成状态、减少动态效果、倒计时到点状态。倒计时自动测试覆盖上海、伦敦、洛杉矶时区与秒级边界。设计截图与比较记录见 `design-qa.md`；本地证据在忽略的 `qa/` 目录。
 
 iOS Safari、微信内置浏览器和真实校园网络需要实机复测；未宣称达到生产环境 Core Web Vitals 百分位指标。
+
+打开页面先显示全屏倒计时，当前设备的 120 帧下载完成且首帧绘制成功后，自动淡出并解锁滚动。加载失败或超过 45 秒则降级为静态海报；减少动态效果及省流量模式直接等待海报后进入。无 JavaScript 时展示静态页面。酒单下方为原图及细线框组成的 Jill.St 人物板块。

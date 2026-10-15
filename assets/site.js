@@ -55,10 +55,17 @@
   dialog.addEventListener('close', () => { document.body.style.overflow = ''; opener?.focus(); });
 
   // Every public section is readable before animation or if animation cannot load.
-  if (!window.gsap || !window.ScrollTrigger || navigator.connection?.saveData) return;
+  const finishStaticEntry = () => {
+    const poster = document.querySelector('.hero-image');
+    Promise.resolve(poster.decode?.()).catch(() => {}).then(() => window.entryGate?.finish('static'));
+  };
+  if (!window.gsap || !window.ScrollTrigger || navigator.connection?.saveData) { finishStaticEntry(); return; }
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) finishStaticEntry();
   gsap.registerPlugin(ScrollTrigger);
   ScrollTrigger.config({ ignoreMobileResize: true });
+  window.addEventListener('entry-open', () => ScrollTrigger.refresh(), { once: true });
   const media = gsap.matchMedia();
+  media.add('(prefers-reduced-motion: reduce)', finishStaticEntry);
   media.add('(prefers-reduced-motion: no-preference)', () => {
     const observer = new IntersectionObserver((entries) => {
       for (const entry of entries) if (entry.isIntersecting) {
@@ -73,6 +80,7 @@
   media.add('(prefers-reduced-motion: no-preference)', () => {
     document.documentElement.classList.add('motion-ready');
     const sequence = window.createHeroSequence?.(document.querySelector('.hero-canvas'));
+    if (!sequence) finishStaticEntry();
     const playhead = { progress: 0 };
     const hero = document.querySelector('.hero-story');
     // Absolute document offsets also work when the browser restores a mid-page scroll on reload.

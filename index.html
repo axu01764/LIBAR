@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <script src="assets/entry.js"></script>
   <meta name="theme-color" content="#260c0b">
-  <meta name="description" content="理 BAR 本期活动「复活」：10 月 22 日，19:00 till late，华东理工大学奉贤风檐广场。查看本期四款鸡尾酒酒单。">
-  <title>复活 · 10/22 — 理 BAR</title>
+  <meta name="description" content="理 BAR 本期活动「复活」：10 月 20 日，19:00 till late，华东理工大学奉贤风檐广场。查看本期四款鸡尾酒酒单。">
+  <title>复活 · 10/20 — 理 BAR</title>
   <link rel="icon" href="favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="favicon.png">
   <link rel="preload" href="images/hero-sequence/v2/poster.webp" as="image" media="(min-width:700px)" fetchpriority="high">
@@ -28,6 +29,14 @@
   <script defer src="assets/site.js"></script>
 </head>
 <body>
+<div class="entry-screen" aria-label="活动倒计时" aria-busy="true">
+    <div class="countdown-row">
+      <div class="countdown" role="timer" aria-label="活动倒计时" aria-live="off" hidden>
+        <span><strong data-count="days" aria-label="天">00</strong></span><span><strong data-count="hours" aria-label="小时">00</strong></span><span><strong data-count="minutes" aria-label="分钟">00</strong></span><span><strong data-count="seconds" aria-label="秒">00</strong></span>
+      </div>
+      <p class="countdown-ended" role="status" hidden>复活已开场</p>
+    </div>
+</div>
 <div id="app"><div class="public-site" :class="{'site-hidden': showPos || showWheel}">
 <a class="skip-link" href="#menu">跳至酒单</a>
 <header class="site-header">
@@ -46,7 +55,7 @@
       <picture><source media="(max-width: 699px)" srcset="images/hero-sequence/v2/poster-mobile.webp"><img class="hero-image" src="images/hero-sequence/v2/poster.webp" alt="深酒红光影中，一只盛着清澈酒液与橄榄的高脚鸡尾酒杯" width="1440" height="1000" fetchpriority="high" decoding="async"></picture>
       <canvas class="hero-canvas" aria-hidden="true"></canvas>
       <div class="hero-left">
-        <p class="eyebrow hero-date"><time datetime="2026-10-22">OCT. 22</time><span>19:00 till late</span></p>
+        <p class="eyebrow hero-date"><time datetime="2026-10-20">OCT. 20</time><span>19:00 till late</span></p>
         <h1 id="hero-title"><span class="hero-chinese">复活</span><span class="hero-english">Resurrection.</span></h1>
         <p class="hero-tagline">让夜晚，再次发生。</p>
       </div>
@@ -55,23 +64,17 @@
         <p class="hero-location">华东理工大学 · 奉贤风檐广场</p>
         <a class="text-link hero-cta" href="#menu">查看酒单 <span>OUR MENU</span></a>
       </div>
-      <div class="hero-transition" aria-hidden="true"><p class="eyebrow">LI BAR · BACK TO THE NIGHT</p><p class="transition-title">复活</p><p>10 / 22 &nbsp; / &nbsp; 19:00 till late</p><p>奉贤风檐广场</p></div>
+      <div class="hero-transition" aria-hidden="true"><p class="eyebrow">LI BAR · BACK TO THE NIGHT</p><p class="transition-title">复活</p><p>10 / 20 &nbsp; / &nbsp; 19:00 till late</p><p>奉贤风檐广场</p></div>
       <div class="hero-bottom"><span>ALAN</span><a href="#event">向下探索 <span class="scroll-rule" aria-hidden="true"></span> SCROLL TO DISCOVER</a><span>GIN</span></div>
     </div>
   </section>
 
   <section id="event" class="event-section section-pad" aria-labelledby="event-title">
-    <div class="countdown-row" data-reveal>
-      <div class="countdown" role="timer" aria-label="活动倒计时" aria-live="off" hidden>
-        <span><strong data-count="days" aria-label="天">00</strong></span><span><strong data-count="hours" aria-label="小时">00</strong></span><span><strong data-count="minutes" aria-label="分钟">00</strong></span><span><strong data-count="seconds" aria-label="秒">00</strong></span>
-      </div>
-      <p class="countdown-ended" role="status" hidden>复活已开场</p>
-    </div>
     <div class="event-grid">
       <div data-reveal><p class="eyebrow copper">AUTUMN, TOGETHER AGAIN.</p><h2 id="event-title">复活<em>Resurrection.</em></h2></div>
       <div class="event-copy" data-reveal><h3>让夜晚，再次发生。</h3><p>熟悉的风檐，久违的碰杯。理 BAR 带着四款鸡尾酒重新开场，邀你把日常暂放一旁，在秋夜里相聚。</p>
-        <dl class="event-details"><div><dt>WHEN / 时间</dt><dd><time datetime="2026-10-22">10 月 22 日</time><small>19:00 till late</small></dd></div><div><dt>WHERE / 地点</dt><dd>奉贤风檐广场<small>华东理工大学 · 奉贤校区</small></dd></div></dl>
-        <a href="#menu" class="text-link">先选一杯 <span>EXPLORE THE MENU</span></a>
+        <dl class="event-details"><div><dt class="sr-only">时间</dt><dd><time datetime="2026-10-20">10 月 20 日</time><small>19:00 till late</small></dd></div><div><dt class="sr-only">地点</dt><dd>奉贤风檐广场<small>华东理工大学 · 奉贤校区</small></dd></div></dl>
+
       </div>
     </div>
   </section>
@@ -111,6 +114,13 @@
   <p class="drink-description">黑加仑与姜汁的碰撞，酒体颜色如恶魔的血液。<br>13%abv</p>
 </article></div>
     <div class="menu-footnote"><span>欢迎与我们沟通风味偏好。</span></div>
+  </section>
+
+  <section class="bartender-section" aria-label="调酒师介绍">
+    <figure class="bartender-portrait" data-reveal>
+      <div class="portrait-frame"><img src="images/jill-st.jpg" alt="调酒师 Jill.St" width="1080" height="1920" loading="lazy" decoding="async"></div>
+      <figcaption>Jill.St</figcaption>
+    </figure>
   </section>
 
   <section id="moments" class="moments-section section-pad" aria-labelledby="moments-title">
@@ -162,7 +172,7 @@
 
   <section id="visit" class="visit-section section-pad" aria-labelledby="visit-title">
     <div class="visit-grid"><div data-reveal><h2 id="visit-title">Find Us</h2></div>
-      <div class="visit-info" data-reveal><p class="visit-location">奉贤风檐广场</p><p class="muted">华东理工大学 · 上海</p>
+      <div class="visit-info" data-reveal><p class="visit-campus">华东理工大学 · 上海</p>
         <button class="text-link copy-wechat" type="button" data-copy="17601382093">微信 17601382093 <span>点击复制</span></button>
         <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
         <div class="social-links"><a href="https://b23.tv/KLiRgD0" target="_blank" rel="noopener noreferrer">bilibili</a><a href="https://xhslink.com/m/9IN1QDcfLlw" target="_blank" rel="noopener noreferrer">小红书</a><a href="#menu">酒单</a></div>

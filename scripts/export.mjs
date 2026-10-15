@@ -3,7 +3,7 @@ mkdirSync('dist/assets', { recursive: true });
 mkdirSync('dist/images', { recursive: true });
 copyFileSync('index.html', 'dist/index.html');
 copyFileSync('favicon.png', 'dist/favicon.png');
-for (const file of ['site.css', 'pos.css', 'utilities.css', 'site.js', 'hero-sequence.js', 'hero-renderer.js', 'hero-worker.js', 'pos.js', 'content.js', 'countdown.js']) {
+for (const file of ['entry.js', 'site.css', 'pos.css', 'utilities.css', 'site.js', 'hero-sequence.js', 'hero-renderer.js', 'hero-worker.js', 'pos.js', 'content.js', 'countdown.js']) {
   copyFileSync(`assets/${file}`, `dist/assets/${file}`);
 }
 cpSync('assets/vendor', 'dist/assets/vendor', { recursive: true });

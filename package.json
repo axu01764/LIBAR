@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "node scripts/build.mjs && tailwindcss -i assets/utilities.input.css -o assets/utilities.css --minify && node scripts/export.mjs",
-    "test": "node --test scripts/countdown.test.cjs scripts/hero-sequence.test.cjs",
+    "test": "node --test scripts/entry.test.cjs scripts/countdown.test.cjs scripts/hero-sequence.test.cjs",
     "dev": "http-server . -p 4173 -c-1"
   },
   "devDependencies": {

@@ -4,7 +4,7 @@ const vm = require('node:vm');
 const fs = require('node:fs');
 const settle = () => new Promise(resolve => setImmediate(resolve));
 function setup({ mobile = false, deferred = false, fail = false } = {}) {
-  const pending = new Map(), drawn = [], closed = [], messages = [];
+  const pending = new Map(), drawn = [], closed = [], messages = [], events = [];
   const canvas = { width: 1440, height: 1000, getContext: () => ({ drawImage: bitmap => drawn.push(bitmap.id) }) };
   const context = { self: {}, AbortController,
     fetch: async () => ({ ok: !fail, blob: async () => ({}) }),
@@ -15,8 +15,8 @@ function setup({ mobile = false, deferred = false, fail = false } = {}) {
     return deferred ? new Promise(resolve => pending.set(id, () => resolve(make()))) : Promise.resolve(make());
   };
   vm.runInNewContext(fs.readFileSync('assets/hero-renderer.js','utf8'),context);
-  const renderer = context.self.createHeroRenderer(canvas, { baseUrl: '/frames', count: 120, mobile }, message => messages.push(message));
-  return { renderer, canvas, pending, drawn, closed, messages };
+  const renderer = context.self.createHeroRenderer(canvas, { baseUrl: '/frames', count: 120, mobile }, message => { events.push(message); if(message.type === "paint") messages.push(message); });
+  return { renderer, canvas, pending, drawn, closed, messages, events };
 }
 test('120-frame selection reverses, clamps, avoids redundant drawing and disposes resources', async () => {
   const t = setup(); await settle(); assert.equal(t.drawn.at(-1), 0);
@@ -55,4 +55,9 @@ test('failed assets preserve the poster; redundant resizes do not clear the canv
   const good=setup();await settle(); const draws=good.drawn.length;
   good.renderer.resize(1440,1000);assert.equal(good.drawn.length,draws);
   good.renderer.resize(720,500);assert.equal(good.drawn.length,draws+1);good.renderer.dispose();
+});
+
+test('entry readiness waits for all downloads and reports incomplete assets', async () => {
+  const good=setup(); await settle(); assert.ok(good.events.some(e=>e.type==='loaded' && e.complete)); good.renderer.dispose();
+  const bad=setup({fail:true}); await settle(); assert.ok(bad.events.some(e=>e.type==='loaded' && !e.complete)); bad.renderer.dispose();
 });

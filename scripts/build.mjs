@@ -76,17 +76,11 @@ const publicPage = `<div class="public-site" :class="{'site-hidden': showPos || 
   </section>
 
   <section id="event" class="event-section section-pad" aria-labelledby="event-title">
-    <div class="countdown-row" data-reveal>
-      <div class="countdown" role="timer" aria-label="活动倒计时" aria-live="off" hidden>
-        <span><strong data-count="days" aria-label="天">00</strong></span><span><strong data-count="hours" aria-label="小时">00</strong></span><span><strong data-count="minutes" aria-label="分钟">00</strong></span><span><strong data-count="seconds" aria-label="秒">00</strong></span>
-      </div>
-      <p class="countdown-ended" role="status" hidden>复活已开场</p>
-    </div>
     <div class="event-grid">
       <div data-reveal><p class="eyebrow copper">AUTUMN, TOGETHER AGAIN.</p><h2 id="event-title">${e.name}<em>${e.english}.</em></h2></div>
       <div class="event-copy" data-reveal><h3>${e.intro}</h3><p>${e.description}</p>
-        <dl class="event-details"><div><dt>WHEN / 时间</dt><dd><time datetime="${e.date}">${dateChinese}</time><small>${e.time}</small></dd></div><div><dt>WHERE / 地点</dt><dd>${e.location}<small>华东理工大学 · 奉贤校区</small></dd></div></dl>
-        <a href="#menu" class="text-link">先选一杯 <span>EXPLORE THE MENU</span></a>
+        <dl class="event-details"><div><dt class="sr-only">时间</dt><dd><time datetime="${e.date}">${dateChinese}</time><small>${e.time}</small></dd></div><div><dt class="sr-only">地点</dt><dd>${e.location}<small>华东理工大学 · 奉贤校区</small></dd></div></dl>
+
       </div>
     </div>
   </section>
@@ -97,6 +91,13 @@ const publicPage = `<div class="public-site" :class="{'site-hidden': showPos || 
     <div class="menu-footnote"><span>欢迎与我们沟通风味偏好。</span></div>
   </section>
 
+  <section class="bartender-section" aria-label="调酒师介绍">
+    <figure class="bartender-portrait" data-reveal>
+      <div class="portrait-frame"><img src="images/jill-st.jpg" alt="调酒师 Jill.St" width="1080" height="1920" loading="lazy" decoding="async"></div>
+      <figcaption>Jill.St</figcaption>
+    </figure>
+  </section>
+
   <section id="moments" class="moments-section section-pad" aria-labelledby="moments-title">
     <div class="moments-heading" data-reveal><h2 id="moments-title">A little of<br><em>the night.</em></h2><p>杯中的风味会散去，<br>相聚的片刻会留下。</p></div>
     <div class="moments-grid">${gallery}</div>
@@ -105,7 +106,7 @@ const publicPage = `<div class="public-site" :class="{'site-hidden': showPos || 
 
   <section id="visit" class="visit-section section-pad" aria-labelledby="visit-title">
     <div class="visit-grid"><div data-reveal><h2 id="visit-title">Find Us</h2></div>
-      <div class="visit-info" data-reveal><p class="visit-location">${e.location}</p><p class="muted">华东理工大学 · 上海</p>
+      <div class="visit-info" data-reveal><p class="visit-campus">华东理工大学 · 上海</p>
         <button class="text-link copy-wechat" type="button" data-copy="17601382093">微信 17601382093 <span>点击复制</span></button>
         <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
         <div class="social-links"><a href="https://b23.tv/KLiRgD0" target="_blank" rel="noopener noreferrer">bilibili</a><a href="https://xhslink.com/m/9IN1QDcfLlw" target="_blank" rel="noopener noreferrer">小红书</a><a href="#menu">酒单</a></div>
@@ -123,6 +124,7 @@ const page = `<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <script src="assets/entry.js"></script>
   <meta name="theme-color" content="#260c0b">
   <meta name="description" content="理 BAR 本期活动「${e.name}」：${dateChinese}，${e.time}，华东理工大学${e.location}。查看本期四款鸡尾酒酒单。">
   <title>${e.name} · ${dateShort} — 理 BAR</title>
@@ -148,6 +150,14 @@ const page = `<!DOCTYPE html>
   <script defer src="assets/site.js"></script>
 </head>
 <body>
+<div class="entry-screen" aria-label="活动倒计时" aria-busy="true">
+    <div class="countdown-row">
+      <div class="countdown" role="timer" aria-label="活动倒计时" aria-live="off" hidden>
+        <span><strong data-count="days" aria-label="天">00</strong></span><span><strong data-count="hours" aria-label="小时">00</strong></span><span><strong data-count="minutes" aria-label="分钟">00</strong></span><span><strong data-count="seconds" aria-label="秒">00</strong></span>
+      </div>
+      <p class="countdown-ended" role="status" hidden>复活已开场</p>
+    </div>
+</div>
 <div id="app">${publicPage}\n${pos}</div>
 </body>
 </html>\n`;

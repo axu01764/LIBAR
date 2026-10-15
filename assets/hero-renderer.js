@@ -79,6 +79,7 @@ self.createHeroRenderer = function (canvas, options, notify) {
         try { await fetchFrame(i); } catch { /* A future scroll may retry. */ }
       }
     }));
+    if (!disposed) notify({ type: 'loaded', complete: blobs.size === count });
   }
   plan(); preload();
   return {

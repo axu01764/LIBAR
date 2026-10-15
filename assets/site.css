@@ -42,3 +42,29 @@ body{margin:0;background:var(--wine);color:var(--cream);font-family:var(--sans);
 
 @media(max-width:699px){.hero-image,.hero-canvas{height:48%}}
 @media(max-width:699px) and (max-height:740px){.hero-image,.hero-canvas{height:46%}}
+
+/* The opening countdown holds scrolling until the device's sequence is downloaded. */
+.entry-screen{display:none;position:fixed;inset:0;z-index:1000;background:radial-gradient(ellipse at 50% 65%,#3c1612,var(--dark) 75%);align-items:center;justify-content:center;opacity:1;transition:opacity .65s ease;touch-action:none}
+.entry-loading,.entry-loading body{overflow:hidden;overscroll-behavior:none}
+.entry-loading .entry-screen{display:flex}
+.entry-screen[hidden]{display:none}
+.entry-screen.is-leaving{opacity:0}
+.entry-screen .countdown-row{margin:0;padding:24px;border:0;width:100%}
+.entry-screen .countdown{gap:clamp(18px,3vw,50px)}
+.entry-screen .countdown strong{font-size:clamp(48px,10vw,150px);min-width:1em;font-variant-numeric:lining-nums tabular-nums}
+.entry-screen .countdown>span+span:before{font-size:clamp(48px,10vw,150px);left:calc(clamp(18px,3vw,50px) * -.72)}
+.bartender-section{background:#efe6d8;color:#34221e;padding:0 24px 100px;display:flex;justify-content:center}
+.bartender-portrait{width:230px;margin:0;text-align:center}
+.portrait-frame{position:relative;isolation:isolate}
+.portrait-frame:before,.portrait-frame:after{content:'';position:absolute;z-index:-1;pointer-events:none;border:1px solid #b49a7c}
+.portrait-frame:before{inset:16px -20px -16px 20px}
+.portrait-frame:after{width:55px;height:75px;left:-17px;top:-17px;border-right:0;border-bottom:0}
+.portrait-frame img{width:100%;height:auto}
+.bartender-portrait figcaption{font:italic 38px/1.2 var(--serif);letter-spacing:1px;margin-top:38px}
+.visit-grid{align-items:center;gap:8%;grid-template-columns:1fr 1.2fr;max-width:1150px;margin:0 auto 90px}
+.visit-grid h2{margin:0;font-size:clamp(64px,7vw,100px)}
+.visit-info{padding:8px 0 8px 48px;border-left:1px solid var(--line)}
+.visit-campus{font:clamp(22px,2.2vw,32px)/1.6 var(--cn);letter-spacing:2px;margin:0}
+.visit-info .copy-wechat{margin-top:24px}
+.visit-info .social-links{margin-top:12px}
+@media(max-width:699px){.bartender-section{padding:10px 24px 80px}.bartender-portrait{width:190px}.bartender-portrait figcaption{font-size:34px}.visit-grid{grid-template-columns:1fr;gap:30px;margin-bottom:55px}.visit-info{border-left:0;border-top:1px solid var(--line);padding:26px 0 0}.visit-campus{font-size:23px;letter-spacing:1px}.visit-grid h2{font-size:68px}}

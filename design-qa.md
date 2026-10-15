@@ -95,3 +95,13 @@ final result: passed
 - Evidence: qa/hero-v2-mobile-closeup.png. QA artifacts and raw renders remain local and are excluded from deployment.
 - Refresh-position regression verified: reload at 87% scroll retains frame 119. Refresh events explicitly synchronize the frame even when GSAP suppresses tween callbacks. Final browser evidence: qa/hero-v2-final.png.
 - Production verification: Vercel success and live worker-rendered frame 119 confirmed. Cold-visit prefetch prioritizes start/end and quarter-turn poses, with six fetch lanes and immediate requests for the desired frame. Follow-up build/tests and restored-position browser check passed. Live screenshot: qa/hero-v2-live-closeup.png.
+
+
+## Full-screen entry and Jill.St · 2026-10-15
+
+- Event moved to next Tuesday, 2026-10-20 at 19:00 UTC+8. Page title, metadata, hero, event details and countdown use the shared source. Timezone/boundary tests updated.
+- Countdown moved to a full-screen burgundy entry overlay with no additional public copy. Normal entry requires all 120 device frames downloaded and a valid first frame painted. Scroll and keyboard access to the background remain locked until the fade completes. One-second minimum presentation; no manual enter button.
+- Controlled local server delayed each frame response by 700 ms: observed entry-loading=true, scrollY=0 after wheel input, app.inert=true. After the sequence completed, entryState=ready, inert=false and frame=0. Browser fallback check confirmed entryState=fallback, unlocked background and visible poster. Watchdog test covers the 45-second deadline. Reduced-motion browser check entered static mode successfully.
+- Removed visible WHEN/WHERE labels and the entire '先选一杯' CTA. Screen-reader terms remain for the event definition list. Find Us omits the square name, enlarges the university/city line and aligns contact links within a separated right column; mobile stacks cleanly.
+- New section immediately after menu: supplied original portrait, 230 px desktop / 190 px mobile width, original proportions, offset hairline frames, and only Jill.St below. No invented biography or headings. No horizontal overflow at 390 × 844 or 1280 × 720.
+- Build and eight tests pass. Screenshots: qa/entry-countdown.png, qa/jill-mobile.png, qa/jill-desktop.png, qa/find-us-refined.png, qa/find-us-desktop.png.
