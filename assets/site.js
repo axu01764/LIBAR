@@ -90,8 +90,12 @@
       .to('.hero-left', { y: -28, autoAlpha: 0, duration: .3, ease: 'power1.inOut' }, .2)
       .to('.hero-right', { y: -18, autoAlpha: 0, duration: .3, ease: 'power1.inOut' }, .28)
       .to('.hero-bottom', { autoAlpha: 0, duration: .2 }, .1)
-      .to(['.hero-image', '.hero-canvas'], { opacity: .16, duration: .1, ease: 'power1.inOut' }, .9)
-      .fromTo('.hero-transition', { y: 22, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: .1 }, .9);
+      // Reveal the darkened scene and its copy together behind one soft upward sweep.
+      // Extra scroll distance preserves the glass speed and gives the reveal room to breathe.
+      .set('.hero-transition', { autoAlpha: 1 }, .9)
+      .fromTo('.hero-transition', { y: 40, maskPosition: '0% 0%', webkitMaskPosition: '0% 0%' },
+        { y: 0, maskPosition: '0% 100%', webkitMaskPosition: '0% 100%', duration: .45, ease: 'power1.inOut', immediateRender: false }, .9)
+      .to({}, { duration: .15 });
     // Refresh/restored scroll positions can seek a timeline with tween callbacks suppressed.
     const syncSequence = () => sequence?.setProgress(playhead.progress);
     ScrollTrigger.addEventListener('refresh', syncSequence);
