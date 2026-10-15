@@ -94,3 +94,4 @@ final result: passed
 - Build and five Node tests passed. Text extracted from generated HTML matches the previous deployed commit exactly. No new public copy.
 - Evidence: qa/hero-v2-mobile-closeup.png. QA artifacts and raw renders remain local and are excluded from deployment.
 - Refresh-position regression verified: reload at 87% scroll retains frame 119. Refresh events explicitly synchronize the frame even when GSAP suppresses tween callbacks. Final browser evidence: qa/hero-v2-final.png.
+- Production verification: Vercel success and live worker-rendered frame 119 confirmed. Cold-visit prefetch prioritizes start/end and quarter-turn poses, with six fetch lanes and immediate requests for the desired frame. Follow-up build/tests and restored-position browser check passed. Live screenshot: qa/hero-v2-live-closeup.png.

@@ -69,9 +69,13 @@ self.createHeroRenderer = function (canvas, options, notify) {
   }
   async function preload() {
     let next = 0;
-    await Promise.all(Array.from({ length: 3 }, async () => {
-      while (next < count && !disposed) {
-        const i = next++;
+    // Fetch the endpoint and major poses early, so a cold visit can jump into the close-up.
+    const order = [...new Set([0, count - 1, Math.round((count - 1) / 2),
+      Math.round((count - 1) / 4), Math.round((count - 1) * .75),
+      ...Array.from({ length: count }, (_, i) => i)])];
+    await Promise.all(Array.from({ length: 6 }, async () => {
+      while (next < order.length && !disposed) {
+        const i = order[next++];
         try { await fetchFrame(i); } catch { /* A future scroll may retry. */ }
       }
     }));
@@ -84,6 +88,7 @@ self.createHeroRenderer = function (canvas, options, notify) {
       if (next === desired) return;
       direction = next > desired ? 1 : -1; desired = next;
       if (!bitmaps.has(desired)) missCount++;
+      if (!blobs.has(desired)) fetchFrame(desired).catch(() => {});
       paint(); plan();
     },
     resize(width, height) {
