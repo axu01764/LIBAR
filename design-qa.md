@@ -69,3 +69,15 @@ final result: passed
 - Browser checks: 390 × 844 mobile scene measured 2194 px with 844 px sticky stage; at scroll 1200 the title transition is visible, and returning to zero restores the original hero. Desktop 1440 × 800 active distance measured 1280 px. No horizontal overflow on mobile.
 - Opened and inspected updated browser screenshots: qa/mobile-motion-updated.png, qa/countdown-updated.png, qa/gallery-updated.png, qa/find-us-updated.png. New photos loaded; captions match; Find Us has no date/time. No console errors.
 - Countdown tests and build pass. Static visible-text assertions pass for every requested deletion. Existing earlier design comparison remains the baseline for untouched layout; the explicit latest user instructions supersede its copy and motion constraints.
+
+
+## Cycles scroll sequence · 2026-10-15
+
+- Scripted Blender 4.5 Cycles scene: hollow crystal coupe, liquid meniscus, two textured olives, metal pick, strip lights and seamless burgundy studio. Camera advances and rises while the cocktail rotates clockwise 180 degrees.
+- Desktop: 60 WebP frames at 1280 × 888, 1.19 MiB total. Mobile: 36 frames at 864 × 600, 0.37 MiB total. Poster is approximately 23 KB.
+- Canvas is driven by the same GSAP scrub timeline as text. Decoded bitmap cache is bounded (12 desktop / 10 mobile). Stale asynchronous results cannot overwrite a later scroll selection. Poster is hidden only after a valid canvas frame is painted.
+- Verified mobile CSS viewport 390 × 844: frame 0 → 32 → 12 → 0, text returns to opacity 1, no horizontal overflow. Reduced-motion uses the mobile poster and no visible canvas.
+- Verified desktop CSS viewport 1440 × 900: frame 0 → 54, correct leftward pick position, and correct frame 54 when reloading at the same scroll position. Absolute trigger start remains 0 after browser scroll restoration. Returning to the top restores frame 0 and original text.
+- Visible page text matches the previously published version. No extra page copy introduced.
+- Build validates existence of every desktop/mobile frame. Node tests cover reverse selection, clamping, resource disposal, late-frame races, unavailable-image fallback and the existing timezone countdown.
+- Screenshots: qa/hero-cycles-final.png, qa/hero-cycles-desktop-turn.png, qa/hero-mobile-rotation.png. Mobile validation is browser emulation, not a physical iPhone or WeChat device test.

@@ -69,14 +69,19 @@
   // The same reversible sequence runs on desktop and touch screens.
   media.add('(prefers-reduced-motion: no-preference)', () => {
     document.documentElement.classList.add('motion-ready');
-    const timeline = gsap.timeline({ scrollTrigger: { trigger: '.hero-story', start: 'top top', end: 'bottom bottom', scrub: .35, invalidateOnRefresh: true } });
-    timeline.to('.hero-left', { x: -35, autoAlpha: 0, duration: .25 }, .15)
-      .to('.hero-right', { x: 35, autoAlpha: 0, duration: .25 }, .15)
+    const sequence = window.createHeroSequence?.(document.querySelector('.hero-canvas'));
+    const playhead = { progress: 0 };
+    const hero = document.querySelector('.hero-story');
+    // Absolute document offsets also work when the browser restores a mid-page scroll on reload.
+    const heroStart = () => hero.getBoundingClientRect().top + window.scrollY;
+    const timeline = gsap.timeline({ scrollTrigger: { trigger: hero, start: heroStart, end: () => heroStart() + Math.max(1, hero.offsetHeight - window.innerHeight), scrub: .55, invalidateOnRefresh: true } });
+    timeline.to(playhead, { progress: 1, duration: .7, ease: 'none', onUpdate: () => sequence?.setProgress(playhead.progress) }, .15)
+      .to('.hero-left', { y: -28, autoAlpha: 0, duration: .3, ease: 'power1.inOut' }, .2)
+      .to('.hero-right', { y: -18, autoAlpha: 0, duration: .3, ease: 'power1.inOut' }, .28)
       .to('.hero-bottom', { autoAlpha: 0, duration: .2 }, .1)
-      .to('.hero-image', { scale: 1.07, yPercent: -2, duration: .6, ease: 'none' }, .15)
-      .to('.hero-image', { opacity: .13, scale: 1.02, duration: .25 }, .75)
-      .fromTo('.hero-transition', { y: 25, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: .25 }, .75);
+      .to(['.hero-image', '.hero-canvas'], { opacity: .16, duration: .18, ease: 'power1.inOut' }, .82)
+      .fromTo('.hero-transition', { y: 22, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: .18 }, .82);
     ScrollTrigger.refresh();
-    return () => document.documentElement.classList.remove('motion-ready');
+    return () => { sequence?.dispose(); document.documentElement.classList.remove('motion-ready'); };
   });
 })();
