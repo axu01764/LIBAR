@@ -53,6 +53,7 @@ body{margin:0;background:var(--wine);color:var(--cream);font-family:var(--sans);
 .entry-screen .countdown-row{margin:0;padding:24px;border:0;width:100%;flex-direction:column;gap:30px}
 .countdown-status{display:flex;align-items:center;justify-content:center;gap:12px;margin:0;font:clamp(18px,2.4vw,28px)/1.5 var(--cn);letter-spacing:.22em;color:var(--muted);text-align:center}
 .countdown-status.is-live{font-family:var(--serif);letter-spacing:.1em;color:var(--cream)}
+.countdown-status[hidden]{display:none}
 .countdown-status.is-live:before{content:'';width:7px;height:7px;flex-shrink:0;border-radius:50%;background:#7eae92;box-shadow:0 0 14px #7eae9233}
 .entry-screen .countdown{gap:clamp(16px,3vw,50px);width:min(100%,940px);margin:0}
 .entry-screen .countdown>span{flex:1;min-width:0;gap:12px}

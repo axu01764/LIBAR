@@ -25,7 +25,8 @@
     const mode = state.started ? 'elapsed' : 'remaining';
     if (timer.dataset.mode !== mode) {
       timer.dataset.mode = mode;
-      status.textContent = state.started ? 'EVENT IN PROGRESS' : '距离复活';
+      status.textContent = state.started ? 'EVENT IN PROGRESS' : '';
+      status.hidden = !state.started;
       status.classList.toggle('is-live', state.started);
       timer.setAttribute('aria-label', state.started ? '活动已开始时长' : '活动倒计时');
       document.querySelector('.entry-screen').setAttribute('aria-label', state.started ? '活动正向计时' : '活动倒计时');

@@ -37,11 +37,14 @@ vm.runInNewContext(fs.readFileSync('assets/countdown.js', 'utf8'), {
   Date: { parse: Date.parse, now: () => now }, setInterval: callback => { tick = callback; }
 });
 assert.equal(timer.dataset.mode, 'remaining');
+assert.equal(status.textContent, '');
+assert.equal(status.hidden, true);
 assert.equal(fields.seconds.textContent, '01');
 now = Date.parse(target); tick();
 assert.equal(timer.dataset.mode, 'elapsed');
 assert.equal(timer.hidden, false);
 assert.equal(status.textContent, 'EVENT IN PROGRESS');
+assert.equal(status.hidden, false);
 now += 2000; tick();
 assert.equal(fields.seconds.textContent, '02');
 console.log('Countdown passed: UTC+8, visitor timezones, countdown-to-elapsed boundary, elapsed days, and continued browser updates.');
