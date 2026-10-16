@@ -150,10 +150,10 @@ const page = `<!DOCTYPE html>
 <body>
 <div class="entry-screen" aria-label="活动倒计时" aria-busy="true">
     <div class="countdown-row">
+      <p class="countdown-status" role="status">距离复活</p>
       <div class="countdown" role="timer" aria-label="活动倒计时" aria-live="off" hidden>
-        <span><strong data-count="days" aria-label="天">00</strong></span><span><strong data-count="hours" aria-label="小时">00</strong></span><span><strong data-count="minutes" aria-label="分钟">00</strong></span><span><strong data-count="seconds" aria-label="秒">00</strong></span>
+        <span><strong data-count="days" aria-label="天">00</strong><small>DAYS</small></span><span><strong data-count="hours" aria-label="小时">00</strong><small>HRS</small></span><span><strong data-count="minutes" aria-label="分钟">00</strong><small>MINS</small></span><span><strong data-count="seconds" aria-label="秒">00</strong><small>SECS</small></span>
       </div>
-      <p class="countdown-ended" role="status" hidden>复活已开场</p>
     </div>
 </div>
 <div id="app">${publicPage}\n${pos}</div>
