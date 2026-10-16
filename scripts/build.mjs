@@ -31,8 +31,7 @@ const menu = drinks.map((drink, i) => `<article class="menu-item" data-reveal>
   <div class="menu-item-border">
     <h3><span class="drink-name">${esc(drink.name)}</span><span class="drink-name-cn">${esc(drink.subName)}</span></h3>
     <span class="drink-price" aria-label="${esc(drink.price)}元">${esc(drink.price)}</span>
-  </div>
-  <p class="drink-type">${esc(drink.tags)}</p>
+  </div>${drink.tags ? `\n  <p class="drink-type">${esc(drink.tags)}</p>` : ''}
   <p class="drink-description">${esc(drink.desc).replace(/\n/g, '<br>')}</p>
 </article>`).join('\n');
 const gallery = moments.map((photo, i) => `<figure class="moment" data-reveal>
@@ -124,7 +123,7 @@ const page = `<!DOCTYPE html>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <script src="assets/entry.js"></script>
   <meta name="theme-color" content="#260c0b">
-  <meta name="description" content="理 BAR 本期活动「${e.name}」：${dateChinese}，${e.time}，华东理工大学${e.location}。查看本期四款鸡尾酒酒单。">
+  <meta name="description" content="理 BAR 本期活动「${e.name}」：${dateChinese}，${e.time}，华东理工大学${e.location}。查看本期八款鸡尾酒酒单。">
   <title>${e.name} · ${dateShort} — 理 BAR</title>
   <link rel="icon" href="favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="favicon.png">

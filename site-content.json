@@ -8,7 +8,7 @@
     "time": "19:00 till late",
     "location": "奉贤风檐广场",
     "intro": "今夜，重新开场。",
-    "description": "熟悉的风檐，久违的碰杯。理 BAR 带着四款鸡尾酒重新开场，邀你把日常暂放一旁，在秋夜里相聚。"
+    "description": "熟悉的风檐，久违的碰杯。理 BAR 带着八款鸡尾酒重新开场，邀你把日常暂放一旁，在秋夜里相聚。"
   },
   "drinks": [
     {
@@ -46,6 +46,42 @@
       "color": "#7f292f",
       "tags": "长饮",
       "desc": "黑加仑与姜汁的碰撞，酒体颜色如恶魔的血液。\n13%abv"
+    },
+    {
+      "id": 215,
+      "name": "Whiskey Sour",
+      "subName": "威士忌酸",
+      "price": "38",
+      "color": "#92400e",
+      "tags": "",
+      "desc": "酸涩的时光溶于威士忌的香醇。"
+    },
+    {
+      "id": 216,
+      "name": "Gimlet",
+      "subName": "琴蕾",
+      "price": "38",
+      "color": "#3f6212",
+      "tags": "",
+      "desc": "There are a thousand Gimlet in a thousand bartenders' shakers."
+    },
+    {
+      "id": 217,
+      "name": "New York",
+      "subName": "纽约",
+      "price": "48",
+      "color": "#7f1d1d",
+      "tags": "",
+      "desc": "如都市夜景一般绚丽又深邃。"
+    },
+    {
+      "id": 218,
+      "name": "Bramble",
+      "subName": "荆棘",
+      "price": "48",
+      "color": "#581c87",
+      "tags": "",
+      "desc": "莓果始于棘刺之间。"
     }
   ],
   "moments": [
