@@ -1,5 +1,8 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "framework": null
+  "framework": null,
+  "redirects": [
+    { "source": "/index.html", "destination": "/", "permanent": true }
+  ]
 }

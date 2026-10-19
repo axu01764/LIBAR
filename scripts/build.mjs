@@ -10,12 +10,27 @@ for (const [device, count] of [['desktop', 120], ['mobile', 120]]) {
   }
 }
 const content = JSON.parse(readFileSync('site-content.json', 'utf8'));
+const seo = JSON.parse(readFileSync('seo-config.json', 'utf8'));
 const { event, drinks, moments } = content;
 const [year, month, day] = event.date.split('-').map(Number);
 const dateChinese = `${month} 月 ${day} 日`;
 const dateShort = `${month}/${day}`;
 const dateEnglish = new Intl.DateTimeFormat('en-US', {month: 'short', timeZone: 'Asia/Shanghai'}).format(new Date(event.startsAt)).toUpperCase() + '. ' + day;
 const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+const siteTitle = `${seo.name}｜理 BAR · 鸡尾酒与活动`;
+const siteDescription = `${seo.name}（理 BAR / LI BAR）官方网站。查看鸡尾酒酒单、往期活动照片及联系方式。本期活动「${event.name}」：${dateChinese}，${event.time}，${event.location}。`;
+const siteImage = new URL('images/hero-sequence/v2/poster.webp', seo.url).href;
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    { '@type': 'WebSite', '@id': `${seo.url}#website`, url: seo.url, name: seo.name, alternateName: seo.alternateNames, inLanguage: 'zh-CN' },
+    { '@type': 'WebPage', '@id': seo.url, url: seo.url, name: siteTitle, description: siteDescription, inLanguage: 'zh-CN', isPartOf: { '@id': `${seo.url}#website` }, primaryImageOfPage: { '@type': 'ImageObject', url: siteImage } }
+  ]
+};
+if (!/^[a-zA-Z0-9-]{8,128}$/.test(seo.indexNowKey)) throw new Error('Invalid IndexNow key');
+writeFileSync('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${new URL('sitemap.xml', seo.url).href}\n`);
+writeFileSync('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <url><loc>${esc(seo.url)}</loc></url>\n</urlset>\n`);
+writeFileSync(`${seo.indexNowKey}.txt`, `${seo.indexNowKey}\n`);
 const e = Object.fromEntries(Object.entries(event).map(([key, value]) => [key, esc(value)]));
 mkdirSync('assets/vendor', { recursive: true });
 for (const [source, target] of [
@@ -123,8 +138,24 @@ const page = `<!DOCTYPE html>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <script src="assets/entry.js"></script>
   <meta name="theme-color" content="#260c0b">
-  <meta name="description" content="理 BAR 本期活动「${e.name}」：${dateChinese}，${e.time}，华东理工大学${e.location}。查看本期八款鸡尾酒酒单。">
-  <title>${e.name} · ${dateShort} — 理 BAR</title>
+  <title>${esc(siteTitle)}</title>
+  <meta name="description" content="${esc(siteDescription)}">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <link rel="canonical" href="${esc(seo.url)}">
+  ${seo.googleSiteVerification ? `<meta name="google-site-verification" content="${esc(seo.googleSiteVerification)}">` : ''}
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="${esc(seo.name)}">
+  <meta property="og:title" content="${esc(siteTitle)}">
+  <meta property="og:description" content="${esc(siteDescription)}">
+  <meta property="og:url" content="${esc(seo.url)}">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:image" content="${esc(siteImage)}">
+  <meta property="og:image:alt" content="理 BAR 鸡尾酒">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${esc(siteTitle)}">
+  <meta name="twitter:description" content="${esc(siteDescription)}">
+  <meta name="twitter:image" content="${esc(siteImage)}">
+  <script type="application/ld+json">${JSON.stringify(structuredData).replace(/</g, '\\u003c')}</script>
   <link rel="icon" href="favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="favicon.png">
   <link rel="preload" href="images/hero-sequence/v2/poster.webp" as="image" media="(min-width:700px)" fetchpriority="high">

@@ -19,6 +19,15 @@
 
 ## 本地开发与部署
 
+### 搜索引擎配置
+
+- `seo-config.json` 保存主域名、站点名 `alanbar`、别名、Google Search Console 验证标签以及公开的 IndexNow 验证 key。验证信息需要持续保留。
+- 构建会生成品牌标题、描述、canonical、分享预览及 WebSite / WebPage 结构化数据，并导出 `robots.txt`、`sitemap.xml` 和 IndexNow key 文件。页面正文不因 SEO 配置而增加文案。
+- 主网址为 `https://www.alanbar.site/`，站点地图只包含实际存在的首页，不把页内锚点当作独立页面。
+- Google Search Console 使用该 HTTPS URL prefix，验证后提交 `https://www.alanbar.site/sitemap.xml`，并对首页请求编入索引。
+- 发布后运行 `npm run seo:submit` 可通知 Bing 的 IndexNow 接口首页已更新。HTTP 200 / 202 仅表示接收，收录和排名由搜索引擎决定。
+- Google 抓取说明：https://developers.google.com/search/docs/crawling-indexing/ask-google-to-recrawl 。IndexNow 文档：https://www.indexnow.org/documentation 。
+
 ```sh
 npm ci
 npm run build
