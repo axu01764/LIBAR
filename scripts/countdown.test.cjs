@@ -2,7 +2,9 @@ const assert = require('node:assert/strict');
 const { remaining } = require('../assets/countdown.js');
 const { event } = require('../site-content.json');
 const target = '2026-10-20T19:00:00+08:00';
-assert.equal(event.startsAt, target);
+assert.match(event.startsAt, /T19:00:00\+08:00$/);
+assert.equal(event.date, event.startsAt.slice(0,10));
+assert.equal(remaining(event.startsAt, Date.parse(event.startsAt)).started, true);
 assert.equal(Date.parse(target), Date.parse('2026-10-20T11:00:00Z'));
 for (const timezone of ['Asia/Shanghai', 'America/Los_Angeles', 'Europe/London']) {
   process.env.TZ = timezone;

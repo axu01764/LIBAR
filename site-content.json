@@ -1,87 +1,60 @@
 {
   "event": {
-    "name": "复活",
-    "english": "Resurrection",
-    "date": "2026-10-20",
-    "startsAt": "2026-10-20T19:00:00+08:00",
-    "displayDate": "10 / 20",
+    "name": "果韵三味",
+    "english": "",
+    "date": "2026-10-27",
+    "startsAt": "2026-10-27T19:00:00+08:00",
+    "displayDate": "10 / 27",
     "time": "19:00 till late",
     "location": "奉贤风檐广场",
-    "intro": "今夜，重新开场。",
-    "description": "熟悉的风檐，久违的碰杯。理 BAR 带着八款鸡尾酒重新开场，邀你把日常暂放一旁，在秋夜里相聚。"
+    "intro": "今夜，果韵入杯。",
+    "description": "荔枝的清甜、青提的清新与乌梅的醇厚，带来今夜的三种果韵。再来一杯清爽的金汤力或莫斯科骡子，在熟悉的风檐广场，轻松碰杯。"
   },
   "drinks": [
     {
-      "id": 203,
-      "name": "Long Island Iced Tea",
-      "subName": "长岛冰茶",
-      "price": "48",
-      "color": "#1e3a8a",
-      "tags": "长饮",
-      "desc": "无害的茶色下藏着五种基酒的烈性，后劲十足。\n17%abv"
-    },
-    {
-      "id": 204,
-      "name": "Zombie",
-      "subName": "僵尸",
-      "price": "48",
-      "color": "#166534",
-      "tags": "长饮",
-      "desc": "畅销的热带经典\n13%abv"
-    },
-    {
-      "id": 210,
-      "name": "Coffee Martini",
-      "subName": "咖啡马天尼",
-      "price": "48",
-      "color": "#78350f",
-      "tags": "短饮",
-      "desc": "非常规的鸡尾酒味觉体验\n16%abv"
-    },
-    {
-      "id": 214,
-      "name": "Diablo",
-      "subName": "恶魔",
+      "id": 219,
+      "name": "Gin Tonic",
+      "subName": "金汤力",
       "price": "38",
-      "color": "#7f292f",
+      "color": "#89956b",
       "tags": "长饮",
-      "desc": "黑加仑与姜汁的碰撞，酒体颜色如恶魔的血液。\n13%abv"
+      "desc": "告慰一下今日劳碌的自己吧~\n8%abv"
     },
     {
-      "id": 215,
-      "name": "Whiskey Sour",
-      "subName": "威士忌酸",
+      "id": 220,
+      "name": "Moscow Mule",
+      "subName": "莫斯科骡子",
       "price": "38",
-      "color": "#92400e",
-      "tags": "短饮",
-      "desc": "酸涩的时光溶于威士忌的香醇。\n18%abv"
+      "color": "#96734d",
+      "tags": "长饮",
+      "desc": "青柠、姜汁与气泡交织的经典清爽\n8%abv"
     },
     {
-      "id": 216,
-      "name": "Gimlet",
-      "subName": "琴蕾",
+      "id": 221,
+      "name": "Smoked Plum Sour",
+      "subName": "乌梅酸",
       "price": "48",
-      "color": "#3f6212",
+      "color": "#6e3f4d",
       "tags": "短饮",
-      "desc": "There are a thousand Gimlet in a thousand bartenders' shakers.\n21%abv"
+      "desc": "烟熏莓果香气带来的醇厚体验。\n15%abv"
     },
     {
-      "id": 217,
-      "name": "New York",
-      "subName": "纽约",
+      "id": 222,
+      "name": "Lychee Margarita",
+      "subName": "海盐荔枝玛格丽特",
+      "price": "48",
+      "color": "#b7ae9c",
+      "tags": "短饮",
+      "desc": "尝尝一颗冰鲜荔枝的清甜\n17%abv"
+    },
+    {
+      "id": 223,
+      "name": "Verdant Fizz",
+      "subName": "青提菲士",
       "price": "38",
-      "color": "#7f1d1d",
-      "tags": "短饮",
-      "desc": "如都市夜景一般绚丽又深邃。\n15%abv"
-    },
-    {
-      "id": 218,
-      "name": "Bramble",
-      "subName": "荆棘",
-      "price": "48",
-      "color": "#581c87",
-      "tags": "短饮",
-      "desc": "莓果始于棘刺之间。\n13%abv"
+      "color": "#708556",
+      "tags": "长饮",
+      "desc": "怀念夏日的清新\n10%abv"
     }
   ],
   "moments": [

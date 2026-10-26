@@ -77,7 +77,7 @@
             const posDrinkGroups = computed(() => [
                 {
                     id: 'fruit',
-                    title: '本期酒单 / Resurrection',
+                    title: `本期酒单 / ${window.LIBAR_CONTENT.event.name}`,
                     drinks: fruitCocktails.value.filter((drink) => !drink.soldOut)
                 },
                 { id: 'classic', title: '经典 Classics', drinks: classicDrinks.value.filter((drink) => !drink.soldOut) }
