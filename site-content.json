@@ -12,6 +12,60 @@
   },
   "drinks": [
     {
+      "id": 203,
+      "name": "Long Island Iced Tea",
+      "subName": "长岛冰茶",
+      "price": "48",
+      "color": "#1e3a8a",
+      "tags": "长饮",
+      "desc": "无害的茶色下藏着五种基酒的烈性，后劲十足。\n17%abv"
+    },
+    {
+      "id": 204,
+      "name": "Zombie",
+      "subName": "僵尸",
+      "price": "48",
+      "color": "#166534",
+      "tags": "长饮",
+      "desc": "畅销的热带经典\n13%abv"
+    },
+    {
+      "id": 214,
+      "name": "Diablo",
+      "subName": "恶魔",
+      "price": "38",
+      "color": "#7f292f",
+      "tags": "长饮",
+      "desc": "黑加仑与姜汁的碰撞，酒体颜色如恶魔的血液。\n13%abv"
+    },
+    {
+      "id": 215,
+      "name": "Whiskey Sour",
+      "subName": "威士忌酸",
+      "price": "38",
+      "color": "#92400e",
+      "tags": "短饮",
+      "desc": "酸涩的时光溶于威士忌的香醇。\n18%abv"
+    },
+    {
+      "id": 216,
+      "name": "Gimlet",
+      "subName": "琴蕾",
+      "price": "48",
+      "color": "#3f6212",
+      "tags": "短饮",
+      "desc": "There are a thousand Gimlet in a thousand bartenders' shakers.\n21%abv"
+    },
+    {
+      "id": 218,
+      "name": "Bramble",
+      "subName": "荆棘",
+      "price": "48",
+      "color": "#581c87",
+      "tags": "短饮",
+      "desc": "莓果始于棘刺之间。\n13%abv"
+    },
+    {
       "id": 219,
       "name": "Gin Tonic",
       "subName": "金汤力",
