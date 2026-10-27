@@ -57,15 +57,6 @@
       "desc": "There are a thousand Gimlet in a thousand bartenders' shakers.\n21%abv"
     },
     {
-      "id": 218,
-      "name": "Bramble",
-      "subName": "荆棘",
-      "price": "48",
-      "color": "#581c87",
-      "tags": "短饮",
-      "desc": "莓果始于棘刺之间。\n13%abv"
-    },
-    {
       "id": 219,
       "name": "Gin Tonic",
       "subName": "金汤力",
@@ -99,7 +90,7 @@
       "price": "48",
       "color": "#b7ae9c",
       "tags": "短饮",
-      "desc": "尝尝一颗冰鲜荔枝的清甜\n17%abv"
+      "desc": "贵妃垂泪\n17%abv"
     },
     {
       "id": 223,
