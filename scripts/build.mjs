@@ -106,6 +106,7 @@ const publicPage = `<div class="public-site" :class="{'site-hidden': showPos || 
     <figure class="bartender-portrait" data-reveal>
       <p class="bartender-label">new bartender</p>
       <figcaption>🥑</figcaption>
+      <p class="bartender-label bartender-intro">to be continued</p>
     </figure>
   </section>
 

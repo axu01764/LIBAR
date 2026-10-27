@@ -88,4 +88,5 @@ body{margin:0;background:var(--wine);color:var(--cream);font-family:var(--sans);
 .has-long-title .hero-chinese{font-size:clamp(34px,4.8vw,90px);white-space:nowrap}
 .has-long-title .transition-title{font-size:clamp(52px,7vw,110px);letter-spacing:.12em;padding-left:.12em}
 .event-section.has-long-title h2{font-size:clamp(42px,5.2vw,78px);letter-spacing:.1em}
+.bartender-intro{margin:28px 0 0}
 @media(max-width:699px){.has-long-title .hero-chinese{font-size:clamp(42px,12vw,62px)}.has-long-title .transition-title{font-size:clamp(42px,12vw,68px)}.event-section.has-long-title h2{font-size:clamp(42px,12vw,62px)}}
