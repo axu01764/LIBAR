@@ -105,8 +105,7 @@ const publicPage = `<div class="public-site" :class="{'site-hidden': showPos || 
   <section class="bartender-section" aria-label="调酒师介绍">
     <figure class="bartender-portrait" data-reveal>
       <p class="bartender-label">new bartender</p>
-      <div class="portrait-frame"><img src="images/jill-st.jpg" alt="调酒师 Jill.St" width="1080" height="1920" loading="lazy" decoding="async"></div>
-      <figcaption>Jill.St</figcaption>
+      <figcaption>🥑</figcaption>
     </figure>
   </section>
 
