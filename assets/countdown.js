@@ -1,7 +1,14 @@
 // Explicit +08:00 event time; calculations do not depend on the visitor's timezone.
 (function (root) {
   function remaining(target, now) {
-    const milliseconds = Date.parse(target) - now;
+    const start = Date.parse(target);
+    const week = 7 * 86400000;
+    const liveWindow = 12 * 3600000;
+    // Repeat the weekly schedule, including pages opened several weeks later.
+    const cycle = now >= start ? Math.floor((now - start) / week) : 0;
+    let scheduled = start + cycle * week;
+    if (now - scheduled >= liveWindow) scheduled += week;
+    const milliseconds = scheduled - now;
     if (!Number.isFinite(milliseconds)) return null;
     const started = milliseconds <= 0;
     const seconds = started ? Math.floor(Math.abs(milliseconds) / 1000) : Math.ceil(milliseconds / 1000);

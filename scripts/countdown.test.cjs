@@ -19,12 +19,17 @@ for (const [offset, expected] of [
   [0, { days: 0, hours: 0, minutes: 0, seconds: 0 }],
   [999, { days: 0, hours: 0, minutes: 0, seconds: 0 }],
   [1000, { days: 0, hours: 0, minutes: 0, seconds: 1 }],
-  [86400000, { days: 1, hours: 0, minutes: 0, seconds: 0 }],
-  [95707000, { days: 1, hours: 2, minutes: 35, seconds: 7 }]
+  [43199999, { days: 0, hours: 11, minutes: 59, seconds: 59 }]
 ]) {
   assert.deepEqual(remaining(target, Date.parse(target) + offset), { started: true, ...expected });
 }
-assert.equal(remaining('invalid date', Date.now()), null);
+for (const [offset, expected] of [
+  [43200000, { started: false, days: 6, hours: 12, minutes: 0, seconds: 0 }],
+  [86400000, { started: false, days: 6, hours: 0, minutes: 0, seconds: 0 }],
+  [7 * 86400000, { started: true, days: 0, hours: 0, minutes: 0, seconds: 0 }],
+  [14 * 86400000 + 43200000, { started: false, days: 6, hours: 12, minutes: 0, seconds: 0 }]
+]) assert.deepEqual(remaining(target, Date.parse(target) + offset), expected);
+assert.equal(remaining('invalid date' , Date.now()), null);
 // A page left open across 19:00 switches direction and keeps ticking.
 const vm = require('node:vm');
 const fs = require('node:fs');
@@ -49,4 +54,9 @@ assert.equal(status.textContent, 'EVENT IN PROGRESS');
 assert.equal(status.hidden, false);
 now += 2000; tick();
 assert.equal(fields.seconds.textContent, '02');
+now = Date.parse(target) + 43200000; tick();
+assert.equal(timer.dataset.mode, 'remaining');
+assert.equal(status.hidden, true);
+assert.equal(fields.days.textContent, '06');
+assert.equal(fields.hours.textContent, '12');
 console.log('Countdown passed: UTC+8, visitor timezones, countdown-to-elapsed boundary, elapsed days, and continued browser updates.');

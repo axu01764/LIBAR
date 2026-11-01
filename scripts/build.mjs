@@ -46,7 +46,7 @@ const menu = drinks.map((drink, i) => `<article class="menu-item" data-reveal>
   <div class="menu-item-border">
     <h3><span class="drink-name">${esc(drink.name)}</span><span class="drink-name-cn">${esc(drink.subName)}</span></h3>
     <span class="drink-price" aria-label="${esc(drink.price)}元">${esc(drink.price)}</span>
-  </div>${drink.tags ? `\n  <p class="drink-type">${esc(drink.tags)}</p>` : ''}
+  </div>${drink.tags ? `\n  <p class="drink-type">${esc(drink.tags)}${drink.flavor ? `<span class="drink-flavor">${esc(drink.flavor)}</span>` : ''}</p>` : ''}
   <p class="drink-description">${esc(drink.desc).replace(/\n/g, '<br>')}</p>
 </article>`).join('\n');
 const gallery = moments.map((photo, i) => `<figure class="moment" data-reveal>
@@ -109,6 +109,11 @@ const publicPage = `<div class="public-site" :class="{'site-hidden': showPos || 
       <p class="bartender-label bartender-intro">to be continued</p>
     </figure>
   </section>
+
+  <div class="guest-menus">
+    <img src="images/guest-menu-gin.png" alt="Gin 客座酒单" loading="lazy" decoding="async">
+    <img src="images/guest-menu-zhongshan.png" alt="中山路 客座酒单" loading="lazy" decoding="async">
+  </div>
 
   <section id="moments" class="moments-section section-pad" aria-labelledby="moments-title">
     <div class="moments-heading" data-reveal><h2 id="moments-title">A little of<br><em>the night.</em></h2></div>

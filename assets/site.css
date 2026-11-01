@@ -90,3 +90,8 @@ body{margin:0;background:var(--wine);color:var(--cream);font-family:var(--sans);
 .event-section.has-long-title h2{font-size:clamp(42px,5.2vw,78px);letter-spacing:.1em}
 .bartender-intro{margin:28px 0 0}
 @media(max-width:699px){.has-long-title .hero-chinese{font-size:clamp(42px,12vw,62px)}.has-long-title .transition-title{font-size:clamp(42px,12vw,68px)}.event-section.has-long-title h2{font-size:clamp(42px,12vw,62px)}}
+
+.drink-flavor{display:inline-block;margin-left:2em}
+.guest-menus{background:#efe6d8;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;gap:32px;padding:0 max(24px,calc((100vw - 1100px)/2)) 100px}
+.guest-menus img{display:block;width:100%;height:auto}
+@media(max-width:699px){.guest-menus{grid-template-columns:1fr;gap:28px;padding:0 24px 64px}}
