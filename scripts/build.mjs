@@ -110,11 +110,6 @@ const publicPage = `<div class="public-site" :class="{'site-hidden': showPos || 
     </figure>
   </section>
 
-  <div class="guest-menus">
-    <img src="images/guest-menu-gin.png" alt="Gin 客座酒单" loading="lazy" decoding="async">
-    <img src="images/guest-menu-zhongshan.png" alt="中山路 客座酒单" loading="lazy" decoding="async">
-  </div>
-
   <section id="moments" class="moments-section section-pad" aria-labelledby="moments-title">
     <div class="moments-heading" data-reveal><h2 id="moments-title">A little of<br><em>the night.</em></h2></div>
     <div class="moments-grid">${gallery}</div>
