@@ -1,10 +1,10 @@
 {
   "event": {
-    "name": "重温旧调",
-    "english": "",
-    "date": "2026-11-03",
-    "startsAt": "2026-11-03T19:00:00+08:00",
-    "displayDate": "11 / 03",
+    "name": "莓果氤氲",
+    "english": "berry haze",
+    "date": "2026-11-10",
+    "startsAt": "2026-11-10T19:00:00+08:00",
+    "displayDate": "11 / 10",
     "time": "19:00 till late",
     "location": "奉贤风檐广场",
     "intro": "今夜，重新开场。",
@@ -28,7 +28,7 @@
       "price": "48",
       "color": "#1e3a8a",
       "tags": "长饮",
-      "desc": "无害的茶色下藏着五种基酒的烈性，后劲十足。\n17%abv",
+      "desc": "无害的茶色下藏着五种基酒的烈性，后劲十足\n17%abv",
       "flavor": "甜润/洌爽"
     },
     {
@@ -58,7 +58,7 @@
       "price": "38",
       "color": "#7f292f",
       "tags": "长饮",
-      "desc": "黑加仑与姜汁的碰撞，酒体颜色如恶魔的血液。\n13%abv",
+      "desc": "黑加仑与姜汁的碰撞，酒体颜色如恶魔的血液\n13%abv",
       "flavor": "莓果/姜汁香气"
     },
     {
@@ -128,7 +128,7 @@
       "price": "38",
       "color": "#3f6212",
       "tags": "短饮",
-      "desc": "21%abv",
+      "desc": "There are a thousand Gimlet in a thousand bartenders' shakers.\n21%abv",
       "flavor": "草本/清酸"
     }
   ],

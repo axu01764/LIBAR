@@ -74,7 +74,7 @@ const publicPage = `<div class="public-site" :class="{'site-hidden': showPos || 
       <picture><source media="(max-width: 699px)" srcset="images/hero-sequence/v2/poster-mobile.webp"><img class="hero-image" src="images/hero-sequence/v2/poster.webp" alt="深酒红光影中，一只盛着清澈酒液与橄榄的高脚鸡尾酒杯" width="1440" height="1000" fetchpriority="high" decoding="async"></picture>
       <canvas class="hero-canvas" aria-hidden="true"></canvas>
       <div class="hero-left">
-        <h1 id="hero-title"><span class="hero-chinese">${e.name}</span>${e.english ? `<span class="hero-english">${e.english}.</span>` : ''}</h1>
+        <h1 id="hero-title"><span class="hero-chinese">${e.name}</span>${e.english ? `<span class="hero-english">${e.english}</span>` : ''}</h1>
         <p class="hero-tagline">${e.intro}</p>
       </div>
       <div class="hero-right">
@@ -88,7 +88,7 @@ const publicPage = `<div class="public-site" :class="{'site-hidden': showPos || 
 
   <section id="event" class="event-section section-pad${[...event.name].length > 2 ? ' has-long-title' : ''}" aria-labelledby="event-title">
     <div class="event-grid">
-      <div data-reveal><h2 id="event-title">${e.name}${e.english ? `<em>${e.english}.</em>` : ''}</h2></div>
+      <div data-reveal><h2 id="event-title">${e.name}${e.english ? `<em>${e.english}</em>` : ''}</h2></div>
       <div class="event-copy" data-reveal><h3>${e.intro}</h3><p>${e.description}</p>
         <dl class="event-details"><div><dt class="sr-only">时间</dt><dd><time datetime="${e.date}">${dateChinese}</time><small>${e.time}</small></dd></div><div><dt class="sr-only">地点</dt><dd>${e.location}<small>华东理工大学 · 奉贤校区</small></dd></div></dl>
 
