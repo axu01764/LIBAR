@@ -1,10 +1,10 @@
 {
   "event": {
-    "name": "莓果氤氲",
-    "english": "berry haze",
-    "date": "2026-11-10",
-    "startsAt": "2026-11-10T19:00:00+08:00",
-    "displayDate": "11 / 10",
+    "name": "暖酌寻香",
+    "english": "Warmth & Aroma",
+    "date": "2026-11-17",
+    "startsAt": "2026-11-17T19:00:00+08:00",
+    "displayDate": "11 / 17",
     "time": "19:00 till late",
     "location": "奉贤风檐广场",
     "intro": "今夜，重新开场。",
@@ -48,8 +48,8 @@
       "price": "38",
       "color": "#96734d",
       "tags": "长饮",
-      "desc": "青柠、姜汁与气泡交织的经典清爽\n8%abv",
-      "flavor": "清爽/姜汁香气"
+      "desc": "倒不如叫美国骡子更为贴切？\n8%abv",
+      "flavor": "清爽/姜汁"
     },
     {
       "id": 214,
@@ -59,7 +59,7 @@
       "color": "#7f292f",
       "tags": "长饮",
       "desc": "黑加仑与姜汁的碰撞，酒体颜色如恶魔的血液\n13%abv",
-      "flavor": "莓果/姜汁香气"
+      "flavor": "莓果/姜汁"
     },
     {
       "id": 223,
@@ -68,8 +68,8 @@
       "price": "38",
       "color": "#708556",
       "tags": "长饮",
-      "desc": "怀念夏日的清新\n10%abv",
-      "flavor": "清爽/气泡/青提"
+      "desc": "蝉联多周的时尚单品，每周的青提都不太够用\n10%abv",
+      "flavor": "清爽/气泡"
     },
     {
       "id": 215,
@@ -80,6 +80,16 @@
       "tags": "短饮",
       "desc": "酸涩的时光溶于威士忌的香醇\n18%abv",
       "flavor": "醇和/清酸"
+    },
+    {
+      "id": 216,
+      "name": "Gimlet",
+      "subName": "琴蕾",
+      "price": "38",
+      "color": "#3f6212",
+      "tags": "短饮",
+      "desc": "There are a thousand Gimlet in a thousand bartenders' shakers.\n21%abv",
+      "flavor": "草本/清酸"
     },
     {
       "id": 213,
@@ -108,7 +118,7 @@
       "price": "42",
       "color": "#a75a6d",
       "tags": "短饮",
-      "desc": "深夜闹市的一抹浅粉。\n16%abv",
+      "desc": "深夜闹市的一抹浅粉\n16%abv",
       "flavor": "酸甜/果味"
     },
     {
@@ -118,18 +128,38 @@
       "price": "48",
       "color": "#92400e",
       "tags": "短饮",
-      "desc": "经典的架构，经典的风味。\n26%abv",
+      "desc": "经典的架构，经典的风味\n26%abv",
       "flavor": "香气/复古"
     },
     {
-      "id": 216,
-      "name": "Gimlet",
-      "subName": "琴蕾",
-      "price": "38",
-      "color": "#3f6212",
+      "id": 227,
+      "color": "#78350f",
+      "name": "Irish Coffee",
+      "subName": "爱尔兰咖啡",
+      "price": "58",
+      "tags": "长饮",
+      "flavor": "浓厚/甜美",
+      "desc": "理bar的第一款热饮酒，御寒的不二之选\n12%abv"
+    },
+    {
+      "id": 228,
+      "color": "#a16207",
+      "name": "Sidecar",
+      "subName": "边车",
+      "price": "48",
       "tags": "短饮",
-      "desc": "There are a thousand Gimlet in a thousand bartenders' shakers.\n21%abv",
-      "flavor": "草本/清酸"
+      "flavor": "橙香/甘醇",
+      "desc": "一战巴黎的经典酸调\n18%abv"
+    },
+    {
+      "id": 229,
+      "color": "#713f52",
+      "name": "Plumgaze",
+      "subName": "望梅",
+      "price": "48",
+      "tags": "长饮",
+      "flavor": "层次/酸调",
+      "desc": "望梅入盏，酸韵余甘\n13%abv"
     }
   ],
   "moments": [
