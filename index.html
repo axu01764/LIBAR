@@ -1,397 +1,446 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <script src="assets/entry.js"></script>
-  <meta name="theme-color" content="#260c0b">
-  <title>alanbar｜理 BAR · 鸡尾酒与活动</title>
-  <meta name="description" content="alanbar（理 BAR / LI BAR）官方网站。查看鸡尾酒酒单、往期活动照片及联系方式。本期活动「暖酌寻香」：11 月 17 日，19:00 till late，奉贤风檐广场。">
-  <meta name="robots" content="index, follow, max-image-preview:large">
-  <link rel="canonical" href="https://www.alanbar.site/">
-  <meta name="google-site-verification" content="S9mdgwj0UR-fDwSLaPGioppQ3WOX3xNSFbWkwTQUytE">
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="alanbar">
-  <meta property="og:title" content="alanbar｜理 BAR · 鸡尾酒与活动">
-  <meta property="og:description" content="alanbar（理 BAR / LI BAR）官方网站。查看鸡尾酒酒单、往期活动照片及联系方式。本期活动「暖酌寻香」：11 月 17 日，19:00 till late，奉贤风檐广场。">
-  <meta property="og:url" content="https://www.alanbar.site/">
-  <meta property="og:locale" content="zh_CN">
-  <meta property="og:image" content="https://www.alanbar.site/images/hero-sequence/v2/poster.webp">
-  <meta property="og:image:alt" content="理 BAR 鸡尾酒">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="alanbar｜理 BAR · 鸡尾酒与活动">
-  <meta name="twitter:description" content="alanbar（理 BAR / LI BAR）官方网站。查看鸡尾酒酒单、往期活动照片及联系方式。本期活动「暖酌寻香」：11 月 17 日，19:00 till late，奉贤风檐广场。">
-  <meta name="twitter:image" content="https://www.alanbar.site/images/hero-sequence/v2/poster.webp">
-  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.alanbar.site/#website","url":"https://www.alanbar.site/","name":"alanbar","alternateName":["ALAN BAR","理 BAR","LI BAR"],"inLanguage":"zh-CN"},{"@type":"WebPage","@id":"https://www.alanbar.site/","url":"https://www.alanbar.site/","name":"alanbar｜理 BAR · 鸡尾酒与活动","description":"alanbar（理 BAR / LI BAR）官方网站。查看鸡尾酒酒单、往期活动照片及联系方式。本期活动「暖酌寻香」：11 月 17 日，19:00 till late，奉贤风檐广场。","inLanguage":"zh-CN","isPartOf":{"@id":"https://www.alanbar.site/#website"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://www.alanbar.site/images/hero-sequence/v2/poster.webp"}}]}</script>
-  <link rel="icon" href="favicon.png" type="image/png">
-  <link rel="apple-touch-icon" href="favicon.png">
-  <link rel="preload" href="images/hero-sequence/v2/poster.webp" as="image" media="(min-width:700px)" fetchpriority="high">
-  <link rel="preload" href="images/hero-sequence/v2/poster-mobile.webp" as="image" media="(max-width:699px)" fetchpriority="high">
-  <link rel="preload" href="assets/vendor/cormorant-regular.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/utilities.css">
-  <link rel="stylesheet" href="assets/site.css">
-  <link rel="stylesheet" href="assets/pos.css">
-  <script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};window.si=window.si||function(){(window.siq=window.siq||[]).push(arguments)};</script>
-  <script defer src="/_vercel/insights/script.js"></script>
-  <script defer src="/_vercel/speed-insights/script.js"></script>
-  <script defer src="assets/content.js"></script>
-  <script defer src="assets/vendor/vue.js"></script>
-  <script defer src="assets/pos.js"></script>
-  <script defer src="assets/vendor/gsap.js"></script>
-  <script defer src="assets/vendor/ScrollTrigger.js"></script>
-  <script defer src="assets/countdown.js"></script>
-  <script defer src="assets/hero-renderer.js"></script>
-  <script defer src="assets/hero-sequence.js"></script>
-  <script defer src="assets/site.js"></script>
+    <meta charset="UTF-8">
+    <title>小鳄鱼跳仙人掌 - 终极版</title>
+    <!-- 引入像素字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #000; /* 背景设为黑色，更有街机感 */
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden;
+        }
+
+        /* 1. 开屏 Logo 样式 */
+        #splash-screen {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 3rem;
+            color: #ff0000;
+            text-shadow: 4px 4px 0 #000;
+            opacity: 0;
+            z-index: 100;
+            pointer-events: none;
+            animation: splashAnim 1.5s ease-in-out forwards;
+        }
+
+        @keyframes splashAnim {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+            30% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(2); }
+        }
+
+        /* 2. 开始按钮样式 */
+        #start-screen {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 90;
+            display: none; /* 默认隐藏，等Logo播完再显示 */
+        }
+
+        #start-btn {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.5rem;
+            padding: 20px 40px;
+            background-color: #222;
+            color: #fff;
+            border: 4px solid #fff;
+            box-shadow: 8px 8px 0 #000;
+            cursor: pointer;
+            transition: transform 0.1s, box-shadow 0.1s;
+            outline: none;
+        }
+
+        #start-btn:hover {
+            background-color: #444;
+            transform: translate(-2px, -2px);
+            box-shadow: 10px 10px 0 #000;
+        }
+
+        #start-btn:active {
+            transform: translate(4px, 4px);
+            box-shadow: 0px 0px 0 #000;
+        }
+
+        /* 游戏主容器 */
+        #game {
+            width: 800px;
+            height: 250px;
+            border: 2px solid #333;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(#87CEEB, #E0F6FF);
+            opacity: 0.8; /* 开始前稍微暗一点 */
+            transition: opacity 0.5s;
+        }
+
+        #game.active {
+            opacity: 1; /* 开始后变亮 */
+        }
+
+        /* 🐊 鳄鱼 */
+        #dino {
+            width: 70px;
+            height: 60px;
+            position: absolute;
+            bottom: 0;
+            left: 50px;
+            display: flex;
+            flex-wrap: wrap;
+            z-index: 10;
+        }
+        .dino-pixel { width: 8px; height: 8px; box-sizing: border-box; }
+        .dino-pixel.green { background-color: #1e7a1e; }
+        .dino-pixel.light-green { background-color: #32cd32; }
+        .dino-pixel.black { background-color: #000; }
+        .dino-pixel.empty { background-color: transparent; }
+
+        /* 🌵 仙人掌容器 */
+        #cactus-container {
+            position: absolute;
+            bottom: 0;
+            left: 850px;
+            height: 100%;
+            display: flex;
+            align-items: flex-end;
+        }
+
+        /* 基础仙人掌 */
+        .cactus {
+            width: 40px;
+            height: 70px;
+            display: flex;
+            flex-wrap: wrap;
+            z-index: 5;
+            margin-right: -10px; /* 重叠间距 */
+        }
+        /* 双倍高仙人掌 */
+        .cactus.tall {
+            height: 140px;
+            align-self: flex-end;
+        }
+
+        .cactus-pixel { width: 8px; height: 8px; box-sizing: border-box; }
+        .cactus-pixel.green { background-color: #2e8b57; }
+        .cactus-pixel.dark-green { background-color: #006400; }
+        .cactus-pixel.empty { background-color: transparent; }
+
+        /* UI */
+        .score-panel {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            border: 2px solid #333;
+            padding: 5px 10px;
+            background: rgba(255,255,255,0.8);
+            z-index: 20;
+        }
+        #ground {
+            width: 100%;
+            height: 5px;
+            background-color: #666;
+            position: absolute;
+            bottom: 0;
+            z-index: 1;
+        }
+
+        /* 云朵动画 */
+        .cloud { position: absolute; background: white; border-radius: 50%; opacity: 0.8; }
+        .cloud-group { position: absolute; top: 30px; right: -100px; animation: cloudMove 20s linear infinite; }
+        .cloud-group:nth-child(2) { top: 60px; right: -150px; animation-duration: 25s; animation-delay: 5s; transform: scale(0.8); }
+        .cloud-group:nth-child(3) { top: 40px; right: -200px; animation-duration: 30s; animation-delay: 10s; transform: scale(0.7); }
+        @keyframes cloudMove { from { right: -100px; } to { right: 900px; } }
+    </style>
 </head>
 <body>
-<div class="entry-screen" aria-label="活动倒计时" aria-busy="true">
-    <div class="countdown-row">
-      <p class="countdown-status" role="status" hidden></p>
-      <div class="countdown" role="timer" aria-label="活动倒计时" aria-live="off" hidden>
-        <span><strong data-count="days" aria-label="天">00</strong><small>DAYS</small></span><span><strong data-count="hours" aria-label="小时">00</strong><small>HRS</small></span><span><strong data-count="minutes" aria-label="分钟">00</strong><small>MINS</small></span><span><strong data-count="seconds" aria-label="秒">00</strong><small>SECS</small></span>
-      </div>
+
+    <!-- Logo 层 -->
+    <div id="splash-screen">ALAN PRESENTS</div>
+
+    <!-- 开始按钮层 -->
+    <div id="start-screen">
+        <button id="start-btn">START GAME</button>
     </div>
-</div>
-<div id="app"><div class="public-site" :class="{'site-hidden': showPos || showWheel}">
-<a class="skip-link" href="#menu">跳至酒单</a>
-<header class="site-header">
-  <a href="#home" class="brand" aria-label="理 BAR 首页">理 <span>BAR</span></a>
-  <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav">菜单</button>
-  <nav id="site-nav" aria-label="主导航">
-    <a href="#event">本次活动<span>THE EVENT</span></a>
-    <a href="#menu">酒单<span>OUR MENU</span></a>
-    <a href="#moments">片刻<span>MOMENTS</span></a>
-    <a href="#visit">找到我们<span>FIND US</span></a>
-  </nav>
-</header>
-<main>
-  <section id="home" class="hero-story has-long-title" aria-labelledby="hero-title">
-    <div class="hero-stage">
-      <picture><source media="(max-width: 699px)" srcset="images/hero-sequence/v2/poster-mobile.webp"><img class="hero-image" src="images/hero-sequence/v2/poster.webp" alt="深酒红光影中，一只盛着清澈酒液与橄榄的高脚鸡尾酒杯" width="1440" height="1000" fetchpriority="high" decoding="async"></picture>
-      <canvas class="hero-canvas" aria-hidden="true"></canvas>
-      <div class="hero-left">
-        <h1 id="hero-title"><span class="hero-chinese">暖酌寻香</span><span class="hero-english">Warmth &amp; Aroma</span></h1>
-        <p class="hero-tagline">今夜，重新开场。</p>
-      </div>
-      <div class="hero-right">
-        <p class="hero-invitation">夜色里相聚，<br>杯盏间重逢。</p>
-        <a class="text-link hero-cta" href="#menu">查看酒单 <span>OUR MENU</span></a>
-      </div>
-      <div class="hero-transition" aria-hidden="true"><p class="eyebrow">LI BAR · BACK TO THE NIGHT</p><p class="transition-title">暖酌寻香</p><p>11 / 17 &nbsp; / &nbsp; 19:00 till late</p><p>奉贤风檐广场</p></div>
-      <div class="hero-bottom"><span>ALAN</span><a href="#event">向下探索 <span class="scroll-rule" aria-hidden="true"></span> SCROLL TO DISCOVER</a><span>GIN</span></div>
-    </div>
-  </section>
 
-  <section id="event" class="event-section section-pad has-long-title" aria-labelledby="event-title">
-    <div class="event-grid">
-      <div data-reveal><h2 id="event-title">暖酌寻香<em>Warmth &amp; Aroma</em></h2></div>
-      <div class="event-copy" data-reveal><h3>今夜，重新开场。</h3><p></p>
-        <dl class="event-details"><div><dt class="sr-only">时间</dt><dd><time datetime="2026-11-17">11 月 17 日</time><small>19:00 till late</small></dd></div><div><dt class="sr-only">地点</dt><dd>奉贤风檐广场<small>华东理工大学 · 奉贤校区</small></dd></div></dl>
-
-      </div>
-    </div>
-  </section>
-
-  <section id="menu" class="menu-section section-pad" aria-labelledby="menu-title">
-    <div class="menu-heading" data-reveal><h2 id="menu-title">The Menu</h2></div>
-    <div class="menu-grid"><article class="menu-item" data-reveal>
-  <div class="menu-item-border">
-    <h3><span class="drink-name">Gin Tonic</span><span class="drink-name-cn">金汤力</span></h3>
-    <span class="drink-price" aria-label="38元">38</span>
-  </div>
-  <p class="drink-type">长饮<span class="drink-flavor">清爽/气泡</span></p>
-  <p class="drink-description">告慰一下今日劳碌的自己吧~<br>8%abv</p>
-</article>
-<article class="menu-item" data-reveal>
-  <div class="menu-item-border">
-    <h3><span class="drink-name">Long Island Iced Tea</span><span class="drink-name-cn">长岛冰茶</span></h3>
-    <span class="drink-price" aria-label="48元">48</span>
-  </div>
-  <p class="drink-type">长饮<span class="drink-flavor">甜润/洌爽</span></p>
-  <p class="drink-description">无害的茶色下藏着五种基酒的烈性，后劲十足<br>17%abv</p>
-</article>
-<article class="menu-item" data-reveal>
-  <div class="menu-item-border">
-    <h3><span class="drink-name">Zombie</span><span class="drink-name-cn">僵尸</span></h3>
-    <span class="drink-price" aria-label="48元">48</span>
-  </div>
-  <p class="drink-type">长饮<span class="drink-flavor">热带风味/酸甜</span></p>
-  <p class="drink-description">畅销的热带经典<br>13%abv</p>
-</article>
-<article class="menu-item" data-reveal>
-  <div class="menu-item-border">
-    <h3><span class="drink-name">Moscow Mule</span><span class="drink-name-cn">莫斯科骡子</span></h3>
-    <span class="drink-price" aria-label="38元">38</span>
-  </div>
-  <p class="drink-type">长饮<span class="drink-flavor">清爽/姜汁</span></p>
-  <p class="drink-description">倒不如叫美国骡子更为贴切？<br>8%abv</p>
-</article>
-<article class="menu-item" data-reveal>
-  <div class="menu-item-border">
-    <h3><span class="drink-name">El Diablo</span><span class="drink-name-cn">恶魔</span></h3>
-    <span class="drink-price" aria-label="38元">38</span>
-  </div>
-  <p class="drink-type">长饮<span class="drink-flavor">莓果/姜汁</span></p>
-  <p class="drink-description">黑加仑与姜汁的碰撞，酒体颜色如恶魔的血液<br>13%abv</p>
-</article>
-<article class="menu-item" data-reveal>
-  <div class="menu-item-border">
-    <h3><span class="drink-name">Verdant Fizz</span><span class="drink-name-cn">青提菲士</span></h3>
-    <span class="drink-price" aria-label="38元">38</span>
-  </div>
-  <p class="drink-type">长饮<span class="drink-flavor">清爽/气泡</span></p>
-  <p class="drink-description">蝉联多周的时尚单品，每周的青提都不太够用<br>10%abv</p>
-</article>
-<article class="menu-item" data-reveal>
-  <div class="menu-item-border">
-    <h3><span class="drink-name">Whiskey Sour</span><span class="drink-name-cn">威士忌酸</span></h3>
-    <span class="drink-price" aria-label="38元">38</span>
-  </div>
-  <p class="drink-type">短饮<span class="drink-flavor">醇和/清酸</span></p>
-  <p class="drink-description">酸涩的时光溶于威士忌的香醇<br>18%abv</p>
-</article>
-<article class="menu-item" data-reveal>
-  <div class="menu-item-border">
-    <h3><span class="drink-name">Gimlet</span><span class="drink-name-cn">琴蕾</span></h3>
-    <span class="drink-price" aria-label="38元">38</span>
-  </div>
-  <p class="drink-type">短饮<span class="drink-flavor">草本/清酸</span></p>
-  <p class="drink-description">There are a thousand Gimlet in a thousand bartenders&#39; shakers.<br>21%abv</p>
-</article>
-<article class="menu-item" data-reveal>
-  <div class="menu-item-border">
-    <h3><span class="drink-name">Daiquiri</span><span class="drink-name-cn">戴其利</span></h3>
-    <span class="drink-price" aria-label="42元">42</span>
-  </div>
-  <p class="drink-type">短饮<span class="drink-flavor">酸甜/清爽</span></p>
-  <p class="drink-description">“这个名字太长了，为什么不直接叫Daiquiri呢？”<br>17%abv</p>
-</article>
-<article class="menu-item" data-reveal>
-  <div class="menu-item-border">
-    <h3><span class="drink-name">Raspberry</span><span class="drink-name-cn">树莓</span></h3>
-    <span class="drink-price" aria-label="38元">38</span>
-  </div>
-  <p class="drink-type">短饮<span class="drink-flavor">莓果/甜美</span></p>
-  <p class="drink-description">比莓果派更加香甜<br>16%abv</p>
-</article>
-<article class="menu-item" data-reveal>
-  <div class="menu-item-border">
-    <h3><span class="drink-name">Cosmopolitan</span><span class="drink-name-cn">大都会</span></h3>
-    <span class="drink-price" aria-label="42元">42</span>
-  </div>
-  <p class="drink-type">短饮<span class="drink-flavor">酸甜/果味</span></p>
-  <p class="drink-description">深夜闹市的一抹浅粉<br>16%abv</p>
-</article>
-<article class="menu-item" data-reveal>
-  <div class="menu-item-border">
-    <h3><span class="drink-name">Old Fashioned</span><span class="drink-name-cn">古典</span></h3>
-    <span class="drink-price" aria-label="48元">48</span>
-  </div>
-  <p class="drink-type">短饮<span class="drink-flavor">香气/复古</span></p>
-  <p class="drink-description">经典的架构，经典的风味<br>26%abv</p>
-</article>
-<article class="menu-item" data-reveal>
-  <div class="menu-item-border">
-    <h3><span class="drink-name">Irish Coffee</span><span class="drink-name-cn">爱尔兰咖啡</span></h3>
-    <span class="drink-price" aria-label="58元">58</span>
-  </div>
-  <p class="drink-type">长饮<span class="drink-flavor">浓厚/甜美</span></p>
-  <p class="drink-description">理bar的第一款热饮酒，御寒的不二之选<br>12%abv</p>
-</article>
-<article class="menu-item" data-reveal>
-  <div class="menu-item-border">
-    <h3><span class="drink-name">Sidecar</span><span class="drink-name-cn">边车</span></h3>
-    <span class="drink-price" aria-label="48元">48</span>
-  </div>
-  <p class="drink-type">短饮<span class="drink-flavor">橙香/甘醇</span></p>
-  <p class="drink-description">一战巴黎的经典酸调<br>18%abv</p>
-</article>
-<article class="menu-item" data-reveal>
-  <div class="menu-item-border">
-    <h3><span class="drink-name">Plumgaze</span><span class="drink-name-cn">望梅</span></h3>
-    <span class="drink-price" aria-label="48元">48</span>
-  </div>
-  <p class="drink-type">长饮<span class="drink-flavor">层次/酸调</span></p>
-  <p class="drink-description">望梅入盏，酸韵余甘<br>13%abv</p>
-</article></div>
-    <div class="menu-footnote"><span>欢迎与我们沟通风味偏好。</span></div>
-  </section>
-
-  <section class="bartender-section" aria-label="调酒师介绍">
-    <figure class="bartender-portrait" data-reveal>
-      <p class="bartender-label">new bartender</p>
-      <figcaption>🥑</figcaption>
-      <p class="bartender-label bartender-intro">to be continued</p>
-    </figure>
-  </section>
-
-  <section id="moments" class="moments-section section-pad" aria-labelledby="moments-title">
-    <div class="moments-heading" data-reveal><h2 id="moments-title">A little of<br><em>the night.</em></h2></div>
-    <div class="moments-grid"><figure class="moment" data-reveal>
-  <a class="photo-link" href="images/moment-guava.webp" data-photo="0" aria-label="放大照片：芭乐">
-    <img src="images/moment-guava.webp" alt="芭乐" loading="lazy" decoding="async" width="800" height="1000">
-  </a>
-  <figcaption>01 / 芭乐</figcaption>
-</figure>
-<figure class="moment" data-reveal>
-  <a class="photo-link" href="images/moment-white-wine.webp" data-photo="1" aria-label="放大照片：白葡萄酒">
-    <img src="images/moment-white-wine.webp" alt="白葡萄酒" loading="lazy" decoding="async" width="800" height="1000">
-  </a>
-  <figcaption>02 / 白葡萄酒</figcaption>
-</figure>
-<figure class="moment" data-reveal>
-  <a class="photo-link" href="images/moment-3.webp" data-photo="2" aria-label="放大照片：Penicillin">
-    <img src="images/moment-3.webp" alt="Penicillin" loading="lazy" decoding="async" width="800" height="1000">
-  </a>
-  <figcaption>03 / Penicillin</figcaption>
-</figure>
-<figure class="moment" data-reveal>
-  <a class="photo-link" href="images/moment-4.webp" data-photo="3" aria-label="放大照片：Palermo">
-    <img src="images/moment-4.webp" alt="Palermo" loading="lazy" decoding="async" width="800" height="1000">
-  </a>
-  <figcaption>04 / Palermo</figcaption>
-</figure>
-<figure class="moment" data-reveal>
-  <a class="photo-link" href="images/moment-8.webp" data-photo="4" aria-label="放大照片：威士忌酸">
-    <img src="images/moment-8.webp" alt="威士忌酸" loading="lazy" decoding="async" width="800" height="1000">
-  </a>
-  <figcaption>05 / 威士忌酸</figcaption>
-</figure>
-<figure class="moment" data-reveal>
-  <a class="photo-link" href="images/moment-5.webp" data-photo="5" aria-label="放大照片：Gin&amp;Tonic">
-    <img src="images/moment-5.webp" alt="Gin&amp;Tonic" loading="lazy" decoding="async" width="800" height="1000">
-  </a>
-  <figcaption>06 / Gin&amp;Tonic</figcaption>
-</figure></div>
-    <p class="gallery-hint">往期活动记录</p>
-  </section>
-
-  <section id="visit" class="visit-section section-pad" aria-labelledby="visit-title">
-    <div class="visit-grid"><div data-reveal><h2 id="visit-title">Find Us</h2></div>
-      <div class="visit-info" data-reveal>
-        <button class="text-link copy-wechat" type="button" data-copy="17601382093">微信 17601382093 <span>点击复制</span></button>
-        <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
-        <div class="social-links"><a href="https://b23.tv/KLiRgD0" target="_blank" rel="noopener noreferrer">bilibili</a><a href="https://xhslink.com/m/9IN1QDcfLlw" target="_blank" rel="noopener noreferrer">小红书</a><a href="#menu">酒单</a></div>
-      </div>
-    </div>
-    <footer class="site-footer"><button @click="enterPos" class="pos-entry" type="button" aria-label="打开点单系统">© 2026 LI BAR</button><p>Synchronicity is an ever-present reality.</p><a href="#home">回到顶部 / BACK TO TOP</a></footer>
-  </section>
-</main>
-<dialog class="photo-dialog" aria-label="往期活动照片"><div class="photo-dialog-content"><img alt=""><p class="photo-caption"></p></div><div class="photo-navigation"><button type="button" data-gallery-prev>上一张</button><span class="photo-counter" aria-live="polite"></span><button type="button" data-gallery-next>下一张</button></div></dialog>
-</div>
-    <div v-cloak v-show="showPos" class="fixed inset-0 z-[50] h-[100dvh] overflow-hidden bg-[#050505] text-white">
-        <div class="flex h-full flex-col">
-            <div class="sticky top-0 z-40 border-b border-white/10 bg-black px-4 py-3">
-                <div class="flex items-center justify-end gap-3 text-[11px]">
-                    <p class="rounded-full border border-white/10 bg-white/[0.04] px-3 py-2 text-white/60">总杯数 {{ totalDrinkCount }}</p>
-                    <button @click="exportTonightData" type="button" class="rounded-full border border-white/15 px-4 py-2 text-white/75">导出今晚数据</button>
-                    <button @click="clearTonightData" type="button" class="rounded-full border border-white/15 px-4 py-2 text-white/75">清空今晚数据</button>
-                    <button @click="exitPos" type="button" class="shrink-0 rounded-full border border-white/15 px-4 py-2 text-[11px] tracking-[0.18em] text-white/75">退出系统</button>
-                </div>
-            </div>
-
-            <section class="h-[42dvh] shrink-0 border-b border-white/10 px-4 py-4">
-                <div class="pos-scrollbar-hidden pos-touch-y h-full overflow-y-auto overflow-x-hidden">
-                    <div class="space-y-5">
-                        <div v-for="group in posDrinkGroups" :key="group.id">
-                            <div class="mb-3 text-[11px] tracking-[0.24em] uppercase text-white/35">{{ group.title }}</div>
-                            <div class="grid grid-cols-3 gap-2 sm:grid-cols-4">
-                                <button
-                                    v-for="drink in group.drinks"
-                                    :key="drink.id"
-                                    type="button"
-                                    @click="handleDrinkTap(drink)"
-                                    class="min-h-[64px] rounded-2xl px-3 py-2 text-left text-white shadow-[0_14px_28px_rgba(0,0,0,0.28)] active:scale-[0.98] touch-manipulation"
-                                    :style="drinkButtonStyle(drink)"
-                                >
-                                    <div
-                                        class="font-serif-cn font-medium leading-tight text-white"
-                                        :class="isLongPosDrinkName(drink.subName) ? 'text-[11px]' : 'text-[13px]'"
-                                    >
-                                        {{ drink.subName }}
-                                    </div>
-                                    <div class="mt-2 flex items-center justify-end gap-2">
-                                        <span class="rounded-full bg-black/15 px-2 py-0.5 text-[10px] text-white/80">{{ getDrinkCount(drink.id) }}</span>
-                                    </div>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="pos-timeline-type min-h-0 flex-1 overflow-hidden px-4 py-4">
-                <div class="mb-3 flex items-center justify-between gap-3">
-                    <h3 class="text-sm font-bold tracking-[0.14em] text-white/65">出杯时间轴</h3>
-                    <p class="text-[11px] font-bold text-white/35">{{ serviceDateLabel }}</p>
-                </div>
-
-                <div
-                    ref="timelineScroller"
-                    class="timeline-pan-zone pos-scrollbar-hidden pos-touch-pan h-full overflow-auto pb-2"
-                    @wheel="handleTimelineWheel"
-                >
-                    <div class="flex min-h-full min-w-max items-start gap-3">
-                        <div
-                            v-for="slot in posTimelineSlots"
-                            :key="slot.start"
-                            class="flex min-h-full w-[156px] shrink-0 self-start flex-col rounded-3xl border border-white/10 bg-white/[0.03] p-3"
-                        >
-                            <div class="mb-3 border-b border-white/10 pb-2">
-                                <div class="text-sm font-bold text-white">{{ slot.label }}</div>
-                                <div class="text-[10px] font-bold tracking-[0.18em] uppercase text-white/35">{{ slot.orders.length }} orders</div>
-                            </div>
-
-                            <div class="space-y-2 pr-1">
-                                <button
-                                    v-for="order in slot.orders"
-                                    :key="order.id"
-                                    type="button"
-                                    @click="handleOrderTap(order.id)"
-                                    @dblclick="toggleOrderDone(order.id)"
-                                    class="w-full rounded-2xl border px-3 py-2.5 text-left"
-                                    :class="order.done ? 'border-white/10 bg-white/5 text-white/35' : 'border-transparent bg-white/8 text-white'"
-                                    :style="orderCardStyle(order)"
-                                >
-                                    <div class="flex items-start justify-between gap-2">
-                                        <div class="min-w-0">
-                                            <div class="truncate text-[15px] font-bold leading-tight">{{ order.name }}</div>
-                                            <div class="mt-1 truncate text-[12px] font-bold" :class="order.done ? 'text-white/30' : 'text-white/85'">{{ order.subName }}</div>
-                                        </div>
-                                        <span v-if="order.done" class="text-xs text-white/60">✓</span>
-                                    </div>
-                                </button>
-
-                                <div v-if="!slot.orders.length" class="rounded-2xl border border-dashed border-white/10 px-3 py-4 text-[11px] text-white/20">暂无订单</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+    <!-- 游戏层 -->
+    <div id="game">
+        <!-- 🐊 鳄鱼模型 -->
+        <div id="dino">
+            <div class="dino-pixel empty"></div><div class="dino-pixel empty"></div><div class="dino-pixel light-green"></div><div class="dino-pixel light-green"></div><div class="dino-pixel light-green"></div><div class="dino-pixel empty"></div><div class="dino-pixel empty"></div><div class="dino-pixel empty"></div><div class="dino-pixel empty"></div>
+            <div class="dino-pixel empty"></div><div class="dino-pixel light-green"></div><div class="dino-pixel green"></div><div class="dino-pixel green"></div><div class="dino-pixel green"></div><div class="dino-pixel light-green"></div><div class="dino-pixel empty"></div><div class="dino-pixel empty"></div><div class="dino-pixel empty"></div>
+            <div class="dino-pixel light-green"></div><div class="dino-pixel green"></div><div class="dino-pixel green"></div><div class="dino-pixel black"></div><div class="dino-pixel green"></div><div class="dino-pixel green"></div><div class="dino-pixel light-green"></div><div class="dino-pixel empty"></div><div class="dino-pixel empty"></div>
+            <div class="dino-pixel light-green"></div><div class="dino-pixel green"></div><div class="dino-pixel green"></div><div class="dino-pixel green"></div><div class="dino-pixel green"></div><div class="dino-pixel green"></div><div class="dino-pixel light-green"></div><div class="dino-pixel green"></div><div class="dino-pixel empty"></div>
+            <div class="dino-pixel light-green"></div><div class="dino-pixel green"></div><div class="dino-pixel green"></div><div class="dino-pixel green"></div><div class="dino-pixel green"></div><div class="dino-pixel green"></div><div class="dino-pixel light-green"></div><div class="dino-pixel green"></div><div class="dino-pixel empty"></div>
+            <div class="dino-pixel empty"></div><div class="dino-pixel light-green"></div><div class="dino-pixel green"></div><div class="dino-pixel green"></div><div class="dino-pixel green"></div><div class="dino-pixel green"></div><div class="dino-pixel light-green"></div><div class="dino-pixel empty"></div><div class="dino-pixel empty"></div>
+            <div class="dino-pixel empty"></div><div class="dino-pixel empty"></div><div class="dino-pixel light-green"></div><div class="dino-pixel light-green"></div><div class="dino-pixel light-green"></div><div class="dino-pixel light-green"></div><div class="dino-pixel empty"></div><div class="dino-pixel empty"></div><div class="dino-pixel empty"></div>
+            <div class="dino-pixel empty"></div><div class="dino-pixel empty"></div><div class="dino-pixel light-green"></div><div class="dino-pixel light-green"></div><div class="dino-pixel light-green"></div><div class="dino-pixel light-green"></div><div class="dino-pixel empty"></div><div class="dino-pixel empty"></div><div class="dino-pixel empty"></div>
         </div>
 
-        <div v-show="showRecipePreview" class="absolute inset-0 z-[70] bg-black/70 backdrop-blur-[2px] px-4 py-6">
-            <div class="mx-auto flex h-full w-full max-w-3xl flex-col rounded-2xl border border-white/15 bg-[#111] p-4 md:p-5">
-                <div class="mb-4 flex items-center justify-between gap-3">
-                    <p class="text-sm font-serif-cn text-white/80 truncate">{{ recipePreviewTitle }}</p>
-                    <button @click="closeRecipePreview" type="button" class="text-3xl leading-none text-white/75 hover:text-white transition-colors" aria-label="Close recipe preview">&times;</button>
-                </div>
-                <div class="min-h-0 flex-1 overflow-auto rounded-xl border border-white/10 bg-black/20 p-2">
-                    <img
-                        v-if="recipePreviewSrc"
-                        :src="recipePreviewSrc"
-                        :alt="recipePreviewTitle"
-                        class="mx-auto h-auto max-h-full w-auto rounded-lg"
-                        @error="handleRecipeImageError"
-                    >
-                    <div v-if="recipeImageMissing" class="flex h-full min-h-[180px] items-center justify-center text-center text-sm text-white/55">
-                        未找到配方图。请确认图片命名为 `images/id-{{ recipePreviewDrinkId }}.png` 并放在项目可访问路径中。
-                    </div>
-                </div>
+        <!-- 🌵 仙人掌组 -->
+        <div id="cactus-container">
+            <div class="cactus" id="c1">
+                 <div class="cactus-pixel empty"></div><div class="cactus-pixel empty"></div><div class="cactus-pixel green"></div><div class="cactus-pixel empty"></div><div class="cactus-pixel empty"></div>
+                 <div class="cactus-pixel empty"></div><div class="cactus-pixel green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel green"></div><div class="cactus-pixel empty"></div>
+                 <div class="cactus-pixel green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel green"></div>
+                 <div class="cactus-pixel empty"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div>
+                 <div class="cactus-pixel empty"></div><div class="cactus-pixel green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div>
+                 <div class="cactus-pixel empty"></div><div class="cactus-pixel empty"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div>
+                 <div class="cactus-pixel empty"></div><div class="cactus-pixel empty"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div>
+                 <div class="cactus-pixel empty"></div><div class="cactus-pixel green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div>
+                 <div class="cactus-pixel green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div>
+            </div>
+            <div class="cactus" id="c2">
+                 <div class="cactus-pixel empty"></div><div class="cactus-pixel empty"></div><div class="cactus-pixel green"></div><div class="cactus-pixel empty"></div><div class="cactus-pixel empty"></div>
+                 <div class="cactus-pixel empty"></div><div class="cactus-pixel green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel green"></div><div class="cactus-pixel empty"></div>
+                 <div class="cactus-pixel green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel green"></div>
+                 <div class="cactus-pixel empty"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div>
+                 <div class="cactus-pixel empty"></div><div class="cactus-pixel green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div>
+                 <div class="cactus-pixel empty"></div><div class="cactus-pixel empty"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div>
+                 <div class="cactus-pixel empty"></div><div class="cactus-pixel empty"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div>
+                 <div class="cactus-pixel empty"></div><div class="cactus-pixel green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div>
+                 <div class="cactus-pixel green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div>
+            </div>
+            <div class="cactus" id="c3">
+                 <div class="cactus-pixel empty"></div><div class="cactus-pixel empty"></div><div class="cactus-pixel green"></div><div class="cactus-pixel empty"></div><div class="cactus-pixel empty"></div>
+                 <div class="cactus-pixel empty"></div><div class="cactus-pixel green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel green"></div><div class="cactus-pixel empty"></div>
+                 <div class="cactus-pixel green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel green"></div>
+                 <div class="cactus-pixel empty"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div>
+                 <div class="cactus-pixel empty"></div><div class="cactus-pixel green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div>
+                 <div class="cactus-pixel empty"></div><div class="cactus-pixel empty"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div>
+                 <div class="cactus-pixel empty"></div><div class="cactus-pixel empty"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div>
+                 <div class="cactus-pixel empty"></div><div class="cactus-pixel green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div>
+                 <div class="cactus-pixel green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div><div class="cactus-pixel dark-green"></div>
             </div>
         </div>
+
+        <div class="score-panel">
+            <div>🏆 High Score: <span id="high-score">0</span></div>
+            <div>🎮 Current Score: <span id="current-score">0</span></div>
+        </div>
+        <div id="ground"></div>
+
+        <!-- 装饰 -->
+        <div class="cloud-group"><div class="cloud" style="width:30px;height:30px;top:0;left:0"></div><div class="cloud" style="width:25px;height:25px;top:5px;left:20px"></div></div>
+        <div class="cloud-group"><div class="cloud" style="width:25px;height:25px;top:0;left:0"></div><div class="cloud" style="width:20px;height:20px;top:5px;left:15px"></div></div>
     </div>
-</div>
+
+    <script>
+        // --- DOM 元素获取 ---
+        const splashScreen = document.getElementById('splash-screen');
+        const startScreen = document.getElementById('start-screen');
+        const startBtn = document.getElementById('start-btn');
+        const gameContainer = document.getElementById('game');
+        const dino = document.getElementById('dino');
+        const container = document.getElementById('cactus-container');
+        const c1 = document.getElementById('c1');
+        const c2 = document.getElementById('c2');
+        const c3 = document.getElementById('c3');
+        const currentScoreElement = document.getElementById('current-score');
+        const highScoreElement = document.getElementById('high-score');
+
+        // --- 游戏状态变量 ---
+        let gameStarted = false; // 新增：控制游戏是否开始
+        let score = 0;
+        let isJumping = false;
+        let jumpHeight = 0;
+        let gameOver = false;
+        let currentObstacleCount = 1;
+        let isTall = false;
+
+        // --- 物理参数 ---
+        let baseJumpSpeed = 20;
+        let currentJumpSpeed = baseJumpSpeed;
+        let baseGravity = 0.7;
+        let currentGravity = baseGravity;
+
+        let baseSpeed = 5;
+        let cactusSpeed = baseSpeed;
+        const maxSpeed = baseSpeed * 2;
+        let speedMultiplier = 1;
+
+        // --- 初始化 ---
+        let highScore = localStorage.getItem('dinoHighScore') || 0;
+        highScoreElement.textContent = highScore;
+
+        // --- 流程控制逻辑 ---
+
+        // 1. Logo动画结束后显示开始按钮
+        setTimeout(() => {
+            splashScreen.style.display = 'none'; // 隐藏Logo
+            startScreen.style.display = 'block'; // 显示开始界面
+        }, 1600); // 对应 CSS 动画时长 1.5s
+
+        // 2. 开始按钮点击事件
+        startBtn.addEventListener('click', () => {
+            startGame();
+        });
+
+        // 支持按空格键开始
+        document.addEventListener('keydown', (e) => {
+            if ((e.code === 'Space' || e.key === ' ') && !gameStarted && !gameOver) {
+                startGame();
+            }
+        });
+
+        function startGame() {
+            if (gameStarted) return;
+
+            gameStarted = true;
+            startScreen.style.display = 'none'; // 隐藏按钮
+            gameContainer.classList.add('active'); // 让游戏画面变亮
+            generateObstacle(); // 生成第一个障碍物
+            gameLoop(); // 启动主循环
+        }
+
+        // --- 游戏核心逻辑 (保持不变) ---
+
+        // 键盘跳跃控制
+        document.addEventListener('keydown', (e) => {
+            if ((e.code === 'Space' || e.key === ' ') && !isJumping && gameStarted && !gameOver) {
+                isJumping = true;
+                currentJumpSpeed = baseJumpSpeed * (0.8 + speedMultiplier * 0.2);
+                jump();
+            }
+        });
+
+        function jump() {
+            if (isJumping && !gameOver) {
+                jumpHeight += currentJumpSpeed;
+                dino.style.bottom = `${jumpHeight}px`;
+                currentJumpSpeed -= currentGravity;
+
+                if (jumpHeight <= 0) {
+                    jumpHeight = 0;
+                    dino.style.bottom = '0px';
+                    isJumping = false;
+                    currentJumpSpeed = baseJumpSpeed;
+                } else {
+                    requestAnimationFrame(jump);
+                }
+            }
+        }
+
+        function generateObstacle() {
+            c1.style.display = 'none';
+            c2.style.display = 'none';
+            c3.style.display = 'none';
+            c2.classList.remove('tall');
+            container.style.left = '850px';
+
+            if (score < 80) {
+                c1.style.display = 'flex';
+                currentObstacleCount = 1;
+            } else if (score < 300) {
+                if (Math.random() > 0.5) {
+                    c1.style.display = 'flex';
+                    currentObstacleCount = 1;
+                } else {
+                    c1.style.display = 'flex';
+                    c2.style.display = 'flex';
+                    currentObstacleCount = 2;
+                }
+            } else {
+                c1.style.display = 'flex';
+                c2.style.display = 'flex';
+                c3.style.display = 'flex';
+                currentObstacleCount = 3;
+
+                if (Math.random() > 0.4) {
+                    c2.classList.add('tall');
+                    isTall = true;
+                } else {
+                    isTall = false;
+                }
+            }
+        }
+
+        // 核心修复：基于逻辑的碰撞检测
+        function checkCollision() {
+            const dinoRect = dino.getBoundingClientRect();
+
+            // 1. 只要跳起来就不撞
+            if (dinoRect.bottom - dinoRect.top < 50) {
+                return false;
+            }
+
+            // 2. 强制检测当前阶段应该存在的物体
+            if (checkSingleCactus(c1, dinoRect)) return true;
+            if (currentObstacleCount >= 2 && checkSingleCactus(c2, dinoRect)) return true;
+            if (currentObstacleCount === 3 && checkSingleCactus(c3, dinoRect)) return true;
+
+            return false;
+        }
+
+        function checkSingleCactus(cactus, dinoRect) {
+            const cRect = cactus.getBoundingClientRect();
+            const hitX = dinoRect.right > cRect.left + 5 && dinoRect.left < cRect.right - 5;
+            const hitY = dinoRect.bottom > cRect.top;
+            return hitX && hitY;
+        }
+
+        function gameLoop() {
+            if (gameOver) return;
+            if (!gameStarted) return; // 如果没开始，不执行循环
+
+            // 速度控制
+            let targetMultiplier = 1 + (Math.floor(score / 100) * 0.2);
+            if (targetMultiplier > 2) targetMultiplier = 2;
+
+            if (speedMultiplier < targetMultiplier) {
+                speedMultiplier += 0.005;
+                if(speedMultiplier > targetMultiplier) speedMultiplier = targetMultiplier;
+                cactusSpeed = baseSpeed * speedMultiplier;
+                currentGravity = baseGravity * speedMultiplier * 1.1;
+            }
+
+            // 移动
+            let containerLeft = parseInt(window.getComputedStyle(container).left);
+            container.style.left = `${containerLeft - cactusSpeed}px`;
+
+            // 计分
+            if (containerLeft < -100) {
+                if (currentObstacleCount === 3 && isTall) score += 30;
+                else if (currentObstacleCount >= 2) score += 20;
+                else score += 10;
+
+                currentScoreElement.textContent = score;
+
+                if (score > highScore) {
+                    highScore = score;
+                    highScoreElement.textContent = highScore;
+                    localStorage.setItem('dinoHighScore', highScore);
+                }
+
+                generateObstacle();
+            }
+
+            // 碰撞检测
+            if (checkCollision()) {
+                gameOver = true;
+                setTimeout(() => {
+                    alert(`Game Over!\nScore: ${score}\nHigh Score: ${highScore}`);
+                    window.location.reload(true); // 刷新页面重来
+                }, 50);
+            }
+
+            requestAnimationFrame(gameLoop);
+        }
+    </script>
 </body>
 </html>
