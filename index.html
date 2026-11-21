@@ -15,6 +15,7 @@
             background-color: #000; /* 背景设为黑色，更有街机感 */
             font-family: 'Courier New', Courier, monospace;
             overflow: hidden;
+            touch-action: manipulation;
         }
 
         /* 1. 开屏 Logo 样式 */
@@ -312,12 +313,19 @@
 
         // 键盘跳跃控制
         document.addEventListener('keydown', (e) => {
-            if ((e.code === 'Space' || e.key === ' ') && !isJumping && gameStarted && !gameOver) {
-                isJumping = true;
-                currentJumpSpeed = baseJumpSpeed * (0.8 + speedMultiplier * 0.2);
-                jump();
-            }
+            if (e.code === 'Space' || e.key === ' ') tryJump();
         });
+
+        document.addEventListener('pointerdown', (e) => {
+            if (e.isPrimary && (e.pointerType === 'touch' || e.pointerType === 'pen')) tryJump();
+        });
+
+        function tryJump() {
+            if (!gameStarted || gameOver || isJumping) return;
+            isJumping = true;
+            currentJumpSpeed = baseJumpSpeed * (0.8 + speedMultiplier * 0.2);
+            jump();
+        }
 
         function jump() {
             if (isJumping && !gameOver) {
